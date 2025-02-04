@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - "8000:8000"
+    volumes:
+      - ./dialog_backend:/app
+    env_file:
+      - ./dialog_backend/dialog_backend/.env
+    depends_on:
+      - postgres
+      - redis
+  
+  postgres:
+    image: postgres:14
+    volumes:
+      - ./postgres_data:/var/lib/postgresql@14/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=dialog
+    
+  redis:
+    image: redis:7
+    container_name: redis_cache
+    restart: always
+    env_file:
+      - ./dialog_backend/dialog_backend/.env
