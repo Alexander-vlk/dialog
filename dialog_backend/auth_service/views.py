@@ -13,7 +13,7 @@ class RegistrationAPIView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
             
