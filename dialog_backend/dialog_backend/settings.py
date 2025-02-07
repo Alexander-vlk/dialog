@@ -1,6 +1,7 @@
-from datetime import timedelta
 import environ
 from pathlib import Path
+
+from constants import ONE_DAY, ONE_WEEK
 
 env = environ.Env()
 env.read_env()
@@ -103,8 +104,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=14),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+    'ACCESS_TOKEN_LIFETIME': ONE_DAY,
+    'REFRESH_TOKEN_LIFETIME': ONE_WEEK,
 }
 
 LANGUAGE_CODE = env('LANGUAGE_CODE')
