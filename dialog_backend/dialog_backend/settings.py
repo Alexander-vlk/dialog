@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     
     'auth_service.apps.AuthServiceConfig',
     'cabinet.apps.CabinetConfig',
+    'data_tracking.apps.DataTrackingConfig',
 ]
 
 MIDDLEWARE = [
