@@ -59,3 +59,34 @@ class UserProfile(AutoDateMixin):
     
     def __str__(self):
         return f'Профиль пользователя {self.user}'
+
+
+class Disease(AutoDateMixin):
+    """Модель сопутствующих болезней"""
+    
+    DISEASE_STAGE_CHOICES = {
+        'Начальная': 'early',
+        'Средняя': 'medium',
+        'Последняя': 'latest',
+    }
+    
+    users = models.ManyToManyField(
+        to=User,
+        verbose_name='Пользователи с заболеванием',
+        related_name='diseases',
+        blank=True,
+        help_text='Указанные пользователи болеют этим заболеванием'
+    )
+    
+    name = models.CharField(
+        max_length=500,
+        verbose_name='Название болезни',
+    )
+    
+    class Meta:
+        verbose_name = 'Заболевание'
+        verbose_name_plural = 'Заболевания'
+        ordering = ['name']
+    
+    def __str__(self):
+        return self.name
