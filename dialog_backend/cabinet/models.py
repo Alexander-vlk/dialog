@@ -90,3 +90,25 @@ class Disease(AutoDateMixin):
     
     def __str__(self):
         return self.name
+
+
+class Allergy(AutoDateMixin):
+    """Класс аллергии"""
+
+    users = models.ManyToManyField(
+        to=User,
+        verbose_name='Пользователи',
+        blank=True,
+        related_name='allergies',
+        help_text='Указанные пользователи имеют эту аллергию'
+    )
+
+    name = models.CharField(
+        max_length=500,
+        verbose_name='Название аллергии',
+    )
+
+    class Meta:
+        verbose_name = 'Аллергия'
+        verbose_name_plural = 'Аллергии'
+        ordering = ['name']
