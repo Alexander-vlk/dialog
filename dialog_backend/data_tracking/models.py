@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from core.mixins import AutoDateMixin
+from core.validators import validate_positive_float
 
 
 class DailyLog(AutoDateMixin):
@@ -84,3 +85,57 @@ class DailyLog(AutoDateMixin):
         verbose_name_plural = 'Дневные замеры состояния'
         ordering = ['-updated_at']
 
+
+class Glucose(AutoDateMixin):
+    """Модель для уровня глюкозы"""
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    daily_log = models.ForeignKey(
+        to=DailyLog,
+        on_delete=models.CASCADE,
+        verbose_name='Дневной замер состояния',
+        related_name='glucoses',
+    )
+
+    level = models.FloatField(
+        verbose_name='Уровень глюкозы',
+        validators=[validate_positive_float],
+    )
+
+    class Meta:
+        verbose_name = 'Уровень глюкозы'
+        verbose_name_plural = 'Уровни глюкозы'
+
+
+class Pressure(AutoDateMixin):
+    """Модель для замеров давления"""
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    daily_log = models.ForeignKey(
+        to=DailyLog,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name='Дневной замер состояния',
+        related_name='pressures',
+    )
+
+    systolic = models.PositiveSmallIntegerField(
+        verbose_name='Систолическое давление',
+    )
+
+    diastolic = models.PositiveSmallIntegerField(
+        verbose_name='Диастолическое давление',
+    )
