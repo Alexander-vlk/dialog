@@ -81,6 +81,14 @@ class WeeklyLog(AutoDateMixin):
         verbose_name='Пользователь',
     )
 
+    monthly_log = models.ForeignKey(
+        to=MonthlyLog,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Ежемесячный отчет',
+    )
+
     weight = models.PositiveSmallIntegerField(
         verbose_name='Вес',
     )
