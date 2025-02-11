@@ -6,8 +6,111 @@ from core.mixins import AutoDateMixin
 from core.validators import validate_positive_float
 
 
+class MonthlyLog(AutoDateMixin, models.Model):
+    """Модель ежемесячного отчета"""
+
+    MONTH_CHOICES = {
+        '1': 'Январь',
+        '2': 'Февраль',
+        '3': 'Март',
+        '4': 'Апрель',
+        '5': 'Май',
+        '6': 'Июнь',
+        '7': 'Июль',
+        '8': 'Август',
+        '9': 'Сентябрь',
+        '10': 'Октябрь',
+        '11': 'Ноябрь',
+        '12': 'Декабрь',
+    }
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Пользователь',
+        related_name='monthly_log',
+    )
+
+    hemoglobin = models.PositiveSmallIntegerField(
+        verbose_name='Гликированный гемоглобин',
+        null=True,
+        blank=True,
+    )
+
+    cholesterol = models.FloatField(
+        validators=[validate_positive_float],
+        verbose_name='Уровень холестерина',
+        null=True,
+        blank=True,
+    )
+
+    lipid_profile = models.FloatField(
+        validators=[validate_positive_float],
+        verbose_name='Липидный профиль',
+        null=True,
+        blank=True,
+    )
+
+    microalbuminuria = models.PositiveSmallIntegerField(
+        verbose_name='Микроальбуминурия',
+        null=True,
+        blank=True,
+    )
+
+    month = models.CharField(
+        choices=MONTH_CHOICES,
+        max_length=10,
+        verbose_name='Месяц',
+    )
+
+    class Meta:
+        verbose_name = 'Месячный замер состояния'
+        verbose_name_plural = 'Месячные замеры состояния'
+
+
+class WeeklyLog(AutoDateMixin):
+    """Модель еженедельного отчета"""
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Пользователь',
+    )
+
+    weight = models.PositiveSmallIntegerField(
+        verbose_name='Вес',
+    )
+
+    bmi = models.PositiveSmallIntegerField(
+        verbose_name='Индекс массы тела',
+    )
+
+    ketones = models.FloatField(
+        validators=[validate_positive_float],
+        verbose_name='Кетоны',
+    )
+
+    week_start = models.DateField(
+        default=timezone.now,
+        verbose_name='Дата начала недели',
+    )
+
+    week_end = models.DateField(
+        default=timezone.now,
+        verbose_name='Дата окончания недели',
+    )
+
+    class Meta:
+        verbose_name = 'Еженедельный отчет'
+        verbose_name_plural = 'Еженедельные отчеты'
+
+
 class DailyLog(AutoDateMixin):
-    """Модель ежедневных данных"""
+    """Модель ежедневного отчета"""
 
     BAD = 'bad'
     NORMAL = 'normal'
@@ -29,6 +132,14 @@ class DailyLog(AutoDateMixin):
         NAUSEA: 'Тошнота',
         ANOTHER: 'Другое',
     }
+
+    weekly_log = models.ForeignKey(
+        to=WeeklyLog,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Месячный отчет',
+    )
 
     user = models.ForeignKey(
         to=User,
