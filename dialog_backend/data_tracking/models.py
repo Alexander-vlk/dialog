@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from core.mixins import AutoDateMixin
 from core.validators import validate_positive_float
@@ -80,6 +81,11 @@ class DailyLog(AutoDateMixin):
         default='',
     )
 
+    date = models.DateField(
+        default=timezone.now,
+        verbose_name='Дата замера',
+    )
+
     class Meta:
         verbose_name = 'Дневной замер состояния'
         verbose_name_plural = 'Дневные замеры состояния'
@@ -109,8 +115,11 @@ class Glucose(AutoDateMixin):
     )
 
     class Meta:
-        verbose_name = 'Уровень глюкозы'
-        verbose_name_plural = 'Уровни глюкозы'
+        verbose_name = 'Замер уровня глюкозы'
+        verbose_name_plural = 'Замеры уровня глюкозы'
+
+    def __str__(self):
+        return f'{self.user}:{self.updated_at}:{self.level}'
 
 
 class Pressure(AutoDateMixin):
@@ -139,3 +148,42 @@ class Pressure(AutoDateMixin):
     diastolic = models.PositiveSmallIntegerField(
         verbose_name='Диастолическое давление',
     )
+
+    class Meta:
+        verbose_name = 'Замер давления'
+        verbose_name_plural = 'Замеры давления'
+
+    def __str__(self):
+        return f'{self.user}:{self.updated_at}:{self.systolic}/{self.diastolic}'
+
+
+class BodyTemperature(AutoDateMixin):
+    """Модель для замера температуры тела"""
+
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    daily_log = models.ForeignKey(
+        to=DailyLog,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name='Дневной замер состояния',
+        related_name='body_temperatures',
+    )
+
+    temperature = models.FloatField(
+        verbose_name='Температура тела',
+        validators=[validate_positive_float],
+    )
+
+    class Meta:
+        verbose_name = 'Температура тела'
+        verbose_name_plural = 'Температуры тела'
+
+    def __str__(self):
+        return f'{self.user}:{self.updated_at}:{self.temperature}'
