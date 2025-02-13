@@ -1,13 +1,15 @@
 from django.contrib.auth.models import User
+from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAdminUser
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from auth_service.serializers import UserSerializer
+from cabinet.models import Allergy
+from cabinet.serializers import AllergySerializer, DiseaseSerializer
 
 
-class UserListAPIView(GenericAPIView):
+class UserListAPIView(viewsets.ModelViewSet):
     """GenericAPIView для модели User"""
 
     model = User
@@ -15,7 +17,11 @@ class UserListAPIView(GenericAPIView):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminUser,)
 
-    def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+
+class AllergyViewSet(viewsets.ModelViewSet):
+    """ViewSet для Allergy"""
+
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = AllergySerializer
+    queryset = Allergy.objects.all()
