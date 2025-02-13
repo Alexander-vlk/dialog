@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ class UserListAPIView(GenericAPIView):
 
     model = User
     serializer_class = UserSerializer
+    authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminUser,)
 
     def get(self, request):
