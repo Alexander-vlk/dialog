@@ -95,12 +95,6 @@ class UserProfile(AutoDateMixin):
 class Disease(AutoDateMixin):
     """Модель сопутствующих болезней"""
     
-    DISEASE_STAGE_CHOICES = {
-        'Начальная': 'early',
-        'Средняя': 'medium',
-        'Последняя': 'latest',
-    }
-    
     users = models.ManyToManyField(
         to=User,
         verbose_name='Пользователи с заболеванием',
