@@ -12,7 +12,9 @@ class AllergySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         allergy = super().create(validated_data)
-        allergy.users.add(self.context['request'].user)
+        user = self.context['request'].user
+        if user.is_authenticated:
+            allergy.users.add(user)
         allergy.save()
         return allergy
 
@@ -26,7 +28,9 @@ class DiseaseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         disease = super().create(validated_data)
-        disease.users.add(self.context['request'].user)
+        user = self.context['request'].user
+        if user.is_authenticated:
+            disease.users.add(user)
         disease.save()
         return disease
 
@@ -49,6 +53,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_profile = super().create(validated_data)
-        user_profile.user = self.context['request'].user
+        user = self.context['request'].user
+        if user.is_authenticated:
+            user_profile.user = user
         user_profile.save()
         return user_profile
