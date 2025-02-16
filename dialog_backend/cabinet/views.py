@@ -9,10 +9,11 @@ from cabinet.models import Allergy
 from cabinet.serializers import AllergySerializer, DiseaseSerializer
 
 
-class UserListAPIView(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     """GenericAPIView для модели User"""
 
     model = User
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminUser,)
