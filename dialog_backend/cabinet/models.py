@@ -42,6 +42,14 @@ class UserProfile(AutoDateMixin):
         verbose_name='Пользователь',
         help_text='Пользователь, к которому относится данный профиль',
     )
+
+    image = models.ImageField(
+        upload_to='images/',
+        blank=True,
+        null=True,
+        verbose_name='Фото',
+    )
+
     patronymic_name = models.CharField(
         max_length=150,
         default='',
@@ -60,6 +68,8 @@ class UserProfile(AutoDateMixin):
         max_length=20,
         choices=DIABETES_TYPE_CHOICES,
         verbose_name='Тип диабета',
+        blank=True,
+        default='',
     )
     diagnosis_date = models.DateField(
         verbose_name='Дата постановки диагноза',
