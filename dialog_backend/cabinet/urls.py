@@ -10,4 +10,5 @@ cabinet_router.register(r'allergies', AllergyViewSet, basename='allergies')
 
 urlpatterns = [
     path('', include(cabinet_router.urls)),
+
 ]
