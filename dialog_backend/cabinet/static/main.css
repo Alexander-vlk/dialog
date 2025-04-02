@@ -1,0 +1,5 @@
+@import "base.css";
+
+body {
+    background: var(--color-background);
+}

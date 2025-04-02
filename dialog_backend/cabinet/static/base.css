@@ -1,0 +1,39 @@
+:root {
+    --color-primary: #0351C1;
+    --color-secondary: #FF0000;
+    --color-primary-light: #5199FF;
+    --color-secondary-light: #FF6A61;
+    --color-background: #E5F0FF;
+
+    --color-white: #fff;
+    --color-black: #000;
+}
+
+:root {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-primary-light {
+    color: var(--color-primary-light);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.text-secondary-light {
+    color: var(--color-secondary-light);
+}
