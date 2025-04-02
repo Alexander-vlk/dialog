@@ -1,5 +1,4 @@
        <div class="flex items-center space-x-4">
-            <!-- Иконка уведомлений -->
             <a href="#" class="relative text-primary hover:text-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14V11a6 6 0 10-12 0v3c0 .386-.149.735-.405 1.005L4 17h5m6 0a3 3 0 11-6 0m6 0H9" />
@@ -7,10 +6,8 @@
                 <span class="absolute -top-2 -right-2 bg-secondary text-white text-xs rounded-full px-2">3</span>
             </a>
 
-            <!-- Никнейм -->
             <span class="text-primary font-semibold">{{ user.username }}</span>
 
-            <!-- Аватар -->
             <a href="#" class="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
 {#                <img src="{{ user.profile.avatar.url }}" alt="Аватар" class="w-full h-full object-cover">#}
             </a>
