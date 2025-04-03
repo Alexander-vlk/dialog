@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from constants import DIABETES_TYPE_CHOICES, GENDER_CHOICES, TREATMENTS_TYPE_CHOICES
 
 TEXT_INPUT_CLASS = 'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
+SELECT_INPUT_CLASS = 'w-full mt-1 p-2 border rounded-lg'
 
 
 class ExtendedLoginForm(AuthenticationForm):
@@ -60,12 +61,13 @@ class ExtendedUserCreationForm(UserCreationForm):
         choices=GENDER_CHOICES,
         required=False,
         label='Пол',
+        widget=forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
     )
 
     birth_date = forms.DateField(
         required=True,
-        widget=forms.DateInput(format='%d/%m/%Y'),
         label='Дата рождения',
+        widget=forms.DateInput(attrs={'class': 'w-full mt-1 p-2 border rounded-l', 'type': 'date'}),
     )
 
     diagnosis_date = forms.DateField(
@@ -78,12 +80,14 @@ class ExtendedUserCreationForm(UserCreationForm):
         choices=DIABETES_TYPE_CHOICES,
         required=False,
         label='Тип диабета',
+        widget=forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
     )
 
     treatment_type = forms.ChoiceField(
         choices=TREATMENTS_TYPE_CHOICES,
         required=False,
         label='Тип лечения',
+        widget=forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
     )
 
     def __init__(self, *args, **kwargs):

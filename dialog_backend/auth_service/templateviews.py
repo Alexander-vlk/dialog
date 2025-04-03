@@ -34,7 +34,7 @@ class UserRegisterView(CreateView):
 
     template_name = 'registration/register.html'
     form_class = ExtendedUserCreationForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('cabinet')
 
     def form_valid(self, form):
         instance = super().form_valid(form)
@@ -43,6 +43,11 @@ class UserRegisterView(CreateView):
             username=form.cleaned_data['username'],
             password=form.cleaned_data['password1'],
         )
+
+        user.first_name = form.cleaned_data.get('first_name', '')
+        user.last_name = form.cleaned_data.get('last_name', '')
+        user.email = form.cleaned_data.get('email', '')
+        user.save()
 
         UserProfile.objects.create(
             user=user,
