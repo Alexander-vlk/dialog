@@ -21,6 +21,7 @@ class UserProfile(AutoDateMixin):
         blank=True,
         null=True,
         verbose_name='Фото',
+        default='images/stub.png',
     )
 
     patronymic_name = models.CharField(
@@ -73,6 +74,10 @@ class UserProfile(AutoDateMixin):
     
     def __str__(self):
         return f'Профиль пользователя {self.user}'
+
+    @property
+    def fio(self):
+        return f'{self.user.last_name} {self.user.first_name} {self.patronymic_name}'
 
 
 class Disease(AutoDateMixin):
