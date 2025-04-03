@@ -9,7 +9,8 @@ urlpatterns = [
     path('api/auth_service/', include('auth_service.urls')),
     path('api/cabinet/', include('cabinet.urls')),
 
-    path('', include('cabinet.templateurls'))
+    path('', include('cabinet.templateurls')),
+    path('', include('auth_service.templateurls')),
 ]
 
 if settings.DEBUG:
