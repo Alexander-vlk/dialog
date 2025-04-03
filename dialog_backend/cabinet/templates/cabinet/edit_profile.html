@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl my-4 mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-semibold mb-6">Редактирование профиля</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.username.label }}:</label>
+            {{ form.username }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.last_name.label }}:</label>
+            {{ form.last_name }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.first_name.label }}:</label>
+            {{ form.first_name }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.patronymic_name.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.patronymic_name.label }}</label>
+            {{ form.patronymic_name }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.email.label }}</label>
+            {{ form.email }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.image.label }}</label>
+            {{ form.image }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.gender.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.gender.label }}</label>
+            {{ form.gender }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.birth_date.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.birth_date.label }}</label>
+            {{ form.birth_date }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.diabetes_type.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.diabetes_type.label }}</label>
+            {{ form.diabetes_type }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.diagnosis_date.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.diagnosis_date.label }}</label>
+            {{ form.diagnosis_date }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.treatment_type.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.treatment_type.label }}</label>
+            {{ form.treatment_type }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.phone_number.label     }}</label>
+            {{ form.phone_number }}
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <input type="submit" value="Сохранить изменения" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 md:w-xs cursor-pointer transition" />
+        </div>
+    </form>
+</div>
+<style>
+    #image-clear__id {
+        display: block;
+    }
+</style>
+{% endblock %}
