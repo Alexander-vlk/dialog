@@ -4,6 +4,7 @@ from django.views.generic import CreateView
 from rest_framework.reverse import reverse_lazy
 
 from auth_service.forms import ExtendedLoginForm, ExtendedUserCreationForm
+from cabinet.models import UserProfile
 from constants import TWO_WEEKS
 
 
@@ -33,7 +34,7 @@ class UserRegisterView(CreateView):
 
     template_name = 'registration/register.html'
     form_class = ExtendedUserCreationForm
-    next_page = reverse_lazy('index')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         instance = super().form_valid(form)
@@ -41,6 +42,16 @@ class UserRegisterView(CreateView):
         user = authenticate(
             username=form.cleaned_data['username'],
             password=form.cleaned_data['password1'],
+        )
+
+        UserProfile.objects.create(
+            user=user,
+            patronymic_name=form.cleaned_data.get('patronymic_name', ''),
+            gender=form.cleaned_data.get('gender'),
+            birth_date=form.cleaned_data.get('birth_date'),
+            diabetes_type=form.cleaned_data.get('diabetes_type'),
+            treatment_type=form.cleaned_data.get('treatment_type'),
+            phone_number=form.cleaned_data.get('phone_number'),
         )
 
         login(self.request, user)
