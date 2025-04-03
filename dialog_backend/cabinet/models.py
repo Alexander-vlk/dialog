@@ -1,41 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import ArrayField
 
 from core.mixins import AutoDateMixin
 from core.validators import validate_not_future_date
+from constants import DIABETES_TYPE_CHOICES, GENDER_CHOICES, TREATMENTS_TYPE_CHOICES
 
 
 class UserProfile(AutoDateMixin):
     """Модель профиля пользователя"""
-    
-    MALE = 'MALE'
-    FEMALE = 'FEMALE'
-    GENDER_CHOICES = {
-        MALE: 'Мужской',
-        FEMALE: 'Женский',
-    }
 
-    FIRST_TYPE = '1'
-    SECOND_TYPE = '2'
-    MODY_TYPE = 'mody'
-    GESTATIONAL = 'gestational'
-    MANY_TYPES = 'many_types'
-    DIABETES_TYPE_CHOICES = {
-        FIRST_TYPE: '1-го типа',
-        SECOND_TYPE: '2-го типа',
-        MODY_TYPE: 'MODY-диабет',
-        GESTATIONAL: 'Гестационный диабет',
-        MANY_TYPES: 'Несколько типов диабета',
-    }
-
-    INSULIN_THERAPY = 'insulin_therapy'
-    PREPARATIONS = 'preparations'
-    TREATMENTS_TYPE_CHOICES = {
-        INSULIN_THERAPY: 'Инсулинотерапия',
-        PREPARATIONS: 'Препараты',
-    }
-    
     user = models.OneToOneField(
         to=User,
         on_delete=models.CASCADE,
