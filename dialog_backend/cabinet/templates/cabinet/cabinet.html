@@ -26,7 +26,7 @@
         <p><strong>Тип диабета:</strong> <span id="diabetesType">{{ cabinet.diabetes_type }}</span></p>
         <p><strong>Тип лечения:</strong> <span id="treatmentType">{{ cabinet.treatment_type }}</span></p>
         <p><strong>Дата рождения:</strong> <span>{{ cabinet.birth_date }}</span></p>
-        <p><strong>Дата постановки диагноза:</strong> <span>{{ cabinet.diagnosis_date }}</span></p>
+        <p><strong>Диагноз поставлен</strong> <span>{{ cabinet.diagnosis_date }}</span></p>
         <p><strong>Пол:</strong> <span id="gender">{{ cabinet.gender }}</span></p>
         <p><strong>Дата присоединения</strong> <span id="gender">{{ cabinet.created_at }}</span></p>
     </div>
@@ -34,7 +34,7 @@
     <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
             <a
-                href="/profile/edit"
+                href="{% url 'cabinet_update' %}"
                 class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-700">
                 Редактировать профиль
             </a>
@@ -49,6 +49,6 @@
             <input type="submit" value="Выйти" class="px-4 py-2 bg-red-700 text-white cursor-pointer rounded-lg shadow-md hover:bg-red-700">
         </form>
     </div>
-</div>s
-<div id="success-toast" class="fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 hidden"></div>
+</div>
+<div id="success-toast" class="fixed top-5 md:bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 hidden"></div>
 {% endblock %}
