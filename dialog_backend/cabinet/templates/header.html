@@ -36,6 +36,9 @@
                     <li>
                         <a href="{% url 'login' %}" class="text-green-700 hover:underline transition block py-2 md:py-0 lg:hidden">Войти</a>
                     </li>
+                    <li>
+                        <a href="{% url 'register' %}" class="text-green-700 hover:underline transition block py-2 md:py-0 lg:hidden">Зарегистрироваться</a>
+                    </li>
                 {% else %}
                     <li>
                         <form action="{% url 'logout' %}" method="post">
@@ -47,7 +50,7 @@
             </ul>
         </nav>
         {% if not request.user.is_authenticated %}
-        <div class="flex space-x-4">
+        <div class="hidden space-x-4 md:flex">
             <a
                 autofocus
                 href="{% url 'login' %}"
