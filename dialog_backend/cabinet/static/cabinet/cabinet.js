@@ -15,6 +15,10 @@ const GENDER = {
     'FEMALE': 'Женский',
 }
 
+const INFO_MESSAGES = {
+    'success_change_password': 'Пароль успешно изменен!'
+}
+
 const diabetesType = document.getElementById('diabetesType')
 const treatmentType = document.getElementById('treatmentType')
 const gender = document.getElementById('gender')
@@ -30,8 +34,9 @@ const getQueryParam = (param) => {
     return urlParams.get(param);
 }
 
-const displayMessage = () => {
+const displayMessage = (urlParam) => {
     const toast = document.getElementById("success-toast");
+    toast.textContent = INFO_MESSAGES[urlParam]
 
     toast.classList.remove("hidden");
     setTimeout(() => {
@@ -52,6 +57,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     replaceTextToHuman();
 
     if (getQueryParam("success_change_password") === "true") {
-        displayMessage();
+        displayMessage('success_change_password');
     }
 })
