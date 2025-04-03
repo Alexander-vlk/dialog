@@ -44,7 +44,7 @@
                 Сменить пароль
             </a>
         </div>
-        <form action="{% url 'logout' %}" method="post" class="flex-end">
+        <form action="{% url 'logout' %}" method="post" class="flex-end" id="logoutForm">
             {% csrf_token %}
             <input type="submit" value="Выйти" class="px-4 py-2 bg-red-700 text-white cursor-pointer rounded-lg shadow-md hover:bg-red-700">
         </form>

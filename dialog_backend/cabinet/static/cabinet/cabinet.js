@@ -60,3 +60,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
         displayMessage('success_change_password');
     }
 })
+
+const logoutForm = document.getElementById('logoutForm')
+logoutForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!confirm('Вы действительно хотите выйти?')) {
+        return;
+    }
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const response = await fetch(
+        form.action,
+        {
+            method: form.method,
+            body: formData,
+        },
+    );
+
+    if (!response.ok) {
+        alert('Ошибка выхода');
+        throw new Error(`Ошибка выхода: ${response.status}`);
+    }
+
+    window.location.href = '/';
+
+    alert('Выход успешен');
+})
