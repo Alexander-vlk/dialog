@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'cabinet/cabinet.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+    <div class="flex items-center space-x-4">
+        <img
+            {% if cabinet.image %}
+            src="{{ cabinet.image.url }}"
+            {% endif %}
+            alt="Профиль" class="w-24 h-24 rounded-full border border-gray-300">
+
+        <div>
+            <h2 class="text-xl font-bold text-primary">@{{ request.user.username }}</h2>
+            <p class="text-gray-600">{{ cabinet.fio }}</p>
+            <p class="text-gray-600">{{ request.user.email }}</p>
+            <p class="text-gray-600">+{{ cabinet.phone_number }}</p>
+        </div>
+    </div>
+
+    <div class="mt-6 border-t pt-4 text-gray-700">
+        <p><strong>Тип диабета:</strong> <span id="diabetesType">{{ cabinet.diabetes_type }}</span></p>
+        <p><strong>Тип лечения:</strong> <span id="treatmentType">{{ cabinet.treatment_type }}</span></p>
+        <p><strong>Дата рождения:</strong> <span>{{ cabinet.birth_date }}</span></p>
+        <p><strong>Дата постановки диагноза:</strong> <span>{{ cabinet.diagnosis_date }}</span></p>
+        <p><strong>Пол:</strong> <span id="gender">{{ cabinet.gender }}</span></p>
+        <p><strong>Дата присоединения</strong> <span id="gender">{{ cabinet.created_at }}</span></p>
+    </div>
+
+    <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+        <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+            <a
+                href="/profile/edit"
+                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-700">
+                Редактировать профиль
+            </a>
+            <a
+                href="/profile/change-password"
+                class="px-4 py-2 bg-gray-700 text-white rounded-lg shadow-md hover:bg-red-700">
+                Сменить пароль
+            </a>
+        </div>
+        <form action="{% url 'logout' %}" method="post" class="flex-end">
+            {% csrf_token %}
+            <input type="submit" value="Выйти" class="px-4 py-2 bg-red-700 text-white cursor-pointer rounded-lg shadow-md hover:bg-red-700">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
