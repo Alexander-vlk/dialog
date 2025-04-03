@@ -68,6 +68,12 @@ class ExtendedUserCreationForm(UserCreationForm):
         label='Дата рождения',
     )
 
+    diagnosis_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(format='%d/%m/%Y'),
+        label='Дата постановки диагноза',
+    )
+
     diabetes_type = forms.ChoiceField(
         choices=DIABETES_TYPE_CHOICES,
         required=False,
@@ -83,5 +89,5 @@ class ExtendedUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget = forms.TextInput(attrs={'class': TEXT_INPUT_CLASS})
-        self.fields['password1'].widget = forms.TextInput(attrs={'class': TEXT_INPUT_CLASS})
-        self.fields['password2'].widget = forms.TextInput(attrs={'class': TEXT_INPUT_CLASS})
+        self.fields['password1'].widget = forms.PasswordInput(attrs={'class': TEXT_INPUT_CLASS})
+        self.fields['password2'].widget = forms.PasswordInput(attrs={'class': TEXT_INPUT_CLASS})
