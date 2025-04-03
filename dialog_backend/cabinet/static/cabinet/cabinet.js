@@ -16,7 +16,8 @@ const GENDER = {
 }
 
 const INFO_MESSAGES = {
-    'success_change_password': 'Пароль успешно изменен!'
+    'success_change_password': 'Пароль успешно изменен!',
+    'success_edit_profile': 'Профиль успешно обновлен!',
 }
 
 const diabetesType = document.getElementById('diabetesType')
@@ -58,6 +59,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     if (getQueryParam("success_change_password") === "true") {
         displayMessage('success_change_password');
+    }
+    if (getQueryParam("success_edit_profile") === "true") {
+        displayMessage('success_edit_profile');
     }
 })
 
