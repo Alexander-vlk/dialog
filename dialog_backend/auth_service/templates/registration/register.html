@@ -10,52 +10,76 @@
             <div>
                 <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 {{ form.username }}
-            </div>
-
-            <div>
-                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
-                {{ form.first_name }}
+                <p>{{ form.username.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
                 {{ form.last_name }}
+                <p>{{ form.last_name.errors }}</p>
+            </div>
+
+            <div>
+                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+                <p>{{ form.first_name.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.patronymic_name.id_for_label }}">{{ form.patronymic_name.label }}</label>
                 {{ form.patronymic_name }}
+                <p>{{ form.patronymic_name.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 {{ form.email }}
+                <p>{{ form.email.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
                 {{ form.phone_number }}
+                <p>{{ form.phone_number.errors }}</p>
+            </div>
+
+            <div>
+                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                {{ form.password1 }}
+                <p>{{ form.password1.errors }}</p>
+            </div>
+
+            <div>
+                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                {{ form.password2 }}
+                <p>{{ form.password2.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
                 {{ form.gender }}
+                <p>{{ form.gender.errors }}</p>
             </div>
 
             <div>
-                <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
-                {{ form.image }}
+                <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}</label>
+                {{ form.birth_date }}
+                <p>{{ form.birth_date.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.diabetes_type.id_for_label }}">{{ form.diabetes_type.label }}</label>
                 {{ form.diabetes_type }}
+                <p>{{ form.diabetes_type.errors }}</p>
             </div>
 
             <div>
                 <label for="{{ form.treatment_type.id_for_label }}">{{ form.treatment_type.label }}</label>
                 {{ form.treatment_type }}
+                <p>{{ form.treatment_type.errors }}</p>
             </div>
+
+            {{ form.errors }}
 
             <div class="flex justify-between items-center text-sm">
                 <label class="flex items-center">

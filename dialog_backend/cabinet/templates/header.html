@@ -16,7 +16,7 @@
                     </div>
                 {% endif %}
                 <li>
-                    <a href="#" class="text-primary hover:underline transition block py-2 md:py-0">Главная</a>
+                    <a href="{% url 'index' %}" class="text-primary hover:underline transition block py-2 md:py-0">Главная</a>
                 </li>
                 <li>
                     <a href="#" class="text-primary hover:underline transition block py-2 md:py-0">Анализ данных</a>
@@ -27,6 +27,11 @@
                 <li>
                     <a href="#" class="text-primary hover:underline transition block py-2 md:py-0">Контакты</a>
                 </li>
+                {% if request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'admin:index' %}" class="text-red-700 underline transition block py-2 md:py-0">Админ</a>
+                </li>
+                {% endif %}
                 {% if not request.user.is_authenticated %}
                     <li>
                         <a href="{% url 'login' %}" class="text-green-700 hover:underline transition block py-2 md:py-0 lg:hidden">Войти</a>
