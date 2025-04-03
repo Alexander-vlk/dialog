@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="flex justify-center items-center min-h-screen bg-gray-100 py-10">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 class="text-2xl font-bold text-primary text-center mb-6">Регистрация</h2>
+
+        <form method="POST" action="{% url 'register' %}" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                {{ form.username }}
+            </div>
+
+            <div>
+                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                {{ form.first_name }}
+            </div>
+
+            <div>
+                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                {{ form.last_name }}
+            </div>
+
+            <div>
+                <label for="{{ form.patronymic_name.id_for_label }}">{{ form.patronymic_name.label }}</label>
+                {{ form.patronymic_name }}
+            </div>
+
+            <div>
+                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+
+            <div>
+                <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+                {{ form.phone_number }}
+            </div>
+
+            <div>
+                <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
+                {{ form.gender }}
+            </div>
+
+            <div>
+                <label for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+                {{ form.image }}
+            </div>
+
+            <div>
+                <label for="{{ form.diabetes_type.id_for_label }}">{{ form.diabetes_type.label }}</label>
+                {{ form.diabetes_type }}
+            </div>
+
+            <div>
+                <label for="{{ form.treatment_type.id_for_label }}">{{ form.treatment_type.label }}</label>
+                {{ form.treatment_type }}
+            </div>
+
+            <div class="flex justify-between items-center text-sm">
+                <label class="flex items-center">
+                    <input type="checkbox" name="remember" class="mr-2">
+                    Запомнить меня
+                </label>
+            </div>
+            <div class="flex justify-between items-center text-sm bg-red-200">
+                {{ form.non_field_errors|safe }}
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition">
+                Зарегистрироваться
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-600 mt-4">
+            Уже есть аккаунт? <a href="{% url 'login' %}" class="text-primary hover:text-secondary hover:underline">Войти</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
