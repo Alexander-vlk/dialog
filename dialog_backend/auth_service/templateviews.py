@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.views.generic import CreateView
 from rest_framework.reverse import reverse_lazy
 
@@ -57,3 +57,13 @@ class UserRegisterView(CreateView):
         login(self.request, user)
 
         return instance
+
+
+class UserPasswordChangeView(PasswordChangeView):
+    """View для сброса пароля"""
+
+    template_name = 'registration/change_password.html'
+
+    def get_success_url(self):
+        cabinet_url = reverse_lazy('cabinet', args=[self.request.user.userprofile.id])
+        return f'{cabinet_url}?success_change_password=true'

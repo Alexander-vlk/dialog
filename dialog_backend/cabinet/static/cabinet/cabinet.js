@@ -25,6 +25,33 @@ const replaceTextToHuman = () => {
     treatmentType.textContent = TREATMENT_TYPES[treatmentType.textContent];
 }
 
+const getQueryParam = (param) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+const displayMessage = () => {
+    const toast = document.getElementById("success-toast");
+
+    toast.classList.remove("hidden");
+    setTimeout(() => {
+        toast.classList.add("opacity-100");
+    }, 100);
+
+    setTimeout(() => {
+        toast.classList.remove("opacity-100");
+        toast.classList.add("opacity-0");
+
+        setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 500);
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     replaceTextToHuman();
+
+    if (getQueryParam("success_change_password") === "true") {
+        displayMessage();
+    }
 })
