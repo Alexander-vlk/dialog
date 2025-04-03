@@ -4,14 +4,13 @@ from django.shortcuts import render
 
 
 def index(request):
+    """View для главной страницы"""
     return render(request, 'cabinet/index.html')
 
 
 @login_required
-def cabinet(request, cabinet_id):
-    if request.user.userprofile.id != cabinet_id:
-        raise Http404
-
+def cabinet(request):
+    """View для страницы личного кабинета"""
     context = {
         'cabinet': request.user.userprofile,
     }

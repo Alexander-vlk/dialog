@@ -5,5 +5,5 @@ from cabinet.templateviews import index, cabinet
 
 urlpatterns = [
     path('', index, name='index'),
-    path('cabinet/<int:cabinet_id>', cabinet, name='cabinet'),
+    path('cabinet/', cabinet, name='cabinet'),
 ]

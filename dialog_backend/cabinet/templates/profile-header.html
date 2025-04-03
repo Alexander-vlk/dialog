@@ -8,8 +8,8 @@
         <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">3</span>
     </a>
 
-    <a href="{% url 'cabinet' request.user.userprofile.id %}"><span class="text-primary font-semibold">{{ user.username }}</span></a>
-    <a href="{% url 'cabinet' request.user.userprofile.id %}" class="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
+    <a href="{% url 'cabinet' %}"><span class="text-primary font-semibold">{{ user.username }}</span></a>
+    <a href="{% url 'cabinet' %}" class="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
         <img
             {% if request.user.userprofile.image %}
             src="{{ request.user.userprofile.image.url }}"

@@ -11,7 +11,7 @@ from constants import TWO_WEEKS
 class UserLoginView(LoginView):
     """View для авторизации пользователя"""
 
-    next_page = reverse_lazy('index')
+    next_page = reverse_lazy('cabinet')
     authentication_form = ExtendedLoginForm
 
     def form_valid(self, form):
