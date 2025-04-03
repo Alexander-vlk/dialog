@@ -32,3 +32,6 @@ TREATMENTS_TYPE_CHOICES = {
     INSULIN_THERAPY: 'Инсулинотерапия',
     PREPARATIONS: 'Препараты',
 }
+
+TEXT_INPUT_CLASS = 'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
+SELECT_INPUT_CLASS = 'w-full mt-1 p-2 border rounded-lg'
