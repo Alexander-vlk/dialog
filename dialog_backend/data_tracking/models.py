@@ -146,16 +146,16 @@ class DailyLog(AutoDateMixin):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name='Месячный отчет',
+        verbose_name='Недельный отчет',
     )
 
     user = models.ForeignKey(
         to=User,
         on_delete=models.SET_NULL,
-        verbose_name='Пользователь',
-        related_name='daily_logs',
         null=True,
         blank=True,
+        verbose_name='Пользователь',
+        related_name='daily_logs',
     )
 
     calories_count = models.PositiveSmallIntegerField(
@@ -209,6 +209,8 @@ class DailyLog(AutoDateMixin):
         verbose_name = 'Дневной замер состояния'
         verbose_name_plural = 'Дневные замеры состояния'
         ordering = ['-updated_at']
+
+        unique_together = ('user', 'date')
 
 
 class Glucose(AutoDateMixin):
