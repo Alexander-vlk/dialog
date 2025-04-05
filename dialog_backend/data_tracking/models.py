@@ -75,6 +75,9 @@ class MonthlyLog(AutoDateMixin, models.Model):
         verbose_name_plural = 'Месячные замеры состояния'
         unique_together = ('user', 'month', 'year')
 
+    def __str__(self):
+        return f'Отчет за {self.MONTH_CHOICES[self.month].lower()} {self.year}'
+
 
 class WeeklyLog(AutoDateMixin):
     """Модель еженедельного отчета"""
@@ -122,6 +125,9 @@ class WeeklyLog(AutoDateMixin):
         verbose_name = 'Еженедельный отчет'
         verbose_name_plural = 'Еженедельные отчеты'
         unique_together = ('user', 'week_start', 'week_end')
+
+    def __str__(self):
+        return f'Отчет за неделю {self.week_start.strftime("%d.%m.%Y")} - {self.week_end.strftime("%d.%m.%Y")}'
 
 
 class DailyLog(AutoDateMixin):
@@ -218,6 +224,19 @@ class DailyLog(AutoDateMixin):
         ordering = ['-updated_at']
 
         unique_together = ('user', 'date')
+
+    def __str__(self):
+        return f'Отчет за {self.date}'
+
+    @property
+    def is_filled(self):
+        return any([
+            self.calories_count,
+            self.proteins_count,
+            self.fats_count,
+            self.carbs_count,
+            self.physical_activity,
+        ])
 
 
 class Glucose(AutoDateMixin):
