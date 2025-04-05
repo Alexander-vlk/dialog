@@ -1,17 +1,19 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
-from django.views.generic import UpdateView
 
 from cabinet.forms import UserProfileEditForm
-from cabinet.models import UserProfile
+from cabinet.models import Rate, Advantage
 
 
 def index(request):
     """View для главной страницы"""
-    return render(request, 'cabinet/index.html')
+    context = {
+        'rates': Rate.objects.filter(is_visible=True)[:4],
+        'advantages': Advantage.objects.all(),
+    }
+    return render(request, 'cabinet/index.html', context)
 
 
 @login_required

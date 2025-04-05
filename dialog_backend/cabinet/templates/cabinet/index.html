@@ -5,47 +5,42 @@
     <section class="text-center max-w-3xl mx-auto">
         <h1 class="text-4xl font-bold text-gray-900">Контроль диабета — просто и удобно</h1>
         <p class="text-gray-600 mt-4 text-lg">
-            Следите за своими показателями, анализируйте данные и держите здоровье под контролем.
+            Следите за своими показателями, анализируйте данные и держите здоровье под контролем
         </p>
         <div class="mt-6">
-            <a href="{% url 'register' %}" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 shadow-md">
+            <a href="{% url 'register' %}" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 shadow-md transition">
                 Начать бесплатно
             </a>
         </div>
     </section>
 
     <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="p-6 bg-white shadow-md rounded-lg">
-            <h3 class="text-xl font-semibold text-blue-600">Отслеживание показателей</h3>
-            <p class="text-gray-600 mt-2">Вносите данные о глюкозе, питании, физических нагрузках и медикаментах.</p>
-        </div>
-        <div class="p-6 bg-white shadow-md rounded-lg">
-            <h3 class="text-xl font-semibold text-blue-600">Анализ трендов</h3>
-            <p class="text-gray-600 mt-2">Графики и статистика помогут вам лучше понять состояние здоровья.</p>
-        </div>
-        <div class="p-6 bg-white shadow-md rounded-lg">
-            <h3 class="text-xl font-semibold text-blue-600">Генерация отчётов</h3>
-            <p class="text-gray-600 mt-2">Создавайте отчёты и делитесь ими с врачом для лучшего контроля диабета.</p>
-        </div>
+        {% for advantage in advantages %}
+            <div class="p-6 bg-white shadow-md rounded-lg">
+                <h3 class="text-xl font-semibold text-blue-600">{{ advantage.title }}</h3>
+                <p class="text-gray-600 mt-2 text-left">{{ advantage.description }}</p>
+            </div>
+        {% endfor %}
     </section>
 
     <section class="mt-16">
         <h2 class="text-3xl font-bold text-gray-900 text-center">Что говорят пользователи</h2>
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for rate in rates %}
             <div class="bg-white shadow-md p-6 rounded-lg">
-                <p class="text-gray-600">"Это приложение помогло мне лучше контролировать сахар и понимать, как еда влияет на уровень глюкозы."</p>
-                <p class="mt-4 font-semibold text-gray-900">— Анна, 34 года</p>
+                <p class="text-gray-600">"{{ rate.text }}"</p>
+                <div class="flex items-center justify-between">
+                    <p class="mt-4 font-semibold text-gray-900">— {{ rate.user_info }}</p>
+                    <p class="mt-4 text-gray-400">С нами с {{ rate.date_joined|date:"d.m.Y" }}</p>
+                </div>
             </div>
-            <div class="bg-white shadow-md p-6 rounded-lg">
-                <p class="text-gray-600">"Раньше я записывал всё вручную, но теперь все данные всегда под рукой. Очень удобно!"</p>
-                <p class="mt-4 font-semibold text-gray-900">— Дмитрий, 42 года</p>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
     <section class="mt-16 text-center">
         <h2 class="text-3xl font-bold text-gray-900">Начните следить за своим здоровьем уже сегодня!</h2>
-        <p class="text-gray-600 mt-4 text-lg">Присоединяйтесь и получите доступ ко всем возможностям бесплатно.</p>
+        <p class="text-gray-600 mt-4 text-lg">Присоединяйтесь и получите доступ ко всем возможностям бесплатно</p>
         <div class="mt-6">
             <a href="{% url 'register' %}" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition shadow-md">
                 Зарегистрироваться
