@@ -11,6 +11,8 @@ urlpatterns = [
 
     path('', include('cabinet.templateurls')),
     path('', include('auth_service.templateurls')),
+
+    path('data_tracking/', include('data_tracking.templateurls')),
 ]
 
 if settings.DEBUG:
