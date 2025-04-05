@@ -7,6 +7,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="hidden max-w-2xl mx-auto my-4 p-6 bg-red-700 font-bold shadow-lg rounded-lg text-white" id="notifyWindow">
+    <p>
+        <span id="notifyMessage"></span>
+        <a href="" class="underline font-light">Заполнить</a>
+    </p>
+</div>
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="flex items-center space-x-4">
         <img
@@ -16,7 +22,7 @@
             alt="Профиль" class="w-24 h-24 rounded-full border border-gray-300">
 
         <div>
-            <h2 class="text-xl font-bold text-primary">@{{ request.user.username }}</h2>
+            <h2 class="text-xl font-bold text-primary">@<span id="userName">{{ request.user.username }}</span></h2>
             <p class="text-gray-600">{{ cabinet.fio }}</p>
             <p class="text-gray-600">{{ request.user.email }}</p>
             <p class="text-gray-600">+{{ cabinet.phone_number }}</p>
@@ -69,20 +75,20 @@
     </div>
 </div>
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
-    <div class="flex flex-wrap items-center justify-between space-x-4">
+    <div class="flex flex-wrap items-center justify-between md:space-x-4 space-y-2 md:space-y-0">
             <a
                 href="{% url 'cabinet_update' %}"
-                class="px-4 py-2 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-900 transition">
+                class="px-4 w-full md:w-auto py-2 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-900 transition">
                 Ежедневные отчеты
             </a>
             <a
                 href="{% url 'cabinet_update' %}"
-                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
+                class="px-4 w-full md:w-auto py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
                 Еженедельные отчеты
             </a>
             <a
                 href="{% url 'cabinet_update' %}"
-                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
+                class="px-4 w-full md:w-auto py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
                 Ежемесячные отчеты
             </a>
     </div>

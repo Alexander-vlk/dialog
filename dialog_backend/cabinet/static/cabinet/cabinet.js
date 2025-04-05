@@ -22,7 +22,10 @@ const INFO_MESSAGES = {
 
 const diabetesType = document.getElementById('diabetesType')
 const treatmentType = document.getElementById('treatmentType')
+const userName = document.getElementById('userName')
 const gender = document.getElementById('gender')
+
+const notifyMessage = document.getElementById('notifyMessage')
 
 const replaceTextToHuman = () => {
     diabetesType.textContent = DIABETES_TYPES[diabetesType.textContent];
@@ -54,6 +57,30 @@ const displayMessage = (urlParam) => {
     }, 3000);
 }
 
+const fetchDailyLogFill = async () => {
+    const notifyWindow = document.getElementById('notifyWindow')
+
+    const response = await fetch(
+        `daily_log/filled/?username=${userName.textContent}`,
+        {
+            method: 'get',
+        }
+    )
+
+    if (!response.ok) {
+        notifyWindow.classList.toggle('hidden')
+        notifyMessage.textContent = 'Ошибка! Дневной отчет не создан'
+        return
+    }
+
+    const data = await response.json()
+
+    if (!data['is_filled']) {
+        notifyWindow.classList.toggle('hidden')
+        notifyMessage.textContent = 'Дневной отчет не заполнен!'
+    }
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     replaceTextToHuman();
 
@@ -63,6 +90,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (getQueryParam("success_edit_profile") === "true") {
         displayMessage('success_edit_profile');
     }
+
+    fetchDailyLogFill();
 })
 
 const logoutForm = document.getElementById('logoutForm')
