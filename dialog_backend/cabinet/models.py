@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from core.mixins import AutoDateMixin
-from core.validators import validate_not_future_date
+from core.validators import validate_not_future_date, validate_length
 from constants import DIABETES_TYPE_CHOICES, GENDER_CHOICES, TREATMENTS_TYPE_CHOICES
 
 
@@ -125,3 +125,47 @@ class Allergy(AutoDateMixin):
         verbose_name = 'Аллергия'
         verbose_name_plural = 'Аллергии'
         ordering = ['name']
+
+
+class Advantage(AutoDateMixin):
+    """Модель преимуществ"""
+
+    title = models.CharField(max_length=120, verbose_name='Название')
+    description = models.CharField(max_length=1000, verbose_name='Описание')
+
+    image = models.ImageField(upload_to='advantages/', blank=True, null=True, verbose_name='Изображение')
+
+    order_num = models.PositiveSmallIntegerField(verbose_name='Порядок', unique=True)
+
+    class Meta:
+        verbose_name = 'Преимущество'
+        verbose_name_plural = 'Преимущества'
+
+        ordering = ['order_num']
+
+    def __str__(self):
+        return self.title
+
+
+class Rate(AutoDateMixin):
+    """Модель отзывов"""
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Пользователь')
+
+    text = models.CharField(max_length=1000, validators=[validate_length], verbose_name='Текст')
+
+    is_visible = models.BooleanField(verbose_name='Показывать')
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
+    def __str__(self):
+        return f'{self.text[:100]}...'
+
+    @property
+    def user_info(self):
+        if not self.user:
+            return 'Аноним'
+
+        return f'{self.user.first_name}, {self.user.last_name}'
