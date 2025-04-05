@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{% static 'cabinet/cabinet.js' %}"></script>
 {% endblock %}
 
@@ -35,12 +36,12 @@
         <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
             <a
                 href="{% url 'cabinet_update' %}"
-                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-700">
+                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
                 Редактировать профиль
             </a>
             <a
                 href="{% url 'change_password' %}"
-                class="px-4 py-2 bg-gray-700 text-white rounded-lg shadow-md hover:bg-red-700">
+                class="px-4 py-2 bg-gray-700 text-white rounded-lg shadow-md hover:bg-red-700 transition">
                 Сменить пароль
             </a>
         </div>
@@ -51,4 +52,39 @@
     </div>
 </div>
 <div id="success-toast" class="fixed top-5 md:bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 hidden"></div>
+
+<div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg flex items-center">
+    <div class="w-1/3 mr-6">
+        <canvas id="diabetesChart" width="150" height="150"></canvas>
+    </div>
+    <div class="w-2/3">
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Отслеживание диабета</h2>
+        <p class="text-gray-600 text-sm mb-2">Диаграмма показывает распределение факторов контроля диабета:</p>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Глюкоза: 35%</li>
+            <li>Физическая активность: 25%</li>
+            <li>Питание: 20%</li>
+            <li>Лекарства: 20%</li>
+        </ul>
+    </div>
+</div>
+<div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+    <div class="flex flex-wrap items-center justify-between space-x-4">
+            <a
+                href="{% url 'cabinet_update' %}"
+                class="px-4 py-2 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-900 transition">
+                Ежедневные отчеты
+            </a>
+            <a
+                href="{% url 'cabinet_update' %}"
+                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
+                Еженедельные отчеты
+            </a>
+            <a
+                href="{% url 'cabinet_update' %}"
+                class="px-4 py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
+                Ежемесячные отчеты
+            </a>
+    </div>
+</div>
 {% endblock %}

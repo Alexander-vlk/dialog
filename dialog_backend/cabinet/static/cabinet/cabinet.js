@@ -93,3 +93,48 @@ logoutForm.addEventListener('submit', async (event) => {
 
     alert('Выход успешен');
 })
+
+let ctx = document.getElementById('diabetesChart').getContext('2d');
+let diabetesChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        datasets: [{
+            label: 'Контроль диабета',
+            data: [35, 25, 20, 20],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,  // Делаем график адаптивным
+        plugins: {
+            legend: {
+                position: 'top',
+                align: 'start',
+                labels: {
+                    font: {
+                        size: 14,
+                    },
+                },
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';  // Отображение процентов
+                    }
+                }
+            }
+        }
+    }
+});
