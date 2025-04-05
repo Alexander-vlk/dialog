@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, JsonResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 
-from data_tracking.forms import GlucoseForm, BodyTemperatureForm, PressureForm
+from data_tracking.forms import GlucoseForm, BodyTemperatureForm, PressureForm, DailyLogForm
 from data_tracking.models import DailyLog
 
 
@@ -62,3 +64,30 @@ def temperature(request):
     temperature_instance.save()
 
     return JsonResponse({'success': True})
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def daily_log(request):
+    """View для обработки ежедневного отчета"""
+    daily_log_instance = DailyLog.objects.get(user=request.user, date=timezone.now())
+    if request.method == "GET":
+        form = DailyLogForm(instance=daily_log_instance)
+
+        context = {
+            'form': form,
+        }
+
+        template_name = 'daily_log.html'
+
+        return render(request, template_name, context)
+
+    form = DailyLogForm(request.POST, instance=daily_log_instance)
+
+    if not form.is_valid():
+        return HttpResponseBadRequest()
+
+    form.save()
+
+    cabinet_url = reverse('cabinet')
+    return redirect(f'{cabinet_url}?filled_daily_log=true')

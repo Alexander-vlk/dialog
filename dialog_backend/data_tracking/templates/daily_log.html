@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl my-4 mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-semibold mb-6">Заполнение дневного отчета</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="{{ form.calories_count.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.calories_count.label }}</label>
+            {{ form.calories_count }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.proteins_count.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.proteins_count.label }}</label>
+            {{ form.proteins_count }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.fats_count.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.fats_count.label }}</label>
+            {{ form.fats_count }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.carbs_count.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.carbs_count.label }}</label>
+            {{ form.carbs_count }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.general_health.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.general_health.label }}</label>
+            {{ form.general_health }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.physical_activity.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.physical_activity.label }}</label>
+            {{ form.physical_activity }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.additional_info.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.additional_info.label }}</label>
+            {{ form.additional_info }}
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 md:w-xs cursor-pointer transition" />
+        </div>
+    </form>
+</div>
+
+{% endblock %}
