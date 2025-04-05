@@ -123,6 +123,60 @@ logoutForm.addEventListener('submit', async (event) => {
     alert('Выход успешен');
 })
 
+const pressureOpenModalBtn = document.getElementById('pressureOpenModalBtn');
+const closeModalPressureBtn = document.getElementById('closeModalPressureBtn');
+const modalPressure = document.getElementById('modalPressure');
+
+pressureOpenModalBtn.addEventListener('click', () => {
+modalPressure.classList.remove('hidden');
+});
+
+closeModalPressureBtn.addEventListener('click', () => {
+modalPressure.classList.add('hidden');
+});
+
+modalPressure.addEventListener('click', (e) => {
+if (e.target === modalPressure) {
+    modalPressure.classList.add('hidden');
+}
+});
+
+const glucoseOpenModalBtn = document.getElementById('glucoseOpenModalBtn');
+const closeModalGlucoseBtn = document.getElementById('closeModalGlucoseBtn');
+const modalGlucose = document.getElementById('modalGlucose');
+
+glucoseOpenModalBtn.addEventListener('click', () => {
+modalGlucose.classList.remove('hidden');
+});
+
+closeModalGlucoseBtn.addEventListener('click', () => {
+modalGlucose.classList.add('hidden');
+});
+
+modalGlucose.addEventListener('click', (e) => {
+if (e.target === modalGlucose) {
+    modalGlucose.classList.add('hidden');
+}
+});
+
+const temperatureOpenModalBtn = document.getElementById('temperatureOpenModalBtn');
+const closeModalTemperatureBtn = document.getElementById('closeModalTemperatureBtn');
+const modalTemperature = document.getElementById('modalTemperature');
+
+temperatureOpenModalBtn.addEventListener('click', () => {
+modalTemperature.classList.remove('hidden');
+});
+
+closeModalTemperatureBtn.addEventListener('click', () => {
+modalTemperature.classList.add('hidden');
+});
+
+modalTemperature.addEventListener('click', (e) => {
+if (e.target === modalTemperature) {
+    modalTemperature.classList.add('hidden');
+}
+});
+
 let ctx = document.getElementById('diabetesChart').getContext('2d');
 let diabetesChart = new Chart(ctx, {
     type: 'pie',
