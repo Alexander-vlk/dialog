@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.decorators.http import require_http_methods
+from django.utils import timezone
+from django.views.decorators.http import require_http_methods, require_GET
 
 from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
+from data_tracking.models import DailyLog
 
 
 def index(request):
@@ -16,9 +19,18 @@ def index(request):
     return render(request, 'cabinet/index.html', context)
 
 
+@require_GET
+def get_daily_log_fill_status(request):
+    """Получение статуса заполнения дневного отчета"""
+    daily_log = get_object_or_404(DailyLog, user__username=request.GET['username'], date=timezone.now())
+
+    return JsonResponse({'is_filled': daily_log.is_filled})
+
+
 @login_required
 def cabinet(request):
     """View для страницы личного кабинета"""
+
     context = {
         'cabinet': request.user.userprofile,
     }
