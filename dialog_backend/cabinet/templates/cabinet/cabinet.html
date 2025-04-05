@@ -86,24 +86,51 @@
 {% include 'cabinet/modal_forms/pressure.html' %}
 {% include 'cabinet/modal_forms/temperature.html' %}
 
-<div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg flex items-center">
-    <div class="w-1/3 mr-6">
-        <canvas id="diabetesChart" width="150" height="150"></canvas>
-    </div>
-    <div class="w-2/3">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Дневные замеры</h2>
-        <p class="text-gray-600 text-sm mb-2">Диаграмма показывает распределение факторов контроля диабета:</p>
+<section class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg flex flex-col gap-10 items-center">
+    {% if glucose_per_day_count < 2 and pressure_per_day_count < 2 and temperature_per_day_count < 2 %}
+        <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
+    {% else %}
+        	<div class="w-full">
+                <h2 class="text-lg font-semibold mb-2 text-center">Уровень глюкозы</h2>
+                {% if glucose_per_day_count < 2 %}
+                <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
+                {% else %}
+                <canvas id="glucoseChart" height="200"></canvas>
+                {% endif %}
+            </div>
+
+        <div class="w-full">
+            <h2 class="text-lg font-semibold mb-2 text-center">Температура тела</h2>
+            {% if temperature_per_day_count < 2 %}
+            <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
+            {% else %}
+            <canvas id="tempChart" height="200"></canvas>
+            {% endif %}
+        </div>
+
+        <div class="w-full">
+            <h2 class="text-lg font-semibold mb-2 text-center">Давление</h2>
+            {% if pressure_per_day_count < 2 %}
+            <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
+            {% else %}
+            <canvas id="pressureChart" height="200"></canvas>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div class="w-full text-sm leading-relaxed space-y-2">
+        <p><span class="font-semibold">Калории:</span> {{ daily_log.calories_count }}</p>
+        <p><span class="font-semibold">Белки:</span> {{ daily_log.proteins_count }} г</p>
+        <p><span class="font-semibold">Жиры:</span> {{ daily_log.fats_count }} г</p>
+        <p><span class="font-semibold">Углеводы:</span> {{ daily_log.carbs_count }} г</p>
+        <p><span class="font-semibold">Самочувствие:</span> {{ daily_log.general_health }}</p>
+        <p><span class="font-semibold">Физическая активность:</span> {{ daily_log.physical_activity }}</p>
+        <p><span class="font-semibold">Дополнительно:</span> {{ daily_log.additional_info }}</p>
         <a href="{% url 'daily_log' %}" class="text-primary hover:underline transition block py-2 md:py-0">
             Изменить дневной отчет
         </a>
-        <ul class="list-disc pl-5 space-y-1">
-            <li>Глюкоза: 35%</li>
-            <li>Физическая активность: 25%</li>
-            <li>Питание: 20%</li>
-            <li>Лекарства: 20%</li>
-        </ul>
     </div>
-</div>
+</section>
+
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="flex flex-wrap items-center justify-between md:space-x-4 space-y-2 md:space-y-0">
         <a

@@ -262,47 +262,115 @@ formTemperature.addEventListener('submit', async (e) => {
     glucoseSuccess.textContent = 'Успешно сохранено'
 })
 
-let ctx = document.getElementById('diabetesChart').getContext('2d');
-let diabetesChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        datasets: [{
-            label: 'Контроль диабета',
-            data: [35, 25, 20, 20],
-            backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-            ],
-            borderColor: [
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
+const getGlucoseData = async () => {
+    const glucoseResponse = await fetch(
+        '/data_tracking/glucose_data/'
+    )
+    if (!glucoseResponse.ok) {
+        console.error(await glucoseResponse.text())
+        return;
+    }
+    const {data, labels} = await glucoseResponse.json()
+
+    return {
+        data: data,
+        labels: labels,
+    }
+}
+
+const getTemperatureData = () => {
+    return {
+        labels: ['08:00', '12:00', '16:00', '20:00'],
+        temperatureData: [5.2, 6.1, 5.8, 6.4],
+    }
+}
+
+const getPressureData = () => {
+    return {
+        labels: ['08:00', '12:00', '16:00', '20:00'],
+        systolicData: [5.2, 6.1, 5.8, 6.4],
+        diastolicData: [80, 82, 81, 85]
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const baseOptions = {
+    type: 'line',
     options: {
-        responsive: true,  // Делаем график адаптивным
-        plugins: {
-            legend: {
-                position: 'top',
-                align: 'start',
-                labels: {
-                    font: {
-                        size: 14,
-                    },
-                },
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';  // Отображение процентов
-                    }
-                }
-            }
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+      },
+      scales: {
+        x: { title: { display: true, text: 'Время' } },
+        y: { title: { display: true, text: 'Значение' }, beginAtZero: false }
+      }
+    }
+  };
+    const glucoseChart = document.getElementById('glucoseChart')
+    if (glucoseChart) {
+        const {data, labels} = await getGlucoseData();
+        new Chart(glucoseChart, {
+        ...baseOptions,
+        data: {
+            labels,
+            datasets: [{
+                label: 'Глюкоза (ммоль/л)',
+                data: data,
+                borderColor: '#34d399',
+                backgroundColor: '#6ee7b7',
+                tension: 0.3,
+                fill: false
+            }]
         }
+    });
+    }
+    const tempChart = document.getElementById('tempChart')
+    if (tempChart) {
+        const {labels, temperatureData} = getTemperatureData();
+        new Chart(tempChart, {
+            ...baseOptions,
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Температура (°C)',
+                    data: temperatureData,
+                    borderColor: '#60a5fa',
+                    backgroundColor: '#bfdbfe',
+                    tension: 0.3,
+                    fill: false
+                }]
+            }
+        });
+    }
+
+    const pressureChart = document.getElementById('pressureChart');
+    if (pressureChart) {
+        const {labels, systolicData, diastolicData} = getPressureData();
+        new Chart(pressureChart, {
+            ...baseOptions,
+            data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Систолическое',
+                    data: systolicData,
+                    borderColor: '#f87171',
+                    backgroundColor: '#fecaca',
+                    tension: 0.3,
+                    fill: false
+                },
+                {
+                    label: 'Диастолическое',
+                    data: diastolicData,
+                    borderColor: '#facc15',
+                    backgroundColor: '#fde68a',
+                    tension: 0.3,
+                    fill: false
+                }
+            ]
+            }
+        });
     }
 });
+
