@@ -65,9 +65,15 @@ class MonthlyLog(AutoDateMixin, models.Model):
         verbose_name='Месяц',
     )
 
+    year = models.PositiveSmallIntegerField(
+        verbose_name='Год',
+        default=timezone.now().year,
+    )
+
     class Meta:
         verbose_name = 'Месячный замер состояния'
         verbose_name_plural = 'Месячные замеры состояния'
+        unique_together = ('user', 'month', 'year')
 
 
 class WeeklyLog(AutoDateMixin):
@@ -115,6 +121,7 @@ class WeeklyLog(AutoDateMixin):
     class Meta:
         verbose_name = 'Еженедельный отчет'
         verbose_name_plural = 'Еженедельные отчеты'
+        unique_together = ('user', 'week_start', 'week_end')
 
 
 class DailyLog(AutoDateMixin):
