@@ -18,6 +18,7 @@ const GENDER = {
 const INFO_MESSAGES = {
     'success_change_password': 'Пароль успешно изменен!',
     'success_edit_profile': 'Профиль успешно обновлен!',
+    'filled_daily_log': 'Дневной отчет успешно заполнен!',
 }
 
 const diabetesType = document.getElementById('diabetesType')
@@ -89,6 +90,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     if (getQueryParam("success_edit_profile") === "true") {
         displayMessage('success_edit_profile');
+    }
+    if (getQueryParam('filled_daily_log')) {
+        displayMessage('filled_daily_log');
     }
 
     fetchDailyLogFill();

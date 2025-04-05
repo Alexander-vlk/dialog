@@ -10,7 +10,7 @@
 <div class="hidden max-w-2xl mx-auto my-4 p-6 bg-red-700 font-bold shadow-lg rounded-lg text-white" id="notifyWindow">
     <p>
         <span id="notifyMessage"></span>
-        <a href="" class="underline font-light">Заполнить</a>
+        <a href="{% url 'daily_log' %}" class="underline font-light">Заполнить</a>
     </p>
 </div>
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
@@ -57,7 +57,7 @@
         </form>
     </div>
 </div>
-<div id="success-toast" class="fixed top-5 md:bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 hidden"></div>
+<div id="success-toast" class="fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-500 hidden"></div>
 
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="flex flex-wrap items-center space-y-2 justify-between">
@@ -91,8 +91,11 @@
         <canvas id="diabetesChart" width="150" height="150"></canvas>
     </div>
     <div class="w-2/3">
-        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Отслеживание диабета</h2>
+        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Дневные замеры</h2>
         <p class="text-gray-600 text-sm mb-2">Диаграмма показывает распределение факторов контроля диабета:</p>
+        <a href="{% url 'daily_log' %}" class="text-primary hover:underline transition block py-2 md:py-0">
+            Изменить дневной отчет
+        </a>
         <ul class="list-disc pl-5 space-y-1">
             <li>Глюкоза: 35%</li>
             <li>Физическая активность: 25%</li>
