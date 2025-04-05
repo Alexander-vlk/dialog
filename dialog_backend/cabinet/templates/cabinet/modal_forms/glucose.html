@@ -13,13 +13,14 @@
         </button>
 
         <h2 class="text-xl font-semibold mb-4">Внести замеры глюкозы</h2>
-        <form method="post">
+        <form method="post" action="{% url 'new_glucose' %}" id="formGlucose">
+            {% csrf_token %}
             <div>
-                <label for="diastolic">Уровень глюкозы (ммоль/л)</label>
+                <label for="level">Уровень глюкозы (ммоль/л)</label>
                 <input
                     type="number"
-                    id="diastolic"
-                    name="diastolic"
+                    id="level"
+                    name="level"
                     value="2"
                     min="2"
                     max="10"
@@ -27,6 +28,8 @@
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
+            <div id="glucoseError" class="bg-red-700 text-white p-3 mt-2 rounded-lg hidden"></div>
+            <div id="glucoseSuccess" class="bg-green-700 text-white p-3 mt-2 rounded-lg hidden"></div>
             <div class="mt-5">
                 <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition"/>
             </div>

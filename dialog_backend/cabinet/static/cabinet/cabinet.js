@@ -126,6 +126,8 @@ logoutForm.addEventListener('submit', async (event) => {
 const pressureOpenModalBtn = document.getElementById('pressureOpenModalBtn');
 const closeModalPressureBtn = document.getElementById('closeModalPressureBtn');
 const modalPressure = document.getElementById('modalPressure');
+const formPressure = document.getElementById('formPressure');
+
 
 pressureOpenModalBtn.addEventListener('click', () => {
 modalPressure.classList.remove('hidden');
@@ -141,9 +143,36 @@ if (e.target === modalPressure) {
 }
 });
 
+formPressure.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const response = await fetch(
+        form.action,
+        {
+            method: form.method,
+            body: formData,
+        },
+    );
+
+    if (!response.ok) {
+        const glucoseError = document.getElementById('pressureError');
+        glucoseError.classList.remove('hidden');
+        glucoseError.textContent = await response.text()
+        return
+    }
+
+    const glucoseSuccess = document.getElementById('pressureSuccess');
+    glucoseSuccess.classList.remove('hidden');
+    glucoseSuccess.textContent = 'Успешно сохранено'
+})
+
 const glucoseOpenModalBtn = document.getElementById('glucoseOpenModalBtn');
 const closeModalGlucoseBtn = document.getElementById('closeModalGlucoseBtn');
 const modalGlucose = document.getElementById('modalGlucose');
+const formGlucose = document.getElementById('formGlucose');
 
 glucoseOpenModalBtn.addEventListener('click', () => {
 modalGlucose.classList.remove('hidden');
@@ -158,10 +187,37 @@ if (e.target === modalGlucose) {
     modalGlucose.classList.add('hidden');
 }
 });
+formGlucose.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const response = await fetch(
+        form.action,
+        {
+            method: form.method,
+            body: formData,
+        },
+    );
+
+    if (!response.ok) {
+        const glucoseError = document.getElementById('glucoseError');
+        glucoseError.classList.remove('hidden');
+        glucoseError.textContent = await response.text()
+        return
+    }
+
+    const glucoseSuccess = document.getElementById('glucoseSuccess');
+    glucoseSuccess.classList.remove('hidden');
+    glucoseSuccess.textContent = 'Успешно сохранено'
+})
 
 const temperatureOpenModalBtn = document.getElementById('temperatureOpenModalBtn');
 const closeModalTemperatureBtn = document.getElementById('closeModalTemperatureBtn');
 const modalTemperature = document.getElementById('modalTemperature');
+const formTemperature = document.getElementById('formTemperature');
+
 
 temperatureOpenModalBtn.addEventListener('click', () => {
 modalTemperature.classList.remove('hidden');
@@ -176,6 +232,31 @@ if (e.target === modalTemperature) {
     modalTemperature.classList.add('hidden');
 }
 });
+formTemperature.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const response = await fetch(
+        form.action,
+        {
+            method: form.method,
+            body: formData,
+        },
+    );
+
+    if (!response.ok) {
+        const glucoseError = document.getElementById('temperatureError');
+        glucoseError.classList.remove('hidden');
+        glucoseError.textContent = await response.text()
+        return
+    }
+
+    const glucoseSuccess = document.getElementById('temperatureSuccess');
+    glucoseSuccess.classList.remove('hidden');
+    glucoseSuccess.textContent = 'Успешно сохранено'
+})
 
 let ctx = document.getElementById('diabetesChart').getContext('2d');
 let diabetesChart = new Chart(ctx, {

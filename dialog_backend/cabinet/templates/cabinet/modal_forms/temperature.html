@@ -13,13 +13,14 @@
         </button>
 
         <h2 class="text-xl font-semibold mb-4">Внести замеры температуры</h2>
-        <form method="post">
+        <form method="post" action="{% url 'new_temperature' %}" id="formTemperature">
+            {% csrf_token %}
             <div>
-                <label for="diastolic">Температура тела</label>
+                <label for="temperature">Температура тела</label>
                 <input
                     type="number"
-                    id="diastolic"
-                    name="diastolic"
+                    id="temperature"
+                    name="temperature"
                     value="36.6"
                     step="0.1"
                     min="30"
@@ -27,6 +28,10 @@
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
+
+            <div id="temperatureError" class="bg-red-700 text-white p-3 mt-2 rounded-lg hidden"></div>
+            <div id="temperatureSuccess" class="bg-green-700 text-white p-3 mt-2 rounded-lg hidden"></div>
+
             <div class="mt-5">
                 <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition"/>
             </div>

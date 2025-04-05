@@ -13,14 +13,15 @@
         </button>
 
         <h2 class="text-xl font-semibold mb-4">Внести замеры давления</h2>
-        <form method="post">
+        <form method="post" action="{% url 'new_pressure' %}" id="formPressure">
+            {% csrf_token %}
             <div>
                 <label for="systolic">Систолическое (верхнее)</label>
                 <input
                     type="number"
                     id="systolic"
                     name="systolic"
-                    value="0"
+                    value="120"
                     min="0"
                     max="250"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -32,12 +33,16 @@
                     type="number"
                     id="diastolic"
                     name="diastolic"
-                    value="0"
+                    value="80"
                     min="0"
                     max="250"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
+
+            <div id="pressureError" class="bg-red-700 text-white p-3 mt-2 rounded-lg hidden"></div>
+            <div id="pressureSuccess" class="bg-green-700 text-white p-3 mt-2 rounded-lg hidden"></div>
+
             <div class="mt-5">
                 <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition"/>
             </div>
