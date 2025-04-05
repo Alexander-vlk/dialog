@@ -3,10 +3,10 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_POST, require_http_methods, require_GET
 
 from data_tracking.forms import GlucoseForm, BodyTemperatureForm, PressureForm, DailyLogForm
-from data_tracking.models import DailyLog
+from data_tracking.models import DailyLog, Glucose
 
 
 @login_required
@@ -26,6 +26,23 @@ def glucose(request):
     glucose_instance.save()
 
     return JsonResponse({'success': True})
+
+
+@require_GET
+def get_glucose_for_plot(request):
+    """Получение информации для графика"""
+
+    glucose_data = Glucose.objects.filter(
+        user=request.user, daily_log__date=timezone.now()
+    ).values_list('level', 'created_at')
+
+    data, labels = zip(*glucose_data)
+
+    return JsonResponse({
+        'labels': [label.strftime('%H:%M') for label in labels],
+        'data': data,
+    })
+
 
 
 @login_required
