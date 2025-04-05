@@ -22,7 +22,7 @@ class MonthlyLogAdmin(admin.ModelAdmin):
 class WeeklyLogAdmin(admin.ModelAdmin):
     """Админ для WeeklyLog"""
 
-    list_display = ('user', 'monthly_log', 'created_at', 'week_start', 'week_end')
+    list_display = ('user', 'monthly_log', 'week_start', 'week_end', 'created_at')
     raw_id_fields = ('user', 'monthly_log')
 
 
@@ -30,7 +30,7 @@ class WeeklyLogAdmin(admin.ModelAdmin):
 class DailyLogAdmin(admin.ModelAdmin):
     """Админ для модели DailyLog"""
 
-    list_display = ('user', 'weekly_log', 'created_at', 'date')
+    list_display = ('user', 'weekly_log', 'date')
     raw_id_fields = ('user', 'weekly_log')
 
 
