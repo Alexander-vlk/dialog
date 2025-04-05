@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
 
-# Create your views here.
+from data_tracking.models import Glucose
+from data_tracking.serializers import GlucoseSerializer
