@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods, require_GET
 
 from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
-from data_tracking.models import DailyLog
+from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature
 
 
 def index(request):
@@ -30,9 +30,16 @@ def get_daily_log_fill_status(request):
 @login_required
 def cabinet(request):
     """View для страницы личного кабинета"""
-
+    daily_log = get_object_or_404(DailyLog, user=request.user, date=timezone.now())
+    glucose_per_day_count = Glucose.objects.filter(daily_log=daily_log).count()
+    pressure_per_day_count = Pressure.objects.filter(daily_log=daily_log).count()
+    temperature_per_day_count = BodyTemperature.objects.filter(daily_log=daily_log).count()
     context = {
         'cabinet': request.user.userprofile,
+        'daily_log': daily_log,
+        'glucose_per_day_count': glucose_per_day_count,
+        'pressure_per_day_count': pressure_per_day_count,
+        'temperature_per_day_count': temperature_per_day_count,
     }
 
     return render(request, 'cabinet/cabinet.html', context)
