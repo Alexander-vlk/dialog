@@ -168,4 +168,14 @@ class Rate(AutoDateMixin):
         if not self.user:
             return 'Аноним'
 
-        return f'{self.user.first_name}, {self.user.last_name}'
+        if not self.user.first_name:
+            return self.user.username
+
+        return f'{self.user.first_name} {self.user.last_name}'
+
+    @property
+    def date_joined(self):
+        if not self.user:
+            return ''
+
+        return self.user.userprofile.created_at
