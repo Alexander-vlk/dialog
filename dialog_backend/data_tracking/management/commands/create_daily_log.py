@@ -3,10 +3,10 @@ import logging
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 from django.db.models import Q
+from django.utils import timezone
 
 from constants import BATCH_SIZE
-from data_tracking.models import DailyLog
-
+from data_tracking.models import DailyLog, WeeklyLog
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +23,15 @@ class Command(BaseCommand):
             is_active=True,
         )
 
+        weekly_logs = {
+            weekly_log.user.id: weekly_log
+            for weekly_log in WeeklyLog.objects.filter(week_start__lte=timezone.now(), week_end__gte=timezone.now())
+        }
+
         daily_logs = [
             DailyLog(
                 user=user,
+                weekly_log=weekly_logs[user.id],
                 calories_count=0,
                 proteins_count=0,
                 fats_count=0,
