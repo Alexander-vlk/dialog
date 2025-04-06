@@ -15,11 +15,14 @@
 </div>
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="flex items-center space-x-4">
-        <img
+        <div class="w-24 h-24 rounded overflow-hidden shadow rounded-full border-2">
+            <img
             {% if cabinet.image %}
             src="{{ cabinet.image.url }}"
             {% endif %}
-            alt="Профиль" class="w-24 h-24 rounded-full border border-gray-300">
+            alt="Профиль" class="w-full h-full object-cover"
+        >
+        </div>
 
         <div>
             <h2 class="text-xl font-bold text-primary">@<span id="userName">{{ request.user.username }}</span></h2>
