@@ -30,7 +30,7 @@ def get_daily_log_fill_status(request):
 @login_required
 def cabinet(request):
     """View для страницы личного кабинета"""
-    daily_log = get_object_or_404(DailyLog, user=request.user, date=timezone.now())
+    daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now()).first()
     glucose_per_day_count = Glucose.objects.filter(daily_log=daily_log).count()
     pressure_per_day_count = Pressure.objects.filter(daily_log=daily_log).count()
     temperature_per_day_count = BodyTemperature.objects.filter(daily_log=daily_log).count()
