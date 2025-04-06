@@ -39,9 +39,10 @@ def get_glucose_for_plot(request):
     ).values_list('level', 'created_at')
 
     data, labels = zip(*glucose_data)
+    local_labels = [timezone.localtime(label).strftime('%H:%M') for label in labels]
 
     return JsonResponse({
-        'labels': [label.strftime('%H:%M') for label in labels],
+        'labels': local_labels,
         'data': data,
     })
 
