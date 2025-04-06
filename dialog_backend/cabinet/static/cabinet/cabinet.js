@@ -168,9 +168,14 @@ formPressure.addEventListener('submit', async (e) => {
         return
     }
 
-    const glucoseSuccess = document.getElementById('pressureSuccess');
-    glucoseSuccess.classList.remove('hidden');
-    glucoseSuccess.textContent = 'Успешно сохранено'
+    const pressureSuccess = document.getElementById('pressureSuccess');
+    pressureSuccess.classList.remove('hidden');
+    pressureSuccess.textContent = 'Успешно сохранено'
+    setTimeout(() => {
+            pressureSuccess.classList.add('hidden')
+        },
+        2000
+    )
 })
 
 const glucoseOpenModalBtn = document.getElementById('glucoseOpenModalBtn');
@@ -215,6 +220,12 @@ formGlucose.addEventListener('submit', async (e) => {
     const glucoseSuccess = document.getElementById('glucoseSuccess');
     glucoseSuccess.classList.remove('hidden');
     glucoseSuccess.textContent = 'Успешно сохранено'
+
+    setTimeout(() => {
+        glucoseSuccess.classList.add('hidden')
+    },
+    2000
+    )
 })
 
 const temperatureOpenModalBtn = document.getElementById('temperatureOpenModalBtn');
@@ -257,9 +268,13 @@ formTemperature.addEventListener('submit', async (e) => {
         return
     }
 
-    const glucoseSuccess = document.getElementById('temperatureSuccess');
-    glucoseSuccess.classList.remove('hidden');
-    glucoseSuccess.textContent = 'Успешно сохранено'
+    const temperatureSuccess = document.getElementById('temperatureSuccess');
+    temperatureSuccess.classList.remove('hidden');
+    temperatureSuccess.textContent = 'Успешно сохранено'
+
+    setTimeout(() => {
+        temperatureSuccess.classList.add('hidden');
+    }, 2000)
 })
 
 const getGlucoseData = async () => {
