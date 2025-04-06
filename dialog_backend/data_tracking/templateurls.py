@@ -1,7 +1,7 @@
 from django.urls import path
 
-from data_tracking.templateviews import glucose, pressure, temperature, daily_log, get_glucose_for_plot
-
+from data_tracking.templateviews import glucose, pressure, temperature, daily_log, get_glucose_for_plot, \
+    DailyLogListView
 
 urlpatterns = [
     path('glucose/new', glucose, name='new_glucose'),
@@ -9,6 +9,7 @@ urlpatterns = [
     path('temperature/new', temperature, name='new_temperature'),
 
     path('daily_log', daily_log, name='daily_log'),
+    path('daily_log_list', DailyLogListView.as_view(), name='daily_log_list'),
 
     path('glucose_data/', get_glucose_for_plot, name='get_glucose_for_plot'),
 ]
