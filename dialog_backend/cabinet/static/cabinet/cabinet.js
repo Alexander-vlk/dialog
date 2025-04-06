@@ -278,18 +278,34 @@ const getGlucoseData = async () => {
     }
 }
 
-const getTemperatureData = () => {
+const getTemperatureData = async () => {
+    const temperatureResponse = await fetch(
+        '/data_tracking/temperature',
+    )
+    if (!temperatureResponse.ok) {
+        console.error(await temperatureResponse.text())
+        return;
+    }
+    const {data, labels} = await temperatureResponse.json()
     return {
-        labels: ['08:00', '12:00', '16:00', '20:00'],
-        temperatureData: [5.2, 6.1, 5.8, 6.4],
+        labels: labels,
+        temperatureData: data,
     }
 }
 
-const getPressureData = () => {
+const getPressureData = async () => {
+    const pressureResponse = await fetch(
+        '/data_tracking/pressure_data',
+    )
+    if (!pressureResponse.ok) {
+        console.error(await pressureResponse.text())
+        return;
+    }
+    const {labels, systolic, diastolic} = await pressureResponse.json()
     return {
-        labels: ['08:00', '12:00', '16:00', '20:00'],
-        systolicData: [5.2, 6.1, 5.8, 6.4],
-        diastolicData: [80, 82, 81, 85]
+        labels: labels,
+        systolicData: systolic,
+        diastolicData: diastolic,
     }
 }
 
@@ -327,7 +343,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const tempChart = document.getElementById('tempChart')
     if (tempChart) {
-        const {labels, temperatureData} = getTemperatureData();
+        const {labels, temperatureData} = await getTemperatureData();
         new Chart(tempChart, {
             ...baseOptions,
             data: {
@@ -346,7 +362,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const pressureChart = document.getElementById('pressureChart');
     if (pressureChart) {
-        const {labels, systolicData, diastolicData} = getPressureData();
+        const {labels, systolicData, diastolicData} = await getPressureData();
         new Chart(pressureChart, {
             ...baseOptions,
             data: {
