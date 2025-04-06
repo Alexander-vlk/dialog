@@ -98,14 +98,14 @@
     {% if glucose_per_day_count < 2 and pressure_per_day_count < 2 and temperature_per_day_count < 2 %}
         <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
     {% else %}
-        	<div class="w-full">
-                <h2 class="text-lg font-semibold mb-2 text-center">Уровень глюкозы</h2>
-                {% if glucose_per_day_count < 2 %}
-                <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
-                {% else %}
-                <canvas id="glucoseChart" height="200"></canvas>
-                {% endif %}
-            </div>
+        <div class="w-full">
+            <h2 class="text-lg font-semibold mb-2 text-center">Уровень глюкозы</h2>
+            {% if glucose_per_day_count < 2 %}
+            <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
+            {% else %}
+            <canvas id="glucoseChart" height="200"></canvas>
+            {% endif %}
+        </div>
 
         <div class="w-full">
             <h2 class="text-lg font-semibold mb-2 text-center">Температура тела</h2>
@@ -126,13 +126,36 @@
         </div>
     {% endif %}
     <div class="w-full text-sm leading-relaxed space-y-2">
-        <p><span class="font-semibold">Калории:</span> {{ daily_log.calories_count }}</p>
-        <p><span class="font-semibold">Белки:</span> {{ daily_log.proteins_count }} г</p>
-        <p><span class="font-semibold">Жиры:</span> {{ daily_log.fats_count }} г</p>
-        <p><span class="font-semibold">Углеводы:</span> {{ daily_log.carbs_count }} г</p>
-        <p><span class="font-semibold">Самочувствие:</span> {{ daily_log.general_health }}</p>
-        <p><span class="font-semibold">Физическая активность:</span> {{ daily_log.physical_activity }}</p>
-        <p><span class="font-semibold">Дополнительно:</span> {{ daily_log.additional_info }}</p>
+        <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg">
+            <tbody class="divide-y divide-gray-200">
+                <tr>
+                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50 w-1/2">Калории</th>
+                <td class="p-3">{{ daily_log.calories_count }}</td>
+                </tr>
+                <tr>
+                    <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">БЖУ</th>
+                    <td class="p-3">
+                    {{ daily_log.proteins_count }} /
+                    {{ daily_log.fats_count }} /
+                    {{ daily_log.carbs_count }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="p-3 font-semibold whitespace-nowrap bg-gray-50">Физическая активность</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="p-3">{{ daily_log.physical_activity }}</td>
+                </tr>
+                {% if daily_log.additional_info %}
+                    <tr>
+                        <td colspan="2" class="p-3 font-semibold whitespace-nowrap bg-gray-50">Дополнительная информация</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="p-3">{{ daily_log.additional_info }}</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
         <a href="{% url 'daily_log' %}" class="text-primary hover:underline transition block py-2 md:py-0">
             Изменить дневной отчет
         </a>
