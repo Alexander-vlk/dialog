@@ -140,12 +140,14 @@
                     {{ daily_log.carbs_count }}
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2" class="p-3 font-semibold whitespace-nowrap bg-gray-50">Физическая активность</td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="p-3">{{ daily_log.physical_activity }}</td>
-                </tr>
+                {% if daily_log.physical_activity %}
+                    <tr>
+                        <td colspan="2" class="p-3 font-semibold whitespace-nowrap bg-gray-50">Физическая активность</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="p-3">{{ daily_log.physical_activity }}</td>
+                    </tr>
+                {% endif %}
                 {% if daily_log.additional_info %}
                     <tr>
                         <td colspan="2" class="p-3 font-semibold whitespace-nowrap bg-gray-50">Дополнительная информация</td>
