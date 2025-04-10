@@ -53,17 +53,17 @@
                             </tr>
                             <tr>
                                 <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Средняя глюкоза</th>
-                                <td class="p-3">{{ daily_log.average_glucose|default:"Не указано"|floatformat }}</td>
+                                <td class="p-3">{{ daily_log.average_glucose|floatformat|default:"Не указано" }}</td>
                             </tr>
                             <tr>
                                 <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Средняя температура</th>
-                                <td class="p-3">{{ daily_log.avg_temperature|default:"Не указано"|floatformat }}</td>
+                                <td class="p-3">{{ daily_log.avg_temperature|floatformat|default:"Не указано" }}</td>
                             </tr>
                             <tr>
                                 <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Среднее давление</th>
                                 <td class="p-3">
-                                {{ daily_log.avg_systolic|default:"Не указано"|floatformat }} /
-                                {{ daily_log.avg_diastolic|default:"Не указано"|floatformat }}
+                                {{ daily_log.avg_systolic|floatformat|default:"Не указано" }} /
+                                {{ daily_log.avg_diastolic|floatformat|default:"Не указано" }}
                                 </td>
                             </tr>
                         </tbody>
