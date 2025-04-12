@@ -23,10 +23,7 @@ const INFO_MESSAGES = {
 
 const diabetesType = document.getElementById('diabetesType')
 const treatmentType = document.getElementById('treatmentType')
-const userName = document.getElementById('userName')
 const gender = document.getElementById('gender')
-
-const notifyMessage = document.getElementById('notifyMessage')
 
 const replaceTextToHuman = () => {
     diabetesType.textContent = DIABETES_TYPES[diabetesType.textContent];
@@ -59,30 +56,26 @@ const displayMessage = (urlParam) => {
 }
 
 const fetchDailyLogFill = async () => {
-    const notifyWindow = document.getElementById('notifyWindow')
+    const notifyDailyLogWindow = document.getElementById('notifyDailyLogWindow')
+    const notifyDailyLogMessage = document.getElementById('notifyDailyLogMessage')
 
-    const response = await fetch(
-        `daily_log/filled/?username=${userName.textContent}`,
-        {
-            method: 'get',
-        }
-    )
+    const response = await fetch(`daily_log/filled/`)
 
     if (!response.ok) {
-        notifyWindow.classList.toggle('hidden')
-        notifyMessage.textContent = 'Ошибка! Дневной отчет не создан'
+        notifyDailyLogWindow.classList.toggle('hidden')
+        notifyDailyLogMessage.textContent = 'Ошибка! Дневной отчет не создан'
         return
     }
 
     const data = await response.json()
 
     if (!data['is_filled']) {
-        notifyWindow.classList.toggle('hidden')
-        notifyMessage.textContent = 'Дневной отчет не заполнен!'
+        notifyDailyLogWindow.classList.toggle('hidden')
+        notifyDailyLogMessage.textContent = 'Дневной отчет не заполнен!'
     }
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', async(event) => {
     replaceTextToHuman();
 
     if (getQueryParam("success_change_password") === "true") {
@@ -95,7 +88,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         displayMessage('filled_daily_log');
     }
 
-    fetchDailyLogFill();
+    await fetchDailyLogFill();
 })
 
 const logoutForm = document.getElementById('logoutForm')
@@ -134,17 +127,17 @@ const formPressure = document.getElementById('formPressure');
 
 
 pressureOpenModalBtn.addEventListener('click', () => {
-modalPressure.classList.remove('hidden');
+    modalPressure.classList.remove('hidden');
 });
 
 closeModalPressureBtn.addEventListener('click', () => {
-modalPressure.classList.add('hidden');
+    modalPressure.classList.add('hidden');
 });
 
 modalPressure.addEventListener('click', (e) => {
-if (e.target === modalPressure) {
-    modalPressure.classList.add('hidden');
-}
+    if (e.target === modalPressure) {
+        modalPressure.classList.add('hidden');
+    }
 });
 
 formPressure.addEventListener('submit', async (e) => {
@@ -184,18 +177,19 @@ const modalGlucose = document.getElementById('modalGlucose');
 const formGlucose = document.getElementById('formGlucose');
 
 glucoseOpenModalBtn.addEventListener('click', () => {
-modalGlucose.classList.remove('hidden');
+    modalGlucose.classList.remove('hidden');
 });
 
 closeModalGlucoseBtn.addEventListener('click', () => {
-modalGlucose.classList.add('hidden');
+    modalGlucose.classList.add('hidden');
 });
 
 modalGlucose.addEventListener('click', (e) => {
-if (e.target === modalGlucose) {
-    modalGlucose.classList.add('hidden');
-}
+    if (e.target === modalGlucose) {
+        modalGlucose.classList.add('hidden');
+    }
 });
+
 formGlucose.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -235,18 +229,19 @@ const formTemperature = document.getElementById('formTemperature');
 
 
 temperatureOpenModalBtn.addEventListener('click', () => {
-modalTemperature.classList.remove('hidden');
+    modalTemperature.classList.remove('hidden');
 });
 
 closeModalTemperatureBtn.addEventListener('click', () => {
-modalTemperature.classList.add('hidden');
+    modalTemperature.classList.add('hidden');
 });
 
 modalTemperature.addEventListener('click', (e) => {
-if (e.target === modalTemperature) {
-    modalTemperature.classList.add('hidden');
-}
+    if (e.target === modalTemperature) {
+        modalTemperature.classList.add('hidden');
+    }
 });
+
 formTemperature.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -330,14 +325,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         options: {
             responsive: true,
             plugins: {
-            legend: { display: true },
-        },
-        scales: {
-            x: { title: { display: true, text: 'Время' } },
-            y: { title: { display: true, text: 'Значение' }, beginAtZero: false }
-        },
-    }
-  };
+                legend: { display: true },
+            },
+            scales: {
+                x: { title: { display: true, text: 'Время' } },
+                y: { title: { display: true, text: 'Значение' }, beginAtZero: false }
+            },
+        }
+    };
     const glucoseChart = document.getElementById('glucoseChart')
     const glucoseLoader = document.getElementById('glucoseChart-loader')
     if (glucoseChart) {
