@@ -8,7 +8,7 @@ from django.views.decorators.http import require_POST, require_http_methods, req
 from django.views.generic import ListView
 
 from data_tracking.forms import GlucoseForm, BodyTemperatureForm, PressureForm, DailyLogForm
-from data_tracking.models import DailyLog, Glucose, Pressure
+from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature
 
 
 @login_required
@@ -69,9 +69,9 @@ def get_pressure_for_plot(request):
 @require_GET
 def get_temperature_for_plot(request):
     """Получение данных о температуре для графика"""
-    temperature_data = Glucose.objects.filter(
+    temperature_data = BodyTemperature.objects.filter(
         user=request.user, daily_log__date=timezone.now()
-    ).values_list('created_at', 'temperature')
+    ).values_list('temperature', 'created_at')
 
     data, labels = zip(*temperature_data)
     local_labels = [timezone.localtime(label).strftime('%H:%M') for label in labels]
