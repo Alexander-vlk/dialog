@@ -31,7 +31,7 @@ class Command(BaseCommand):
         weekly_logs = [
             WeeklyLog(
                 user=user,
-                monthly_log=monthly_logs[user.id],
+                monthly_log=monthly_logs.get(user.id),
                 weight=0,
                 bmi=0,
                 ketones=0,

@@ -31,7 +31,7 @@ class Command(BaseCommand):
         daily_logs = [
             DailyLog(
                 user=user,
-                weekly_log=weekly_logs[user.id],
+                weekly_log=weekly_logs.get(user.id),
                 calories_count=0,
                 proteins_count=0,
                 fats_count=0,
