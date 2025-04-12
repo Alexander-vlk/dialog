@@ -31,6 +31,44 @@ def glucose(request):
 
 
 @login_required
+@require_POST
+def pressure(request):
+    """Сохранение замеров давления"""
+    form = PressureForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponseBadRequest()
+
+    daily_log = DailyLog.objects.get(user=request.user, date=timezone.now())
+
+    pressure_instance = form.save(commit=False)
+    pressure_instance.user = request.user
+    pressure_instance.daily_log = daily_log
+    pressure_instance.save()
+
+    return JsonResponse({'success': True})
+
+
+@login_required
+@require_POST
+def temperature(request):
+    """Сохранение замеров температуры"""
+    form = BodyTemperatureForm(request.POST)
+
+    if not form.is_valid():
+        return HttpResponseBadRequest()
+
+    daily_log = DailyLog.objects.get(user=request.user, date=timezone.now())
+
+    temperature_instance = form.save(commit=False)
+    temperature_instance.user = request.user
+    temperature_instance.daily_log = daily_log
+    temperature_instance.save()
+
+    return JsonResponse({'success': True})
+
+
+@login_required
 @require_GET
 def get_glucose_for_plot(request):
     """Получение информации для графика"""
@@ -80,44 +118,6 @@ def get_temperature_for_plot(request):
         'labels': local_labels,
         'data': data,
     })
-
-
-@login_required
-@require_POST
-def pressure(request):
-    """Сохранение замеров давления"""
-    form = PressureForm(request.POST)
-
-    if not form.is_valid():
-        return HttpResponseBadRequest()
-
-    daily_log = DailyLog.objects.get(user=request.user, date=timezone.now())
-
-    pressure_instance = form.save(commit=False)
-    pressure_instance.user = request.user
-    pressure_instance.daily_log = daily_log
-    pressure_instance.save()
-
-    return JsonResponse({'success': True})
-
-
-@login_required
-@require_POST
-def temperature(request):
-    """Сохранение замеров температуры"""
-    form = BodyTemperatureForm(request.POST)
-
-    if not form.is_valid():
-        return HttpResponseBadRequest()
-
-    daily_log = DailyLog.objects.get(user=request.user, date=timezone.now())
-
-    temperature_instance = form.save(commit=False)
-    temperature_instance.user = request.user
-    temperature_instance.daily_log = daily_log
-    temperature_instance.save()
-
-    return JsonResponse({'success': True})
 
 
 @login_required
