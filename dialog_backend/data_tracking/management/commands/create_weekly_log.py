@@ -40,6 +40,10 @@ class Command(BaseCommand):
             for user in users
         ]
 
+        for user in users:
+            if user.id not in monthly_logs:
+                logger.info("There's no monthly log for user with id %s", user.id)
+
         WeeklyLog.objects.bulk_create(weekly_logs, batch_size=BATCH_SIZE)
 
         logger.info('Finish command create_weekly_log')

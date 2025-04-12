@@ -40,6 +40,10 @@ class Command(BaseCommand):
             for user in users
         ]
 
+        for user in users:
+            if user.id not in weekly_logs:
+                logger.info("There's no weekly log for user with id %s", user.id)
+
         DailyLog.objects.bulk_create(daily_logs, batch_size=BATCH_SIZE)
 
         logger.info('Finish command create_daily_log')
