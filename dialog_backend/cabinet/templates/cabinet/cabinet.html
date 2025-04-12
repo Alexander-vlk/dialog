@@ -38,9 +38,9 @@
 
     <div class="mt-6 border-t pt-4 text-gray-700">
         <p><strong>Тип диабета:</strong> <span id="diabetesType">{{ cabinet.diabetes_type }}</span></p>
-        <p><strong>Тип лечения:</strong> <span id="treatmentType">{{ cabinet.treatment_type }}</span></p>
+        <p><strong>Тип лечения:</strong> <span id="treatmentType">{{ cabinet.treatment_type|default:"Не указано" }}</span></p>
         <p><strong>Дата рождения:</strong> <span>{{ cabinet.birth_date }}</span></p>
-        <p><strong>Диагноз поставлен</strong> <span>{{ cabinet.diagnosis_date }}</span></p>
+        <p><strong>Диагноз поставлен</strong> <span>{{ cabinet.diagnosis_date|default:"Не указано" }}</span></p>
         <p><strong>Пол:</strong> <span id="gender">{{ cabinet.gender }}</span></p>
         <p><strong>Дата присоединения</strong> <span id="gender">{{ cabinet.created_at }}</span></p>
     </div>
@@ -110,7 +110,12 @@
             {% if glucose_per_day_count < 2 %}
             <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
             {% else %}
-            <canvas id="glucoseChart" height="200"></canvas>
+                <div class="relative">
+                    <div id="glucoseChart-loader" class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-10">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full animate-ping"></div>
+                    </div>
+                    <canvas id="glucoseChart" height="200"></canvas>
+                </div>
             {% endif %}
         </div>
 
@@ -119,7 +124,12 @@
             {% if temperature_per_day_count < 2 %}
             <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
             {% else %}
-            <canvas id="tempChart" height="200"></canvas>
+            <div class="relative">
+                <div id="tempChart-loader" class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-10">
+                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-ping"></div>
+                </div>
+                <canvas id="tempChart" height="200"></canvas>
+            </div>
             {% endif %}
         </div>
 
@@ -128,7 +138,12 @@
             {% if pressure_per_day_count < 2 %}
             <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">Сегодня было внесено недостаточно данных для построения графиков(</h2>
             {% else %}
-            <canvas id="pressureChart" height="200"></canvas>
+            <div class="relative">
+                <div id="pressureChart-loader" class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-sm z-10">
+                    <div class="w-6 h-6 bg-blue-500 rounded-full animate-ping"></div>
+                </div>
+                <canvas id="pressureChart" height="200"></canvas>
+            </div>
             {% endif %}
         </div>
     {% endif %}

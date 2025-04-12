@@ -295,7 +295,7 @@ const getGlucoseData = async () => {
 
 const getTemperatureData = async () => {
     const temperatureResponse = await fetch(
-        '/data_tracking/temperature',
+        '/data_tracking/temperature_data',
     )
     if (!temperatureResponse.ok) {
         console.error(await temperatureResponse.text())
@@ -325,20 +325,21 @@ const getPressureData = async () => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const baseOptions = {
-    type: 'line',
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true },
-      },
-      scales: {
-        x: { title: { display: true, text: 'Время' } },
-        y: { title: { display: true, text: 'Значение' }, beginAtZero: false }
-      }
+    const baseOptions = {
+        type: 'line',
+        options: {
+            responsive: true,
+            plugins: {
+            legend: { display: true },
+        },
+        scales: {
+            x: { title: { display: true, text: 'Время' } },
+            y: { title: { display: true, text: 'Значение' }, beginAtZero: false }
+        },
     }
   };
     const glucoseChart = document.getElementById('glucoseChart')
+    const glucoseLoader = document.getElementById('glucoseChart-loader')
     if (glucoseChart) {
         const {data, labels} = await getGlucoseData();
         new Chart(glucoseChart, {
@@ -353,10 +354,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 tension: 0.3,
                 fill: false
             }]
+        },
+        options: {
+            responsive: true,
+            animation: {
+                duration: 1000,
+                onComplete: () => {
+                    glucoseLoader.style.display = 'none'
+                }
+            }
         }
     });
     }
     const tempChart = document.getElementById('tempChart')
+    const tempLoader = document.getElementById('tempChart-loader')
     if (tempChart) {
         const {labels, temperatureData} = await getTemperatureData();
         new Chart(tempChart, {
@@ -371,35 +382,54 @@ document.addEventListener('DOMContentLoaded', async () => {
                     tension: 0.3,
                     fill: false
                 }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 1000,
+                    onComplete: () => {
+                        tempLoader.style.display = 'none'
+                    }
+                }
             }
         });
     }
 
     const pressureChart = document.getElementById('pressureChart');
+    const pressureLoader = document.getElementById('pressureChart-loader')
     if (pressureChart) {
         const {labels, systolicData, diastolicData} = await getPressureData();
         new Chart(pressureChart, {
             ...baseOptions,
             data: {
-            labels,
-            datasets: [
-                {
-                    label: 'Систолическое',
-                    data: systolicData,
-                    borderColor: '#f87171',
-                    backgroundColor: '#fecaca',
-                    tension: 0.3,
-                    fill: false
-                },
-                {
-                    label: 'Диастолическое',
-                    data: diastolicData,
-                    borderColor: '#facc15',
-                    backgroundColor: '#fde68a',
-                    tension: 0.3,
-                    fill: false
+                labels,
+                datasets: [
+                    {
+                        label: 'Систолическое',
+                        data: systolicData,
+                        borderColor: '#f87171',
+                        backgroundColor: '#fecaca',
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Диастолическое',
+                        data: diastolicData,
+                        borderColor: '#facc15',
+                        backgroundColor: '#fde68a',
+                        tension: 0.3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 1000,
+                    onComplete: () => {
+                        pressureLoader.style.display = 'none'
+                    }
                 }
-            ]
             }
         });
     }
