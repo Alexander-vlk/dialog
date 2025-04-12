@@ -23,7 +23,7 @@ def index(request):
 @login_required
 def get_daily_log_fill_status(request):
     """Получение статуса заполнения дневного отчета"""
-    daily_log = get_object_or_404(DailyLog, user__username=request.GET['username'], date=timezone.now())
+    daily_log = get_object_or_404(DailyLog, user=request.user, date=timezone.now())
 
     return JsonResponse({'is_filled': daily_log.is_filled})
 
@@ -48,6 +48,7 @@ def get_weekly_log_fill_status(request):
 
     return JsonResponse({
         'status': status,
+        'is_filled': weekly_log.is_filled,
     })
 
 

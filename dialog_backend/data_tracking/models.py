@@ -129,6 +129,15 @@ class WeeklyLog(AutoDateMixin):
     def __str__(self):
         return f'Отчет за неделю {self.week_start.strftime("%d.%m.%Y")} - {self.week_end.strftime("%d.%m.%Y")}'
 
+    @property
+    def is_filled(self):
+        """Заполнен ли отчет"""
+        return any([
+            self.weight,
+            self.bmi,
+            self.ketones,
+        ])
+
 
 class DailyLog(AutoDateMixin):
     """Модель ежедневного отчета"""
