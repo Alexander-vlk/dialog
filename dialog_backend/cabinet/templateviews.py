@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods, require_GET
 
 from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
-from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature
+from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature, WeeklyLog
 
 
 def index(request):
@@ -20,11 +20,35 @@ def index(request):
 
 
 @require_GET
+@login_required
 def get_daily_log_fill_status(request):
     """Получение статуса заполнения дневного отчета"""
     daily_log = get_object_or_404(DailyLog, user__username=request.GET['username'], date=timezone.now())
 
     return JsonResponse({'is_filled': daily_log.is_filled})
+
+
+@require_GET
+@login_required
+def get_weekly_log_fill_status(request):
+    """Возвращает статус заполнения недельного отчета"""
+
+    weekly_log = get_object_or_404(
+        WeeklyLog,
+        user=request.user,
+        week_start__lte=timezone.now(),
+        week_end__gte=timezone.now(),
+    )
+
+    status = 'late'
+    if weekly_log.week_end > timezone.now():
+        status = 'early'
+    elif weekly_log.week_end == timezone.now():
+        status = 'in_time'
+
+    return JsonResponse({
+        'status': status,
+    })
 
 
 @login_required
