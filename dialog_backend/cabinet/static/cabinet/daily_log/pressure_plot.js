@@ -1,9 +1,9 @@
 import { baseOptions } from './common.js'
 
+const pressureUrl = '../api/data-tracking/pressure/?today=true'
+
 const getPressureData = async () => {
-    const pressureResponse = await fetch(
-        '../api/cabinet/pressure/?today=true',
-    )
+    const pressureResponse = await fetch(pressureUrl)
     if (!pressureResponse.ok) {
         console.error(await pressureResponse.text())
         return;
