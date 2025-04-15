@@ -1,5 +1,7 @@
 from datetime import date, timedelta
 
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import serializers
 
 from data_tracking.models import (
@@ -15,7 +17,7 @@ from data_tracking.models import (
 class BodyTemperatureSerializer(serializers.ModelSerializer):
     """Сериализатор модели BodyTemperature"""
 
-    created_at = serializers.DateTimeField(format='%H:%M')
+    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
 
     class Meta:
         model = BodyTemperature
@@ -25,9 +27,19 @@ class BodyTemperatureSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        if user.is_authenticated:
-            return BodyTemperature.objects.create(user=user, **validated_data)
+        user = self.context.get('user')
+
+        if not user:
+            return BodyTemperature.objects.create(
+                **validated_data,
+            )
+
+        daily_log = get_object_or_404(DailyLog, user=user, date=timezone.now())
+        return BodyTemperature.objects.create(
+            user=user,
+            daily_log=daily_log,
+            **validated_data,
+        )
 
 
 class DailyLogSerializer(serializers.ModelSerializer):
