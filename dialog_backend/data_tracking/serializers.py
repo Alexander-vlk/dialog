@@ -97,9 +97,12 @@ class MonthlyLogSerializer(serializers.ModelSerializer):
 class PressureSerializer(serializers.ModelSerializer):
     """Сериализатор модели Pressure"""
 
+    created_at = serializers.DateTimeField(format='%H:%M')
+
     class Meta:
         model = Pressure
         fields = (
+            'created_at',
             'systolic',
             'diastolic',
         )
