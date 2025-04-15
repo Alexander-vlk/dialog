@@ -1,6 +1,6 @@
 import { baseOptions } from './common.js'
 
-const pressureUrl = '../api/data-tracking/pressure/?today=true'
+const pressureUrl = '../api/data-tracking/pressure/?time_period=today'
 
 const getPressureData = async () => {
     const pressureResponse = await fetch(pressureUrl)

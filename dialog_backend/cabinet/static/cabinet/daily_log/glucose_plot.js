@@ -1,25 +1,32 @@
 import {baseOptions} from "./common.js";
 
+const glucoseUrl = '../api/data-tracking/glucose/?time_period=today';
+
 const getGlucoseData = async () => {
-    const glucoseResponse = await fetch(
-        '/data_tracking/glucose_data/'
-    )
+    const glucoseResponse = await fetch(glucoseUrl);
     if (!glucoseResponse.ok) {
         console.error(await glucoseResponse.text())
         return;
     }
-    const {data, labels} = await glucoseResponse.json()
+    const glucoseData = await glucoseResponse.json()
 
-    return {
-        data: data,
-        labels: labels,
+    const result = {
+        labels: [],
+        data: [],
     }
+
+    for (const {created_at, level} of glucoseData) {
+        result.labels.push(created_at)
+        result.data.push(level)
+    }
+
+    return result
 }
 
 const glucoseChart = document.getElementById('glucoseChart')
     const glucoseLoader = document.getElementById('glucoseChart-loader')
     if (glucoseChart) {
-        const {data, labels} = await getGlucoseData();
+        const {labels, data} = await getGlucoseData();
         new Chart(glucoseChart, {
         ...baseOptions,
         data: {

@@ -1,18 +1,24 @@
 import {baseOptions} from "./common.js";
 
+const temperatureUrl = '../api/data-tracking/body-temperature/?time_period=today';
+
 const getTemperatureData = async () => {
-    const temperatureResponse = await fetch(
-        '/data_tracking/temperature_data',
-    )
+    const temperatureResponse = await fetch(temperatureUrl);
     if (!temperatureResponse.ok) {
         console.error(await temperatureResponse.text())
         return;
     }
-    const {data, labels} = await temperatureResponse.json()
-    return {
-        labels: labels,
-        temperatureData: data,
+    const temperatureData = await temperatureResponse.json()
+    const result = {
+        labels: [],
+        temperatureData: [],
     }
+    for (const {created_at, temperature} of temperatureData) {
+        result.labels.push(created_at)
+        result.temperatureData.push(temperature)
+    }
+
+    return result
 }
 
     const tempChart = document.getElementById('tempChart')
