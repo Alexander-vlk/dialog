@@ -56,12 +56,21 @@ def get_weekly_log_fill_status(request):
 def cabinet(request):
     """View для страницы личного кабинета"""
     daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now()).first()
+
     glucose_per_day_count = Glucose.objects.filter(daily_log=daily_log).count()
     pressure_per_day_count = Pressure.objects.filter(daily_log=daily_log).count()
     temperature_per_day_count = BodyTemperature.objects.filter(daily_log=daily_log).count()
+
+    weekly_log = WeeklyLog.objects.filter(
+        user=request.user,
+        week_start__lte=timezone.now(),
+        week_end__gte=timezone.now(),
+    ).first()
+
     context = {
         'cabinet': request.user.userprofile,
         'daily_log': daily_log,
+        'weekly_log': weekly_log,
         'glucose_per_day_count': glucose_per_day_count,
         'pressure_per_day_count': pressure_per_day_count,
         'temperature_per_day_count': temperature_per_day_count,
