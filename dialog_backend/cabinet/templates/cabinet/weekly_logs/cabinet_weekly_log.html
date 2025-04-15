@@ -1,0 +1,57 @@
+{% load static %}
+
+<div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+    <div class="mb-4 text-center">
+        <h2 class="text-xl font-semibold text-gray-800">Еженедельный отчет</h2>
+        <div class="mt-2 text-gray-600">
+            <span class="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+            📅 Неделя с {{ weekly_log.week_start|date:"d.m.Y" }} по {{ weekly_log.week_end|date:"d.m.Y" }}
+            </span>
+        </div>
+    </div>
+
+
+<div class="md:flex md:items-center md:justify-between">
+    <div class="">
+        <canvas id="bjuChart" width="300" height="300"></canvas>
+    </div>
+
+    <div>
+        <div>
+            <canvas id="glucoseChart" height="120"></canvas>
+        </div>
+
+        <div>
+            <canvas id="bpChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+    <table class="min-w-full my-4 text-sm text-left text-gray-700 border border-gray-200 rounded-lg">
+        <thead>
+            <tr class="bg-gray-50">
+                <th class="px-4 py-2 text-sm font-medium text-gray-800">Показатель</th>
+                <th class="px-4 py-2 text-sm font-medium text-gray-800">Значение</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            <tr>
+                <td class="px-4 py-2 text-gray-700">Вес</td>
+                <td class="px-4 py-2 font-semibold text-gray-900">{{ weekly_log.weight }} кг</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-2 text-gray-700">Индекс массы тела</td>
+                <td class="px-4 py-2 font-semibold text-gray-900">{{ weekly_log.bmi }}</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-2 text-gray-700">Кетоны</td>
+                <td class="px-4 py-2 font-semibold text-gray-900">{{ weekly_log.ketones }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'daily_log' %}" class="text-primary hover:underline transition block py-2 md:py-0">
+    Изменить недельный отчет
+    </a>
+</div>
+
+<script src="{% static 'cabinet/weekly_log/cabinet_weekly_log.js' %}"></script>
