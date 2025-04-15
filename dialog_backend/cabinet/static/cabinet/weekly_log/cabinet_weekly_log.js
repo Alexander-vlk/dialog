@@ -31,11 +31,11 @@
   };
 
   const configBJU = { type: 'doughnut', data: bjuData };
-  const configGlucose = { type: 'line', data: glucoseData };
+  const weeklyGlucoseConfig = { type: 'line', data: glucoseData };
   const configBP = { type: 'line', data: bpData };
 
   window.addEventListener('load', () => {
     new Chart(document.getElementById('bjuChart'), configBJU);
-    new Chart(document.getElementById('glucoseChart'), configGlucose);
+    new Chart(document.getElementById('weeklyGlucoseChart'), weeklyGlucoseConfig);
     new Chart(document.getElementById('bpChart'), configBP);
   });
