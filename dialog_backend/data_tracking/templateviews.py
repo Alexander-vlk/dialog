@@ -69,58 +69,6 @@ def temperature(request):
 
 
 @login_required
-@require_GET
-def get_glucose_for_plot(request):
-    """Получение информации для графика"""
-    glucose_data = Glucose.objects.filter(
-        user=request.user, daily_log__date=timezone.now()
-    ).values_list('level', 'created_at')
-
-    data, labels = zip(*glucose_data)
-    local_labels = [timezone.localtime(label).strftime('%H:%M') for label in labels]
-
-    return JsonResponse({
-        'labels': local_labels,
-        'data': data,
-    })
-
-
-@login_required
-@require_GET
-def get_pressure_for_plot(request):
-    """Получение информации о давлении для графика"""
-    pressure_data = Pressure.objects.filter(
-        user=request.user, daily_log__date=timezone.now()
-    ).values_list('created_at', 'systolic', 'diastolic')
-
-    labels, systolic, diastolic = zip(*pressure_data)
-    local_labels = [timezone.localtime(label).strftime('%H:%M') for label in labels]
-
-    return JsonResponse({
-        'labels': local_labels,
-        'systolic': systolic,
-        'diastolic': diastolic,
-    })
-
-
-@login_required
-@require_GET
-def get_temperature_for_plot(request):
-    """Получение данных о температуре для графика"""
-    temperature_data = BodyTemperature.objects.filter(
-        user=request.user, daily_log__date=timezone.now()
-    ).values_list('temperature', 'created_at')
-
-    data, labels = zip(*temperature_data)
-    local_labels = [timezone.localtime(label).strftime('%H:%M') for label in labels]
-
-    return JsonResponse({
-        'labels': local_labels,
-        'data': data,
-    })
-
-
-@login_required
 @require_http_methods(['GET', 'POST'])
 def daily_log(request):
     """View для обработки ежедневного отчета"""

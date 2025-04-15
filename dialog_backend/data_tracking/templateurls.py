@@ -5,9 +5,6 @@ from data_tracking.templateviews import (
     pressure,
     temperature,
     daily_log,
-    get_glucose_for_plot,
-    get_pressure_for_plot,
-    get_temperature_for_plot,
     DailyLogListView,
 )
 
@@ -18,8 +15,4 @@ urlpatterns = [
 
     path('daily_log', daily_log, name='daily_log'),
     path('daily_log_list', DailyLogListView.as_view(), name='daily_log_list'),
-
-    path('glucose_data/', get_glucose_for_plot, name='get_glucose_for_plot'),
-    path('pressure_data/', get_pressure_for_plot, name='get_pressure_for_plot'),
-    path('temperature_data/', get_temperature_for_plot, name='get_temperature_for_plot'),
 ]
