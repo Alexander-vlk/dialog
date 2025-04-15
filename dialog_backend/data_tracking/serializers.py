@@ -15,9 +15,12 @@ from data_tracking.models import (
 class BodyTemperatureSerializer(serializers.ModelSerializer):
     """Сериализатор модели BodyTemperature"""
 
+    created_at = serializers.DateTimeField(format='%H:%M')
+
     class Meta:
         model = BodyTemperature
         fields = (
+            'created_at',
             'temperature',
         )
 
@@ -64,9 +67,12 @@ class DailyLogSerializer(serializers.ModelSerializer):
 class GlucoseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Glucose"""
 
+    created_at = serializers.DateTimeField(format='%H:%M')
+
     class Meta:
         model = Glucose
         fields = (
+            'created_at',
             'level',
         )
 
