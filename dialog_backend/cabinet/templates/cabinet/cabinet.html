@@ -11,9 +11,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="hidden max-w-2xl mx-auto my-4 p-6 bg-red-700 font-bold shadow-lg rounded-lg text-white" id="notifyWindow">
+<div class="hidden max-w-2xl mx-auto my-4 p-6 bg-red-700 font-bold shadow-lg rounded-lg text-white" id="notifyDailyLogWindow">
     <p>
-        <span id="notifyMessage"></span>
+        <span id="notifyDailyLogMessage"></span>
         <a href="{% url 'daily_log' %}" class="underline font-light">Заполнить</a>
     </p>
 </div>
@@ -116,6 +116,7 @@
                     </div>
                     <canvas id="glucoseChart" height="200"></canvas>
                 </div>
+                <script src="{% static 'cabinet/daily_log/glucose_plot.js' %}" type="module"></script>
             {% endif %}
         </div>
 
@@ -130,6 +131,7 @@
                 </div>
                 <canvas id="tempChart" height="200"></canvas>
             </div>
+            <script src="{% static 'cabinet/daily_log/temperature_plot.js' %}" type="module"></script>
             {% endif %}
         </div>
 
@@ -144,6 +146,7 @@
                 </div>
                 <canvas id="pressureChart" height="200"></canvas>
             </div>
+                <script src="{% static 'cabinet/daily_log/pressure_plot.js' %}" type="module"></script>
             {% endif %}
         </div>
     {% endif %}
@@ -185,6 +188,10 @@
         </a>
     </div>
 </section>
+{% endif %}
+
+{% if weekly_log %}
+	{% include 'cabinet/weekly_logs/cabinet_weekly_log.html' %}
 {% endif %}
 
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
