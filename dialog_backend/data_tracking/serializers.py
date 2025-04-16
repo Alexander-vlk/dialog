@@ -34,7 +34,13 @@ class BodyTemperatureSerializer(serializers.ModelSerializer):
                 **validated_data,
             )
 
-        daily_log = get_object_or_404(DailyLog, user=user, date=timezone.now())
+        daily_log = DailyLog.objects.filter(user=user, date=timezone.now()).first()
+        if not daily_log:
+            BodyTemperature.objects.create(
+                user=user,
+                **validated_data,
+            )
+
         return BodyTemperature.objects.create(
             user=user,
             daily_log=daily_log,
@@ -79,7 +85,7 @@ class DailyLogSerializer(serializers.ModelSerializer):
 class GlucoseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Glucose"""
 
-    created_at = serializers.DateTimeField(format='%H:%M')
+    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
 
     class Meta:
         model = Glucose
@@ -89,9 +95,15 @@ class GlucoseSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        if user.is_authenticated:
+        user = self.context['user']
+        if not user:
+            return Glucose.objects.create(**validated_data)
+
+        daily_log = DailyLog.objects.filter(user=user, date=timezone.now()).first()
+        if not daily_log:
             return Glucose.objects.create(user=user, **validated_data)
+
+        return Glucose.objects.create(user=user, daily_log=daily_log, **validated_data)
 
 
 class MonthlyLogSerializer(serializers.ModelSerializer):
