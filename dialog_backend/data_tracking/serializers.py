@@ -95,7 +95,7 @@ class GlucoseSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user = self.context['user']
+        user = self.context.get('user')
         if not user:
             return Glucose.objects.create(**validated_data)
 
@@ -127,7 +127,7 @@ class MonthlyLogSerializer(serializers.ModelSerializer):
 class PressureSerializer(serializers.ModelSerializer):
     """Сериализатор модели Pressure"""
 
-    created_at = serializers.DateTimeField(format='%H:%M')
+    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
 
     class Meta:
         model = Pressure
@@ -138,9 +138,15 @@ class PressureSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        if user.is_authenticated:
+        user = self.context.get('user')
+        if not user:
+            return Pressure.objects.create(**validated_data)
+
+        daily_log = DailyLog.objects.filter(user=user, date=timezone.now()).first()
+        if not daily_log:
             return Pressure.objects.create(user=user, **validated_data)
+
+        return Pressure.objects.create(user=user, daily_log=daily_log, **validated_data)
 
 
 class WeeklyLogSerializer(serializers.ModelSerializer):
