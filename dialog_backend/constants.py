@@ -41,7 +41,13 @@ TEXT_INPUT_CLASS = 'w-full px-4 py-2 border rounded-lg focus:outline-none focus:
 SELECT_INPUT_CLASS = 'w-full mt-1 p-2 border rounded-lg'
 TEXTAREA_INPUT_CLASS = 'w-full resize-y rounded-lg border border-gray-300 p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400 shadow-sm transition'
 
-DATA_TRACKING_SWAGGER_TAG = 'data-tracking'
+MONTHLY_LOG_SWAGGER_TAG = 'Ежемесячный отчет'
+WEEKLY_LOG_SWAGGER_TAG = 'Еженедельный отчет'
+DAILY_LOG_SWAGGER_TAG = 'Дневной отчет'
+
+GLUCOSE_SWAGGER_TAG = 'Глюкоза (уровень сахара в крови)'
+PRESSURE_SWAGGER_TAG = 'Давление'
+BODY_TEMPERATURE_SWAGGER_TAG = 'Температура тела'
 
 SWAGGER_ERROR_MESSAGES = {
     status.HTTP_400_BAD_REQUEST: OpenApiResponse(description='Invalid data'),
