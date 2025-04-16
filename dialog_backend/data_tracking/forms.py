@@ -11,28 +11,21 @@ from data_tracking.models import (
 )
 
 
-class GlucoseForm(forms.ModelForm):
-    """Форма для замеров глюкозы"""
+class WeeklyLogForm(forms.ModelForm):
+    """Форма еженедельного отчета"""
 
     class Meta:
-        model = Glucose
-        fields = ('level',)
-
-
-class PressureForm(forms.ModelForm):
-    """Форма для замеров давления"""
-
-    class Meta:
-        model = Pressure
-        fields = ('systolic', 'diastolic')
-
-
-class BodyTemperatureForm(forms.ModelForm):
-    """Форма для замеров температуры тела"""
-
-    class Meta:
-        model = BodyTemperature
-        fields = ('temperature',)
+        model = WeeklyLog
+        fields = (
+            'weight',
+            'bmi',
+            'ketones',
+        )
+        widgets = {
+            'weight': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'min': 0, 'max': 1000}),
+            'bmi': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
+            'ketones': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'min': 0, 'max': 10}),
+        }
 
 
 class DailyLogForm(forms.ModelForm):
@@ -59,3 +52,27 @@ class DailyLogForm(forms.ModelForm):
             'physical_activity': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
             'additional_info': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
         }
+
+
+class GlucoseForm(forms.ModelForm):
+    """Форма для замеров глюкозы"""
+
+    class Meta:
+        model = Glucose
+        fields = ('level',)
+
+
+class PressureForm(forms.ModelForm):
+    """Форма для замеров давления"""
+
+    class Meta:
+        model = Pressure
+        fields = ('systolic', 'diastolic')
+
+
+class BodyTemperatureForm(forms.ModelForm):
+    """Форма для замеров температуры тела"""
+
+    class Meta:
+        model = BodyTemperature
+        fields = ('temperature',)
