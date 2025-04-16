@@ -102,7 +102,9 @@ class WeeklyLog(AutoDateMixin):
         verbose_name='Вес',
     )
 
-    bmi = models.PositiveSmallIntegerField(
+    bmi = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
         verbose_name='Индекс массы тела',
     )
 
