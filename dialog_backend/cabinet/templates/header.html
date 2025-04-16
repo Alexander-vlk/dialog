@@ -37,6 +37,9 @@
                 <li>
                     <a href="{% url 'swagger-ui' %}" class="text-red-700 underline transition block py-2 md:py-0">Swagger</a>
                 </li>
+                <li>
+                    <a href="{% url 'redoc' %}" class="text-red-700 underline transition block py-2 md:py-0">Redoc</a>
+                </li>
                 {% endif %}
                 {% if not request.user.is_authenticated %}
                     <li>
