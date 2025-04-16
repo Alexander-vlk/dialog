@@ -23,7 +23,7 @@ class PressureAPIView(APIView):
 
     def post(self, request):
         """POST-запрос"""
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'user': request.user})
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
