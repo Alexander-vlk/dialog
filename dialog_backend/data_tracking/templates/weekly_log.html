@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Заполнение еженедельного отчета
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl my-4 mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-semibold mb-6">Заполнение еженедельного отчета</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="{{ form.weight.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.weight.label }}</label>
+            {{ form.weight }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.bmi.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.bmi.label }}</label>
+            {{ form.bmi }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.ketones.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.ketones.label }}</label>
+            {{ form.ketones }}
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 md:w-xs cursor-pointer transition" />
+        </div>
+    </form>
+</div>
+
+{% endblock %}
