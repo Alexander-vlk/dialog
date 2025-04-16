@@ -5,7 +5,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 
-from constants import GLUCOSE_SWAGGER_TAG, BODY_TEMPERATURE_SWAGGER_TAG, PRESSURE_SWAGGER_TAG, SWAGGER_ERROR_MESSAGES
+from constants import (
+    BODY_TEMPERATURE_SWAGGER_TAG,
+    GLUCOSE_SWAGGER_TAG,
+    PRESSURE_SWAGGER_TAG,
+    SWAGGER_ERROR_MESSAGES,
+    WEEKLY_LOG_SWAGGER_TAG,
+)
 from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog
 from data_tracking.serializers import (
     BodyTemperatureSerializer,
@@ -15,12 +21,25 @@ from data_tracking.serializers import (
 )
 
 
+@extend_schema(
+    tags=[WEEKLY_LOG_SWAGGER_TAG],
+    methods=['GET'],
+    responses={
+        status.HTTP_200_OK: WeeklyLogSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
 class WeeklyLogAPIView(APIView):
     """APIView для еженедельного отчета"""
 
     authentication_classes = [SessionAuthentication]
     serializer_class = WeeklyLogSerializer
 
+    @extend_schema(
+        operation_id='Получение информации о недельном отчете',
+        tags=[WEEKLY_LOG_SWAGGER_TAG],
+        description='Получение данных о текущем недельном отчете',
+    )
     def get(self, request):
         """GET-запрос"""
         serializer = self.serializer_class(self.get_queryset(), context={'user': request.user})
@@ -28,7 +47,7 @@ class WeeklyLogAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
-        """Получение кверисета"""
+        """Получение queryset-а"""
         return WeeklyLog.objects.filter(
             user=self.request.user,
             week_start__lte=timezone.now(),
