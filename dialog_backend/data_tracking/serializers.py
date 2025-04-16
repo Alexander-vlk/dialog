@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 
+from django.db.models import Avg
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
@@ -35,12 +36,27 @@ class MonthlyLogSerializer(serializers.ModelSerializer):
 class WeeklyLogSerializer(serializers.ModelSerializer):
     """Сериализатор модели WeeklyLog"""
 
+    avg_data = serializers.SerializerMethodField(required=False, read_only=True)
+
     class Meta:
         model = WeeklyLog
         fields = (
             'weight',
             'bmi',
             'ketones',
+            'avg_data',
+        )
+
+    def get_avg_data(self, obj):
+        user = self.context.get('user')
+        return (
+            DailyLog.objects.filter(weekly_log=obj, user=user)
+            .aggregate(
+                avg_calories=Avg('calories_count'),
+                avg_proteins=Avg('proteins_count'),
+                avg_fats=Avg('fats_count'),
+                avg_carbs=Avg('carbs_count'),
+            )
         )
 
     def create(self, validated_data):
