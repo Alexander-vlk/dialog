@@ -1,3 +1,5 @@
+{% load static %}
+
 <div
     id="modalGlucose"
     class="fixed inset-0 flex items-center justify-center z-50 hidden backdrop-blur-sm bg-white/30"
@@ -13,7 +15,7 @@
         </button>
 
         <h2 class="text-xl font-semibold mb-4">Внести замеры глюкозы</h2>
-        <form method="post" action="{% url 'new_glucose' %}" id="formGlucose">
+        <form method="post" action="{% url 'glucose' %}" id="formGlucose">
             {% csrf_token %}
             <div>
                 <label for="level">Уровень глюкозы (ммоль/л)</label>
@@ -35,4 +37,5 @@
             </div>
         </form>
     </div>
+    <script src="{% static 'cabinet/modal_forms/glucose_modal.js' %}" type="module"></script>
 </div>
