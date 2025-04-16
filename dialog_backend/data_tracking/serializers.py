@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
 
 from data_tracking.models import (
@@ -14,38 +14,43 @@ from data_tracking.models import (
 )
 
 
-class BodyTemperatureSerializer(serializers.ModelSerializer):
-    """Сериализатор модели BodyTemperature"""
-
-    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
+class MonthlyLogSerializer(serializers.ModelSerializer):
+    """Сериализатор модели MonthlyLog"""
 
     class Meta:
-        model = BodyTemperature
+        model = MonthlyLog
         fields = (
-            'created_at',
-            'temperature',
+            'hemoglobin',
+            'cholesterol',
+            'lipid_profile',
+            'microalbuminuria',
         )
 
     def create(self, validated_data):
-        user = self.context.get('user')
+        user = self.context['request'].user
+        if user.is_authenticated:
+            return MonthlyLog.objects.create(user=user, **validated_data)
 
-        if not user:
-            return BodyTemperature.objects.create(
-                **validated_data,
-            )
 
-        daily_log = DailyLog.objects.filter(user=user, date=timezone.now()).first()
-        if not daily_log:
-            BodyTemperature.objects.create(
-                user=user,
-                **validated_data,
-            )
+class WeeklyLogSerializer(serializers.ModelSerializer):
+    """Сериализатор модели WeeklyLog"""
 
-        return BodyTemperature.objects.create(
-            user=user,
-            daily_log=daily_log,
-            **validated_data,
+    class Meta:
+        model = WeeklyLog
+        fields = (
+            'weight',
+            'bmi',
+            'ketones',
         )
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        week_start = date.today()
+        week_end = week_start + timedelta(days=7)
+        if user.is_authenticated:
+            return WeeklyLog.objects.create(user=user, date=week_start, **validated_data)
+
+        return WeeklyLog.objects.create(week_start=week_start, week_end=week_end,**validated_data)
 
 
 class DailyLogSerializer(serializers.ModelSerializer):
@@ -82,6 +87,68 @@ class DailyLogSerializer(serializers.ModelSerializer):
             )
 
 
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Return data example',
+            description='Return temperature and creation date (format: HH:MM)',
+            summary='Data for plots',
+            value={
+                'created_at': '10:00',
+                'temperature': 36.6,
+            },
+        ),
+    ],
+    many=True,
+)
+class BodyTemperatureSerializer(serializers.ModelSerializer):
+    """Сериализатор модели BodyTemperature"""
+
+    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
+
+    class Meta:
+        model = BodyTemperature
+        fields = (
+            'created_at',
+            'temperature',
+        )
+
+    def create(self, validated_data):
+        user = self.context.get('user')
+
+        if not user:
+            return BodyTemperature.objects.create(
+                **validated_data,
+            )
+
+        daily_log = DailyLog.objects.filter(user=user, date=timezone.now()).first()
+        if not daily_log:
+            BodyTemperature.objects.create(
+                user=user,
+                **validated_data,
+            )
+
+        return BodyTemperature.objects.create(
+            user=user,
+            daily_log=daily_log,
+            **validated_data,
+        )
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Return data example',
+            description='Two fields: creation date and glucose level, need for plot creation',
+            summary='Data for plots',
+            value={
+                'created_at': '23:00',
+                'level': 3.4,
+            },
+        ),
+    ],
+    many=True,
+)
 class GlucoseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Glucose"""
 
@@ -106,24 +173,21 @@ class GlucoseSerializer(serializers.ModelSerializer):
         return Glucose.objects.create(user=user, daily_log=daily_log, **validated_data)
 
 
-class MonthlyLogSerializer(serializers.ModelSerializer):
-    """Сериализатор модели MonthlyLog"""
-
-    class Meta:
-        model = MonthlyLog
-        fields = (
-            'hemoglobin',
-            'cholesterol',
-            'lipid_profile',
-            'microalbuminuria',
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Return data example',
+            description='Two fields: creation date, systolic and diastolic pressure',
+            summary='Data for plot',
+            value={
+                'created_at': '23:00',
+                'systolic': 120,
+                'diastolic': 80,
+            }
         )
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        if user.is_authenticated:
-            return MonthlyLog.objects.create(user=user, **validated_data)
-
-
+    ],
+    many=True,
+)
 class PressureSerializer(serializers.ModelSerializer):
     """Сериализатор модели Pressure"""
 
@@ -147,24 +211,3 @@ class PressureSerializer(serializers.ModelSerializer):
             return Pressure.objects.create(user=user, **validated_data)
 
         return Pressure.objects.create(user=user, daily_log=daily_log, **validated_data)
-
-
-class WeeklyLogSerializer(serializers.ModelSerializer):
-    """Сериализатор модели WeeklyLog"""
-
-    class Meta:
-        model = WeeklyLog
-        fields = (
-            'weight',
-            'bmi',
-            'ketones',
-        )
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        week_start = date.today()
-        week_end = week_start + timedelta(days=7)
-        if user.is_authenticated:
-            return WeeklyLog.objects.create(user=user, date=week_start, **validated_data)
-
-        return WeeklyLog.objects.create(week_start=week_start, week_end=week_end,**validated_data)
