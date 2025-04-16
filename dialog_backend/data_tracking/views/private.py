@@ -6,8 +6,34 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 
 from constants import GLUCOSE_SWAGGER_TAG, BODY_TEMPERATURE_SWAGGER_TAG, PRESSURE_SWAGGER_TAG, SWAGGER_ERROR_MESSAGES
-from data_tracking.models import BodyTemperature, Glucose, Pressure
-from data_tracking.serializers import BodyTemperatureSerializer, GlucoseSerializer, PressureSerializer
+from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog
+from data_tracking.serializers import (
+    BodyTemperatureSerializer,
+    GlucoseSerializer,
+    PressureSerializer,
+    WeeklyLogSerializer,
+)
+
+
+class WeeklyLogAPIView(APIView):
+    """APIView для еженедельного отчета"""
+
+    authentication_classes = [SessionAuthentication]
+    serializer_class = WeeklyLogSerializer
+
+    def get(self, request):
+        """GET-запрос"""
+        serializer = self.serializer_class(self.get_queryset(), context={'user': request.user})
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        """Получение кверисета"""
+        return WeeklyLog.objects.filter(
+            user=self.request.user,
+            week_start__lte=timezone.now(),
+            week_end__gte=timezone.now(),
+        ).first()
 
 
 @extend_schema(
