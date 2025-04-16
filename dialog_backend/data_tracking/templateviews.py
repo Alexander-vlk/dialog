@@ -1,3 +1,6 @@
+from lib2to3.fixes.fix_input import context
+from tempfile import template
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Avg
 from django.http import HttpResponseBadRequest
@@ -7,8 +10,39 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 
-from data_tracking.forms import DailyLogForm
-from data_tracking.models import DailyLog
+from data_tracking.forms import DailyLogForm, WeeklyLogForm
+from data_tracking.models import DailyLog, WeeklyLog
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def weekly_log(request):
+    """View для обработки еженедельного отчета"""
+    weekly_log_instance = WeeklyLog.objects.get(
+        user=request.user,
+        week_start__lte=timezone.now(),
+        week_end__gte=timezone.now(),
+    )
+    if request.method == "GET":
+        form = WeeklyLogForm(instance=weekly_log_instance)
+
+        context_data = {
+            'form': form,
+        }
+
+        template_name = 'weekly_log.html'
+
+        return render(request, template_name, context_data)
+
+    form = WeeklyLogForm(request.POST, instance=weekly_log_instance)
+
+    if not form.is_valid():
+        return HttpResponseBadRequest()
+
+    form.save()
+
+    cabinet_url = reverse('cabinet')
+    return redirect(f'{cabinet_url}?filled_weekly_log=true')
 
 
 @login_required
@@ -19,13 +53,13 @@ def daily_log(request):
     if request.method == "GET":
         form = DailyLogForm(instance=daily_log_instance)
 
-        context = {
+        context_data = {
             'form': form,
         }
 
         template_name = 'daily_log.html'
 
-        return render(request, template_name, context)
+        return render(request, template_name, context_data)
 
     form = DailyLogForm(request.POST, instance=daily_log_instance)
 
