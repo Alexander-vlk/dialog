@@ -30,6 +30,7 @@ class PressureAPIView(APIView):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
+
     def get_queryset(self):
         """Получение queryset-а"""
         request = self.request
@@ -55,6 +56,14 @@ class GlucoseAPIView(APIView):
         serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        """POST-запрос"""
+        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def options(self, request, *args, **kwargs):
         """OPTIONS-запрос"""
