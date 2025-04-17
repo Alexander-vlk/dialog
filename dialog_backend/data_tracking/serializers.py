@@ -231,6 +231,24 @@ class PressureSerializer(serializers.ModelSerializer):
         return Pressure.objects.create(user=user, daily_log=daily_log, **validated_data)
 
 
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Пример ответа от сервера',
+            description='Базовый ответ',
+            value=[
+                {
+                    'level': 3.0,
+                    'date': '12.04',
+                },
+                {
+                    'level': 3.5,
+                    'date': '13.04',
+                },
+            ],
+        ),
+    ],
+)
 class AverageGlucoseSerializer(serializers.Serializer):
     """Сериализатор для получения данных о средней глюкозе за период"""
 
