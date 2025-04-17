@@ -24,30 +24,30 @@ const getGlucoseData = async () => {
 }
 
 const glucoseChart = document.getElementById('glucoseChart')
-    const glucoseLoader = document.getElementById('glucoseChart-loader')
-    if (glucoseChart) {
-        const {labels, data} = await getGlucoseData();
-        new Chart(glucoseChart, {
-        ...baseOptions,
-        data: {
-            labels,
-            datasets: [{
-                label: 'Глюкоза (ммоль/л)',
-                data: data,
-                borderColor: '#34d399',
-                backgroundColor: '#6ee7b7',
-                tension: 0.3,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            animation: {
-                duration: 1000,
-                onComplete: () => {
-                    glucoseLoader.style.display = 'none'
-                }
+const glucoseLoader = document.getElementById('glucoseChart-loader')
+if (glucoseChart) {
+    const {labels, data} = await getGlucoseData();
+    new Chart(glucoseChart, {
+    ...baseOptions,
+    data: {
+        labels,
+        datasets: [{
+            label: 'Глюкоза (ммоль/л)',
+            data: data,
+            borderColor: '#34d399',
+            backgroundColor: '#6ee7b7',
+            tension: 0.3,
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        animation: {
+            duration: 1000,
+            onComplete: () => {
+                glucoseLoader.style.display = 'none'
             }
         }
-    });
     }
+});
+}
