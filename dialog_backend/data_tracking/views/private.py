@@ -20,7 +20,7 @@ from data_tracking.serializers import (
     BodyTemperatureSerializer,
     GlucoseSerializer,
     PressureSerializer,
-    WeeklyLogSerializer, AverageGlucoseSerializer,
+    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer,
 )
 
 
@@ -349,6 +349,39 @@ class BodyTemperatureAPIView(APIView):
             queryset = queryset.filter(daily_log__date=timezone.now())
 
         return queryset
+
+
+@extend_schema(
+    tags=[WEEKLY_LOG_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получение данных о калориях за неделю',
+    responses={
+        status.HTTP_200_OK: AverageGlucoseSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class CaloriesAPIView(APIView):
+    """APIView для получения данных о калориях"""
+
+    authentication_classes = [SessionAuthentication]
+    serializer_class = CaloriesSerializer
+
+    @extend_schema(
+        operation_id='Получение списка данных о калориях за неделю',
+        tags=[WEEKLY_LOG_SWAGGER_TAG],
+    )
+    def get(self, request):
+        """GET-запрос"""
+        current_weekly_log = get_object_or_404(
+            WeeklyLog,
+            user=request.user,
+            week_start__lte=timezone.now(),
+            week_end__gte=timezone.now(),
+        )
+
+        serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(
