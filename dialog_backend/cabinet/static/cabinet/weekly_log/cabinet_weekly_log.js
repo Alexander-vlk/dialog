@@ -1,41 +1,40 @@
-const bjuData = {
-    labels: ['Белки', 'Жиры', 'Углеводы'],
-    datasets: [{
-        label: 'БЖУ',
-        data: [30, 25, 45],
-        backgroundColor: ['#34d399', '#f87171', '#60a5fa'],
-        hoverOffset: 10
-    }]
-};
+const fetchWeeklyLogData = async () => {
+    const weeklyLogUrl = '/api/data-tracking/weekly-log/'
+    const weeklyLogDataResponse = await fetch(weeklyLogUrl)
 
-const glucoseData = {
-    labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-    datasets: [{
-        label: 'Глюкоза',
-        data: [5.4, 5.7, 5.3, 6.1, 5.8, 5.9, 5.6],
-        fill: false,
-        borderColor: '#10b981',
-        tension: 0.3
-    }]
-};
+    if (!weeklyLogDataResponse.ok) {
+        console.error(await weeklyLogDataResponse.json())
+        return
+    }
 
-const bpData = {
-    labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-    datasets: [{
-        label: 'Давление',
-        data: [120, 118, 122, 121, 119, 117, 120],
-        fill: false,
-        borderColor: '#3b82f6',
-        tension: 0.3
-    }]
-};
+    return weeklyLogDataResponse.json()
+}
 
-const configBJU = { type: 'doughnut', data: bjuData };
-const weeklyGlucoseConfig = { type: 'line', data: glucoseData };
-const configBP = { type: 'line', data: bpData };
+const getBjuData = async () => {
+    const weeklyLogData = await fetchWeeklyLogData()
+    const {avg_calories, avg_proteins, avg_fats, avg_carbs} = weeklyLogData.avg_data
 
-window.addEventListener('load', () => {
-    new Chart(document.getElementById('bjuChart'), configBJU);
-    new Chart(document.getElementById('weeklyGlucoseChart'), weeklyGlucoseConfig);
-    new Chart(document.getElementById('bpChart'), configBP);
-});
+    return [avg_proteins, avg_fats, avg_carbs]
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const bjuDiagram = document.getElementById('weeklyLogBJUChart');
+if (bjuDiagram) {
+    const bjuData = await getBjuData();
+    new Chart(
+        bjuDiagram,
+        {
+            type: 'doughnut',
+            data: {
+                labels: ['Белки', 'Жиры', 'Углеводы'],
+                datasets: [{
+                    label: 'БЖУ',
+                    data: bjuData,
+                    backgroundColor: ['#34d399', '#f87171', '#60a5fa'],
+                    hoverOffset: 10
+                }]
+            }
+        }
+    );
+}
+})
