@@ -1,3 +1,6 @@
+from lib2to3.fixes.fix_input import context
+
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -17,7 +20,7 @@ from data_tracking.serializers import (
     BodyTemperatureSerializer,
     GlucoseSerializer,
     PressureSerializer,
-    WeeklyLogSerializer,
+    WeeklyLogSerializer, AverageGlucoseSerializer,
 )
 
 
@@ -346,3 +349,34 @@ class BodyTemperatureAPIView(APIView):
             queryset = queryset.filter(daily_log__date=timezone.now())
 
         return queryset
+
+
+@extend_schema(
+    tags=[GLUCOSE_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получение среднего значения глюкозы за указанный период',
+    responses={
+        status.HTTP_200_OK: AverageGlucoseSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class AverageGlucoseDataAPIView(APIView):
+    """APIView получения данных о средней глюкозе за указанный период"""
+
+    authentication_classes = [SessionAuthentication]
+    serializer_class = AverageGlucoseSerializer
+
+    @extend_schema(
+        operation_id='Получение списка данных о среднем уровне глюкозы за день за указанный период',
+        tags=[GLUCOSE_SWAGGER_TAG],
+    )
+    def get(self, request):
+        """GET-запрос"""
+        current_weekly_log = get_object_or_404(
+            WeeklyLog,
+            user=request.user,
+            week_start__lte=timezone.now(),
+            week_end__gte=timezone.now(),
+        )
+        serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
+        return Response(serializer.data, status=status.HTTP_200_OK)

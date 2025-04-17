@@ -1,6 +1,7 @@
 from django.urls import path
 
 from data_tracking.views.private import (
+    AverageGlucoseDataAPIView,
     BodyTemperatureAPIView,
     GlucoseAPIView,
     PressureAPIView,
@@ -8,6 +9,7 @@ from data_tracking.views.private import (
 )
 
 urlpatterns = [
+    path('average-glucose/', AverageGlucoseDataAPIView.as_view(), name='average-glucose'),
     path('body-temperature/', BodyTemperatureAPIView.as_view(), name='body_temperature'),
     path('glucose/', GlucoseAPIView.as_view(), name='glucose'),
     path('pressure/', PressureAPIView.as_view(), name='pressure'),
