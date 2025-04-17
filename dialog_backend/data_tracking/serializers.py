@@ -234,6 +234,47 @@ class PressureSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
+            'Пример возвращаемых данных',
+            value=[
+                {
+                    'calories': 2100,
+                    'date': '12.04',
+                },
+                {
+                    'calories': 2200,
+                    'date': '13.04',
+                },
+            ]
+        )
+    ]
+)
+class CaloriesSerializer(serializers.Serializer):
+    """Сериализатор калорий"""
+
+    calories_per_day = serializers.SerializerMethodField()
+
+    def get_calories_per_day(self, weekly_log: WeeklyLog):
+        """Геттер калорий за день"""
+        user = self.context.get('user')
+
+        daily_logs_in_week = (
+            DailyLog.objects.filter(user=user, weekly_log=weekly_log)
+            .values('date', 'calories_count')
+            .order_by('date')
+        )
+
+        return [
+            {
+                'calories': daily_log_in_week.get('calories_count'),
+                'date': daily_log_in_week.get('date').strftime('%d.%m'),
+            }
+            for daily_log_in_week in daily_logs_in_week
+        ]
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
             'Пример ответа от сервера',
             description='Базовый ответ',
             value=[
@@ -257,6 +298,7 @@ class AverageGlucoseSerializer(serializers.Serializer):
     def _get_daily_logs(self, weekly_log: WeeklyLog):
         """Геттер получения дневного отчета"""
         user = self.context.get('user')
+
         return DailyLog.objects.filter(user=user, weekly_log=weekly_log).order_by('date')
 
     def get_average_glucose_per_day(self, weekly_log: WeeklyLog):
