@@ -22,7 +22,7 @@
         </div>
 
         <div>
-            <canvas id="weeklyGlucoseChart" height="120"></canvas>
+                <canvas id="weeklyGlucoseChart" height="120"></canvas>
         </div>
     </div>
 </div>
@@ -46,6 +46,10 @@
             <tr>
                 <td class="px-4 py-2 text-gray-700">Кетоны</td>
                 <td class="px-4 py-2 font-semibold text-gray-900">{{ weekly_log.ketones }}</td>
+            </tr>
+            <tr>
+                <td class="px-4 py-2 text-gray-700">Среднее количество калорий</td>
+                <td class="px-4 py-2 font-semibold text-gray-900" id="averageCalories"></td>
             </tr>
         </tbody>
     </table>
