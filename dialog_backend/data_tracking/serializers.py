@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 
+from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
@@ -13,6 +14,7 @@ from data_tracking.models import (
     Pressure,
     WeeklyLog,
 )
+from data_tracking.templateviews import daily_log
 
 
 class MonthlyLogSerializer(serializers.ModelSerializer):
@@ -227,3 +229,27 @@ class PressureSerializer(serializers.ModelSerializer):
             return Pressure.objects.create(user=user, **validated_data)
 
         return Pressure.objects.create(user=user, daily_log=daily_log, **validated_data)
+
+
+class AverageGlucoseSerializer(serializers.Serializer):
+    """Сериализатор для получения данных о средней глюкозе за период"""
+
+    average_glucose_per_day = serializers.SerializerMethodField()
+
+    def _get_daily_logs(self, weekly_log: WeeklyLog):
+        """Геттер получения дневного отчета"""
+        user = self.context.get('user')
+        return DailyLog.objects.filter(user=user, weekly_log=weekly_log).order_by('date')
+
+    def get_average_glucose_per_day(self, weekly_log: WeeklyLog):
+        """Геттер получения среднего уровня глюкозы за каждый день в течение недели"""
+        daily_logs = self._get_daily_logs(weekly_log).annotate(avg_glucose_level=Avg('glucoses__level'))
+
+        result = []
+        for log in daily_logs:
+            result.append({
+                'level': log.avg_glucose_level,
+                'date': log.date.strftime('%d.%m'),
+            })
+
+        return result
