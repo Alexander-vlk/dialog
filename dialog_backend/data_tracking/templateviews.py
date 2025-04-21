@@ -104,6 +104,20 @@ class WeeklyLogListView(ListView):
             .filter(user=self.request.user)
             .annotate(
                 daily_logs_count=Count('dailylog', distinct=True),
+                glucoses_count=Count('dailylog__glucoses', distinct=True),
+                pressures_count=Count('dailylog__pressures', distinct=True),
+                temperature_count=Count('dailylog__body_temperatures', distinct=True),
+
+                avg_calories=Avg('dailylog__calories_count', distinct=True),
+                avg_proteins=Avg('dailylog__proteins_count', distinct=True),
+                avg_fats=Avg('dailylog__fats_count', distinct=True),
+                avg_carbs=Avg('dailylog__carbs_count', distinct=True),
+
+                avg_glucoses=Avg('dailylog__glucoses', distinct=True),
+                avg_pressures=Avg('dailylog__pressures', distinct=True),
+                avg_temperature=Avg('dailylog__body_temperatures', distinct=True),
+
+                general_health=Avg('dailylog__mood', distinct=True),
             )
             .order_by('-week_end')
         )
