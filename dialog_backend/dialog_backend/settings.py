@@ -28,6 +28,8 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'drf_spectacular',
+
+    'django_celery_beat',
     
     'auth_service.apps.AuthServiceConfig',
     'cabinet.apps.CabinetConfig',
@@ -161,6 +163,10 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': ONE_DAY,
     'REFRESH_TOKEN_LIFETIME': ONE_WEEK,
 }
+
+CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 
 LANGUAGE_CODE = env('LANGUAGE_CODE')
 
