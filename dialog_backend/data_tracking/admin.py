@@ -5,6 +5,7 @@ from data_tracking.models import (
     WeeklyLog,
     DailyLog,
     BodyTemperature,
+    Health,
     Glucose,
     Pressure,
 )
@@ -24,6 +25,12 @@ class WeeklyLogAdmin(admin.ModelAdmin):
 
     list_display = ('user', 'monthly_log', 'week_start', 'week_end', 'created_at')
     raw_id_fields = ('user', 'monthly_log')
+
+
+@admin.register(Health)
+class HealthAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color']
+    list_display_links = ['name']
 
 
 @admin.register(DailyLog)
