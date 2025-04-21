@@ -19,9 +19,18 @@
             <div class="border rounded-md p-4 shadow-sm hover:shadow-md transition">
                 <div class="flex justify-between items-center mb-2">
                     <p class="text-sm text-gray-500">{{ daily_log.date }}</p>
+                    <p>
                     <span class="text-xs px-2 py-1 rounded generalHealth">
-                        {{ daily_log.general_health }}
+                        {{ daily_log.get_mood_display }}
                     </span>
+                    {% if daily_log.health %}
+                        {% for health in daily_log.health.all %}
+                            <span class="text-xs px-2 py-1 rounded {{ health.color }}">
+                                {{ health.name }}
+                            </span>
+                        {% endfor %}
+                    {% endif %}
+                    </p>
                 </div>
 
                 <div class="overflow-x-auto w-full">
