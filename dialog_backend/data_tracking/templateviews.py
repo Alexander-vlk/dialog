@@ -89,3 +89,21 @@ class DailyLogListView(ListView):
             avg_systolic=Avg('pressures__systolic', distinct=True),
             avg_diastolic=Avg('pressures__diastolic', distinct=True),
         ).order_by('-date')
+
+
+class WeeklyLogListView(ListView):
+    """Страница со списком еженедельных отчетов"""
+
+    template_name = 'data_tracking/weekly_log_list.html'
+    context_object_name = 'weekly_logs'
+    paginate_by = 1
+
+    def get_queryset(self):
+        return (
+            WeeklyLog.objects
+            .filter(user=self.request.user)
+            .annotate(
+                daily_logs_count=Count('dailylog', distinct=True),
+            )
+            .order_by('-week_end')
+        )
