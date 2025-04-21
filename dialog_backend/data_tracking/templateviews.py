@@ -21,7 +21,7 @@ def weekly_log(request):
     weekly_log_instance = WeeklyLog.objects.get(
         user=request.user,
         week_start__lte=timezone.now(),
-        week_end__gte=timezone.now(),
+        week_end__gt=timezone.now(),
     )
     if request.method == "GET":
         form = WeeklyLogForm(instance=weekly_log_instance)

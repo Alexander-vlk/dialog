@@ -54,7 +54,7 @@ class WeeklyLogAPIView(APIView):
         return WeeklyLog.objects.filter(
             user=self.request.user,
             week_start__lte=timezone.now(),
-            week_end__gte=timezone.now(),
+            week_end__gt=timezone.now(),
         ).first()
 
 
@@ -376,7 +376,7 @@ class CaloriesAPIView(APIView):
             WeeklyLog,
             user=request.user,
             week_start__lte=timezone.now(),
-            week_end__gte=timezone.now(),
+            week_end__gt=timezone.now(),
         )
 
         serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
@@ -409,7 +409,7 @@ class AverageGlucoseDataAPIView(APIView):
             WeeklyLog,
             user=request.user,
             week_start__lte=timezone.now(),
-            week_end__gte=timezone.now(),
+            week_end__gt=timezone.now(),
         )
         serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)

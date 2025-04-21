@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
         weekly_logs = {
             weekly_log.user.id: weekly_log
-            for weekly_log in WeeklyLog.objects.filter(week_start__lte=timezone.now(), week_end__gte=timezone.now())
+            for weekly_log in WeeklyLog.objects.filter(week_start__lte=timezone.now(), week_end__gt=timezone.now())
         }
 
         daily_logs = [
@@ -38,6 +38,7 @@ class Command(BaseCommand):
                 carbs_count=0,
             )
             for user in users
+            if not DailyLog.objects.filter(user=user, date=timezone.now()).exists()
         ]
 
         for user in users:

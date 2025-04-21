@@ -30,6 +30,7 @@ class Command(BaseCommand):
                 month=timezone.now().month,
             )
             for user in users
+            if not MonthlyLog.objects.filter(user=user, month=timezone.now().month).exists()
         ]
 
         MonthlyLog.objects.bulk_create(monthly_logs, batch_size=BATCH_SIZE)

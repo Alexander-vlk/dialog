@@ -38,6 +38,9 @@ class Command(BaseCommand):
                 week_end=timezone.now() + timezone.timedelta(days=7),
             )
             for user in users
+            if not WeeklyLog.objects.filter(
+                user=user, week_start__lte=timezone.now(), week_end__gt=timezone.now()
+            ).exists()
         ]
 
         for user in users:
