@@ -167,6 +167,8 @@ SIMPLE_JWT = {
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_IMPORTS = ['dialog_backend.tasks']
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 LANGUAGE_CODE = env('LANGUAGE_CODE')
 
