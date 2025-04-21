@@ -15,6 +15,8 @@ DEBUG = env.bool('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default='localhost')
 
 INSTALLED_APPS = [
+    'cabinet.apps.CabinetConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,7 +34,6 @@ INSTALLED_APPS = [
     'django_celery_beat',
     
     'auth_service.apps.AuthServiceConfig',
-    'cabinet.apps.CabinetConfig',
     'data_tracking.apps.DataTrackingConfig',
 ]
 

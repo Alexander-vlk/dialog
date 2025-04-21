@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+
+ {% block branding %}
+     <div id="site-name">
+        <a href="{% url 'admin:index' %}">DiaLog - Административная панель</a>
+     </div>
+ {% endblock %}
+
+{% block userlinks %}
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'swagger-ui' %}" target="_blank">Swagger</a> /
+        <a href="{% url 'redoc' %}" target="_blank">Redoc</a> /
+        <a href="http://localhost:5555/" target="_blank">Flower</a> /
+        <a href="http://localhost:15672/" target="_blank">RabbitMQ</a> /
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
