@@ -141,28 +141,41 @@ class WeeklyLog(AutoDateMixin):
         ])
 
 
+class Health(AutoDateMixin):
+    """Модель самочувствия"""
+
+    name = models.CharField(
+        max_length=50,
+        verbose_name='Название настроения',
+    )
+    color = models.CharField(
+        max_length=50,
+        verbose_name='Цвет',
+        help_text='Tailwind-класс',
+    )
+
+    class Meta:
+        verbose_name = 'Настроение'
+        verbose_name_plural = 'Настроения'
+
+    def __str__(self):
+        return self.name
+
+
 class DailyLog(AutoDateMixin):
     """Модель ежедневного отчета"""
 
-    BAD = 'bad'
-    NORMAL = 'normal'
-    GREAT = 'great'
-    TIREDNESS = 'tiredness'
-    WEAKNESS = 'weakness'
-    DROWSINESS = 'drowsiness'
-    DIZZINESS = 'dizziness'
-    NAUSEA = 'nausea'
-    ANOTHER = 'another'
+    TERRIBLE = 1
+    BAD = 2
+    NORMAL = 3
+    GOOD = 4
+    GREAT = 5
     GENERAL_HEALTH_CHOICES = {
+        TERRIBLE: 'Ужасное',
         BAD: 'Плохое',
         NORMAL: 'Нормальное',
-        GREAT: 'Отличное',
-        TIREDNESS: 'Усталость',
-        WEAKNESS: 'Слабость',
-        DROWSINESS: 'Сонливость',
-        DIZZINESS: 'Головокружение',
-        NAUSEA: 'Тошнота',
-        ANOTHER: 'Другое',
+        GOOD: 'Хорошее',
+        GREAT: 'Прекрасное',
     }
 
     weekly_log = models.ForeignKey(
@@ -202,11 +215,17 @@ class DailyLog(AutoDateMixin):
         help_text='Количество углеводов за день (в граммах)',
     )
 
-    general_health = models.CharField(
-        max_length=50,
-        verbose_name='Общее самочувствие',
+    mood = models.SmallIntegerField(
+        verbose_name='Настроение',
         choices=GENERAL_HEALTH_CHOICES,
         default=NORMAL,
+    )
+
+    health = models.ManyToManyField(
+        to=Health,
+        related_name='daily_logs',
+        blank=True,
+        verbose_name='Самочувствие',
     )
 
     physical_activity = models.CharField(
