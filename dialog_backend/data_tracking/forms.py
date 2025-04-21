@@ -38,7 +38,8 @@ class DailyLogForm(forms.ModelForm):
             'proteins_count',
             'fats_count',
             'carbs_count',
-            'general_health',
+            'mood',
+            'health',
             'physical_activity',
             'additional_info',
         )
@@ -48,7 +49,8 @@ class DailyLogForm(forms.ModelForm):
             'proteins_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
             'fats_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
             'carbs_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
-            'general_health': forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
+            'mood': forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
+            'health': forms.SelectMultiple(attrs={'class': SELECT_INPUT_CLASS}),
             'physical_activity': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
             'additional_info': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
         }
