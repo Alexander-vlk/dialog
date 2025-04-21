@@ -1,0 +1,100 @@
+{% extends 'data_tracking/data_tracking.html' %}
+
+{% load static %}
+
+{% block title %}
+    Список еженедельных отчетов
+{% endblock %}
+
+{% block content %}
+{% for weekly_log in weekly_logs %}
+<div class="max-w-7xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+    <div class="block text-center md:flex items-center justify-between mb-4">
+        <h2 class="text-2xl mb-4 md:mb-0 font-semibold">Еженедельный отчет</h2>
+        <p>
+            {% if request.user.is_staff %}
+                <a href="{% url 'admin:data_tracking_weeklylog_change' weekly_log.id %}" class="text-red-700 underline transition block py-2 md:py-0">Админ</a>
+            {% endif %}
+        </p>
+        <p class="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+            {{ weekly_log.week_start }} - {{ weekly_log.week_end }}
+        </p>
+    </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">Вес</h3>
+      <p class="text-gray-700 text-xl" id="weight">{{ weekly_log.weight }} кг</p>
+    </div>
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">ИМТ</h3>
+      <p class="text-gray-700 text-xl" id="bmi">{{ weekly_log.bmi }}</p>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">Уровень кетоновых тел</h3>
+      <p class="text-gray-700 text-xl" id="ketones">{{ weekly_log.ketones }} ммоль/л</p>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">Среднее потребление за неделю</h3>
+      <ul class="text-gray-700 text-lg">
+        <li>Калории: <span id="avg-calories">1800</span> ккал</li>
+        <li>Белки: <span id="avg-protein">90</span> г</li>
+        <li>Жиры: <span id="avg-fat">60</span> г</li>
+        <li>Углеводы: <span id="avg-carbs">210</span> г</li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">Заполненные дневные отчеты</h3>
+      <p
+          class="
+            {% if weekly_log.daily_logs_count < 3 %}
+                text-red-700
+            {% elif weekly_log.daily_logs_count <= 6 %}
+                text-gray-700
+            {% else %}
+                text-green-700
+            {% endif %}
+          text-xl
+          font-bold
+          "
+          id="reports-count"
+      >
+          {{ weekly_log.daily_logs_count }} из 7
+      </p>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg">
+      <h3 class="text-lg font-medium">Количество замеров за неделю</h3>
+      <ul class="text-gray-700 text-lg">
+        <li>Глюкоза: <span id="glucose-count">14</span></li>
+        <li>Давление: <span id="pressure-count">7</span></li>
+        <li>Температура: <span id="temperature-count">6</span></li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
+      <h3 class="text-lg font-medium">Общее самочувствие</h3>
+      <p class="text-gray-700 text-lg" id="overall-feeling">Чувствовал(а) себя стабильно, без резких ухудшений</p>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
+      <h3 class="text-lg font-medium mb-2">Уровень глюкозы за неделю</h3>
+      <canvas id="glucoseChart"></canvas>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
+      <h3 class="text-lg font-medium mb-2">Артериальное давление за неделю</h3>
+      <canvas id="pressureChart"></canvas>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+<script src="{% static 'weekly_log_list.js' %}"></script>
+{% include 'pagination.html' %}
+{% endblock %}
