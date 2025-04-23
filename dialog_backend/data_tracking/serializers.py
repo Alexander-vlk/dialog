@@ -170,7 +170,7 @@ class BodyTemperatureSerializer(serializers.ModelSerializer):
 class GlucoseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Glucose"""
 
-    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
+    created_at = serializers.DateTimeField(format='%H:%M (%d.%m)', required=False, read_only=True)
 
     class Meta:
         model = Glucose
@@ -209,7 +209,7 @@ class GlucoseSerializer(serializers.ModelSerializer):
 class PressureSerializer(serializers.ModelSerializer):
     """Сериализатор модели Pressure"""
 
-    created_at = serializers.DateTimeField(format='%H:%M', required=False, read_only=True)
+    created_at = serializers.DateTimeField(format='%H:%M (%d.%m)', required=False, read_only=True)
 
     class Meta:
         model = Pressure
