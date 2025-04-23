@@ -8,7 +8,8 @@
 
 {% block content %}
 {% for weekly_log in weekly_logs %}
-<div class="max-w-7xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+<span id="weeklyLogId">{{ weekly_log.id }}</span>
+<div class="max-w-6xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="block text-center md:flex items-center justify-between mb-4">
         <h2 class="text-2xl mb-4 md:mb-0 font-semibold">Еженедельный отчет</h2>
         <p>
@@ -81,12 +82,12 @@
         </div>
 
         <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
-            <h3 class="text-lg font-medium mb-2">Уровень глюкозы за неделю</h3>
+            <h3 class="text-lg font-medium mb-2">Уровень сахара в крови за неделю</h3>
             <canvas id="glucoseChart"></canvas>
         </div>
 
         <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
-            <h3 class="text-lg font-medium mb-2">Артериальное давление за неделю</h3>
+            <h3 class="text-lg font-medium mb-2">Давление за неделю</h3>
             <canvas id="pressureChart"></canvas>
         </div>
     </div>
