@@ -10,7 +10,7 @@ from data_tracking.views.private import (
 )
 
 urlpatterns = [
-    path('average-glucose/', AverageGlucoseDataAPIView.as_view(), name='average-glucose'),
+    path('glucose/average/', AverageGlucoseDataAPIView.as_view(), name='average-glucose'),
     path('body-temperature/', BodyTemperatureAPIView.as_view(), name='body_temperature'),
     path('calories/', CaloriesAPIView.as_view(), name='calories'),
     path('glucose/', GlucoseAPIView.as_view(), name='glucose'),

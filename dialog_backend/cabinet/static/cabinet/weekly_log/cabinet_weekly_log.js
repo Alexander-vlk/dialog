@@ -105,7 +105,7 @@ const createCaloriesPlot = async () => {
 }
 
 const fetchGlucoseData = async () => {
-    const glucoseUrl = '/api/data-tracking/average-glucose/'
+    const glucoseUrl = '/api/data-tracking/glucose/average'
     const glucoseResponse = await fetch(glucoseUrl)
 
     if (!glucoseResponse.ok) {
