@@ -22,6 +22,7 @@ from data_tracking.serializers import (
     PressureSerializer,
     WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer,
 )
+from data_tracking.templateviews import weekly_log
 
 
 @extend_schema(
@@ -170,6 +171,13 @@ class PressureAPIView(APIView):
         time_period = query_params.get('time_period')
         if time_period == 'today':
             queryset = queryset.filter(daily_log__date=timezone.now())
+        elif time_period == 'week':
+            weekly_log = get_object_or_404(
+                WeeklyLog,
+                user=request.user,
+                id=query_params.get('id'),
+            )
+            queryset = queryset.filter(daily_log__weekly_log=weekly_log)
 
         return queryset
 
@@ -278,6 +286,14 @@ class GlucoseAPIView(APIView):
         time_period = query_params.get('time_period')
         if time_period == 'today':
             queryset = queryset.filter(daily_log__date=timezone.now())
+        elif time_period == 'week':
+            weekly_log = get_object_or_404(
+                WeeklyLog,
+                user=request.user,
+                id=query_params.get('id'),
+            )
+            queryset = queryset.filter(daily_log__weekly_log=weekly_log)
+
 
         return queryset
 
