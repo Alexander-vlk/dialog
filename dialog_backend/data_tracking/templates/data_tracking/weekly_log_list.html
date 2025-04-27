@@ -8,7 +8,7 @@
 
 {% block content %}
 {% for weekly_log in weekly_logs %}
-<span id="weeklyLogId">{{ weekly_log.id }}</span>
+<span id="weeklyLogId" class="hidden">{{ weekly_log.id }}</span>
 <div class="max-w-6xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
     <div class="block text-center md:flex items-center justify-between mb-4">
         <h2 class="text-2xl mb-4 md:mb-0 font-semibold">Еженедельный отчет</h2>
@@ -40,10 +40,10 @@
         <div class="bg-gray-50 p-4 rounded-lg">
             <h3 class="text-lg font-medium">Среднее потребление за неделю</h3>
             <ul class="text-gray-700 text-lg">
-                <li>Калории: <span id="avg-calories">{{ weekly_log.avg_calories }}</span> ккал</li>
-                <li>Белки: <span id="avg-protein">{{ weekly_log.avg_proteins }}</span> г</li>
-                <li>Жиры: <span id="avg-fat">{{ weekly_log.avg_fats }}</span> г</li>
-                <li>Углеводы: <span id="avg-carbs">{{ weekly_log.avg_carbs }}</span> г</li>
+                <li>Калории: <span id="avg-calories">{{ weekly_log.avg_calories|floatformat }}</span> ккал</li>
+                <li>Белки: <span id="avg-protein">{{ weekly_log.avg_proteins|floatformat }}</span> г</li>
+                <li>Жиры: <span id="avg-fat">{{ weekly_log.avg_fats|floatformat }}</span> г</li>
+                <li>Углеводы: <span id="avg-carbs">{{ weekly_log.avg_carbs|floatformat }}</span> г</li>
             </ul>
         </div>
 

@@ -171,7 +171,9 @@ const createGlucosePlot = async () => {
 
 const fillAvgCalories = async () => {
     const weeklyLogData = await fetchWeeklyLogData()
-    document.getElementById('averageCalories').textContent = weeklyLogData.avg_data.avg_calories
+    document.getElementById('averageCalories').textContent = Math.round(
+        parseFloat(weeklyLogData.avg_data.avg_calories)
+    ).toString()
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
