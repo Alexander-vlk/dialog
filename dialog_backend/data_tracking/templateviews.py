@@ -1,17 +1,14 @@
-from lib2to3.fixes.fix_input import context
-from tempfile import template
-
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Avg
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 
 from data_tracking.forms import DailyLogForm, WeeklyLogForm
-from data_tracking.models import DailyLog, WeeklyLog
+from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog
 
 
 @login_required
@@ -121,3 +118,20 @@ class WeeklyLogListView(ListView):
             )
             .order_by('-week_end')
         )
+
+
+def monthly_log_list(request, monthly_log_id):
+    """Список ежемесячных отчетов"""
+
+    monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=monthly_log_id)
+
+    monthly_logs = MonthlyLog.objects.filter(user=request.user).order_by('created_at')[:10]
+
+    template_name = 'data_tracking/monthly_log_list.html'
+
+    context = {
+        'monthly_log': monthly_log,
+        'monthly_logs': monthly_logs,
+    }
+
+    return render(request, template_name, context)
