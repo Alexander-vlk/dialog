@@ -190,8 +190,17 @@
 </section>
 {% endif %}
 
-{% if weekly_log %}
+{% if weekly_log.is_filled %}
 	{% include 'cabinet/weekly_logs/cabinet_weekly_log.html' %}
+{% else %}
+    <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
+        <h2 class="text-lg font-semibold text-gray-500 mb-2 text-center">
+            Заполните недельный отчет, чтобы посмотреть статистику.
+        </h2>
+        <a href="{% url 'weekly_log' %}" class="text-primary text-center hover:underline transition block py-2 md:py-0">
+            Заполнить
+        </a>
+    </div>
 {% endif %}
 
 <div class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
