@@ -31,16 +31,32 @@
                         px-4
                         py-2
                         rounded-lg
-                        hover:bg-blue-100
                         text-gray-700
                         {% if link_to_log.pk == monthly_log.pk %}
                         text-white
                         bg-blue-700
+                        {% else %}
+                        hover:bg-blue-100
                         {% endif %}
+                        transition
                     "
                 >{{ link_to_log.get_month_display }} {{ link_to_log.year }}
                 </a>
                 {% endfor %}
+                {% if monthly_logs.count >= 9 %}
+                    <a
+                        href=""
+                        class="
+                            block
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-blue-700
+                            hover:underline
+                        "
+                    >Посмотреть больше
+                    </a>
+                {% endif %}
             </nav>
         </aside>
 
