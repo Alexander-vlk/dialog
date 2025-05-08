@@ -207,7 +207,11 @@
             Еженедельные отчеты
         </a>
         <a
+            {% if weekly_log.monthly_log %}
             href="{% url 'monthly_log' weekly_log.monthly_log.id %}"
+            {% else %}
+                href=""
+            {% endif %}
             class="px-4 text-center w-full md:w-auto py-2 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-900 transition">
             Ежемесячные отчеты
         </a>
