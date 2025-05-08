@@ -125,7 +125,7 @@ def monthly_log_list(request, monthly_log_id):
 
     monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=monthly_log_id)
 
-    monthly_logs = MonthlyLog.objects.filter(user=request.user).order_by('created_at')[:10]
+    monthly_logs = MonthlyLog.objects.filter(user=request.user).order_by('-created_at')[:10]
 
     template_name = 'data_tracking/monthly_log_list.html'
 
