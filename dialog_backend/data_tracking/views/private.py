@@ -14,14 +14,14 @@ from constants import (
     GLUCOSE_SWAGGER_TAG,
     PRESSURE_SWAGGER_TAG,
     SWAGGER_ERROR_MESSAGES,
-    WEEKLY_LOG_SWAGGER_TAG, AVERAGE_BJU_SWAGGER_TAG,
+    WEEKLY_LOG_SWAGGER_TAG, AVERAGE_BJU_SWAGGER_TAG, HEALTH_SWAGGER_TAG,
 )
 from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog, MonthlyLog
 from data_tracking.serializers import (
     BodyTemperatureSerializer,
     GlucoseSerializer,
     PressureSerializer,
-    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer, AverageBJUSerializer,
+    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer, AverageBJUSerializer, HealthSerializer,
 )
 from data_tracking.templateviews import weekly_log
 
@@ -479,3 +479,36 @@ class AvgBJUApiView(APIView):
         )
         serializer = self.serializer_class(monthly_log, context={'user': request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@extend_schema(
+    tags=[HEALTH_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получение информации о самочувствии',
+    responses={
+        status.HTTP_200_OK: HealthSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class HealthAPIView(APIView):
+    """APIView для получения данных о самочувствии"""
+
+    authentication_classes = [SessionAuthentication]
+    serializer_class = HealthSerializer
+
+    @extend_schema(
+        operation_id='Получение данных о самочувствии',
+        tags=[HEALTH_SWAGGER_TAG],
+    )
+    def get(self, request):
+        """GET-запрос"""
+        monthly_log = get_object_or_404(
+            MonthlyLog,
+            user=request.user,
+            id=request.query_params.get('id'),
+        )
+        serializer = HealthSerializer(context={'user': request.user})
+        data = serializer.get_stats(monthly_log)
+        response = HealthSerializer(data, many=True)
+
+        return Response(response.data, status=status.HTTP_200_OK)
