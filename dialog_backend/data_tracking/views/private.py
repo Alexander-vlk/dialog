@@ -15,7 +15,7 @@ from constants import (
     SWAGGER_ERROR_MESSAGES,
     WEEKLY_LOG_SWAGGER_TAG,
 )
-from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog
+from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog, MonthlyLog
 from data_tracking.serializers import (
     BodyTemperatureSerializer,
     GlucoseSerializer,
@@ -204,8 +204,12 @@ class GlucoseAPIView(APIView):
             OpenApiParameter(
                 'time_period',
                 description='Период, за который должны вернуться данные о глюкозе (уровне сахара в крови)',
-                enum=['today'],
-            )
+                enum=['today', 'week', 'month'],
+            ),
+            OpenApiParameter(
+                'id',
+                description='Идентификатор объекта, который нужно получить',
+            ),
         ],
         examples=[
             OpenApiExample(
@@ -293,7 +297,14 @@ class GlucoseAPIView(APIView):
                 id=query_params.get('id'),
             )
             queryset = queryset.filter(daily_log__weekly_log=weekly_log)
-
+        elif time_period == 'month':
+            monthly_log = get_object_or_404(
+                MonthlyLog,
+                user=request.user,
+                id=query_params.get('id'),
+            )
+            weekly_logs = WeeklyLog.objects.filter(monthly_log=monthly_log)
+            queryset = queryset.filter(daily_log__weekly_log__in=weekly_logs)
 
         return queryset
 
