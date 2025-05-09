@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-    Ежемесячные отчеты
+    Отчет за {{ monthly_log.get_month_display }} {{ monthly_log.year }}
 {% endblock %}
 
 {% block content %}
@@ -71,40 +71,65 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="text-lg font-medium mb-2">Вес</h3>
-                        <p class="text-gray-700 text-xl">75 кг → 72 кг</p>
+                        <h3 class="text-lg font-medium mb-2">Изменение веса за месяц</h3>
+                        {% if weight_in_month_start and weight_in_month_end %}
+                            <p class="text-gray-700 text-xl">
+                                    {{ weight_in_month_start }} кг → {{ weight_in_month_end }} кг
+                            </p>
+                        {% else %}
+                            <p class="text-gray-500 text-xl">
+                                Не были заполнены нужные недельные отчеты
+                            </p>
+                        {% endif %}
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="text-lg font-medium mb-2">ИМТ (конец месяца)</h3>
-                        <p class="text-gray-700 text-xl">22.4</p>
+                        <h3 class="text-lg font-medium mb-2">ИМТ (на конец месяца)</h3>
+                        <p class="text-gray-700 text-xl">{{ last_bmi }}</p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Гемоглобин</h3>
-                        <p class="text-gray-700 text-xl">140 г/л</p>
+                        <p class="text-gray-700 text-xl">
+                            {% if monthly_log.hemoglobin %}
+                                {{ monthly_log.hemoglobin }} г/л
+                            {% else %}
+                                Не заполнено
+                            {% endif %}
+                        </p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Холестерин</h3>
-                        <p class="text-gray-700 text-xl">5.2 ммоль/л</p>
+                        <p class="text-gray-700 text-xl">
+                            {% if monthly_log.cholesterol %}
+                                {{ monthly_log.cholesterol }} ммоль/л
+                            {% else %}
+                                Не заполнено
+                            {% endif %}
+                        </p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Микроальбуминурия</h3>
-                        <p class="text-gray-700 text-xl">10 мг/л</p>
+                        <p class="text-gray-700 text-xl">{{ monthly_log.microalbuminuria }} мг/л</p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Липидный профиль</h3>
-                        <p class="text-gray-700 text-xl">Норма</p>
+                        <p class="text-gray-700 text-xl">{{ monthly_log.lipid_profile|default:"Не заполнено" }}</p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Средний уровень кетоновых тел</h3>
-                        <p class="text-gray-700 text-xl">0.3 ммоль/л</p>
+                        <p class="text-gray-700 text-xl">{{ avg_ketones.ketones__avg|floatformat:2 }} ммоль/л</p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-lg font-medium mb-2">Средние калории</h3>
-                        <p class="text-gray-700 text-xl">1950 ккал</p>
+                        <p class="text-gray-700 text-xl">{{ avg_calories.calories_count__avg|floatformat:2 }} ккал</p>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <h3 class="text-lg font-medium mb-2">Чаще всего у вас было</h3>
-                        <p class="text-yellow-700 bg-yellow-100 inline-block px-3 py-1 rounded-full text-lg font-medium">Счастье</p>
+                        <h3 class="text-lg font-medium mb-2">Чаще всего вы испытывали</h3>
+                        <p class="
+                            {{ most_common_health.color }}
+                            inline-block px-3 py-1 rounded-full text-lg font-medium
+                        ">
+                            {{ most_common_health.name }}
+                        </p>
                     </div>
                 </div>
 
@@ -142,7 +167,18 @@
 
                     <div class="bg-gray-50 p-4 rounded-lg md:col-span-4">
                         <h3 class="text-lg font-medium mb-2">Температурные отклонения</h3>
-                        <p class="text-red-700 text-xl">4 случая</p>
+                        <p
+                            class="
+                                {% if temperature_deviations_count.deviations_count > 5 %}
+                                text-red-700
+                                {% else %}
+                                text-green-600
+                                {% endif %}
+                                text-xl
+                            "
+                        >
+                            {{ temperature_deviations_count.deviations_count }}
+                        </p>
                     </div>
 
                     <a

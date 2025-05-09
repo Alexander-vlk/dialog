@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, Avg
+from django.db.models import Count, Avg, Sum, Max, Q
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 
 from data_tracking.forms import DailyLogForm, WeeklyLogForm
-from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog
+from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog, Health
 
 
 @login_required
@@ -127,11 +127,55 @@ def monthly_log_list(request, monthly_log_id):
 
     monthly_logs = MonthlyLog.objects.filter(user=request.user).order_by('-created_at')[:10]
 
+    weekly_logs_by_month = WeeklyLog.objects.filter(user=request.user, monthly_log=monthly_log).order_by('week_start')
+    daily_logs_by_month = DailyLog.objects.filter(weekly_log__in=weekly_logs_by_month).order_by('-date')
+
+    weight_in_month_start = weekly_logs_by_month.first().weight
+    weight_in_month_end = weekly_logs_by_month.last().weight
+
+    last_bmi = weekly_logs_by_month.last().bmi
+
+    avg_ketones = weekly_logs_by_month.aggregate(Avg('ketones'))
+    avg_calories = daily_logs_by_month.aggregate(Avg('calories_count'))
+
+    most_common_health = (
+        Health.objects
+        .annotate(
+            num_logs=Count(
+                'daily_logs',
+                filter=Q(
+                    daily_logs__in=daily_logs_by_month,
+                ),
+            ),
+        )
+        .order_by('-num_logs')
+        .first()
+    )
+
+    temperature_deviations_count = daily_logs_by_month.aggregate(
+        deviations_count=Count(
+            'body_temperatures',
+            filter=Q(
+                body_temperatures__temperature__lte=36.5,
+            ) | Q(
+                body_temperatures__temperature__gte=37.4,
+            ),
+            distinct=True,
+        )
+    )
+
     template_name = 'data_tracking/monthly_log_list.html'
 
     context = {
         'monthly_log': monthly_log,
         'monthly_logs': monthly_logs,
+        'weight_in_month_start': weight_in_month_start,
+        'weight_in_month_end': weight_in_month_end,
+        'last_bmi': last_bmi,
+        'avg_ketones': avg_ketones,
+        'avg_calories': avg_calories,
+        'most_common_health': most_common_health,
+        'temperature_deviations_count': temperature_deviations_count,
     }
 
     return render(request, template_name, context)
