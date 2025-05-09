@@ -38,24 +38,47 @@ const getPressureData = async () => {
     return result
 }
 
-const ctxState = document.getElementById('stateBarChart');
-new Chart(ctxState, {
-    type: 'bar',
-    data: {
-        labels: ['Сонливость', 'Усталость', 'Раздражение', 'Бодрость', 'Апатия'],
-        datasets: [{
-            label: 'Количество',
-            data: [12, 9, 5, 7, 4],
-            backgroundColor: ['#facc15', '#94a3b8', '#f87171', '#34d399', '#c084fc']
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false }
-        }
+const getHealthData = async () => {
+    const healthUrl = `/api/data-tracking/health/?id=${monthlyLogId}`;
+    const healthDataResponse = await fetch(healthUrl)
+    if (!healthDataResponse) {
+        console.error(await healthDataResponse.text())
+        return;
     }
-});
+
+    const healthData = await healthDataResponse.json()
+    const result = {
+        labels: [],
+        data: [],
+    }
+    for (const {name, count} of healthData) {
+        result.labels.push(name)
+        result.data.push(count)
+    }
+    return result
+}
+
+const createHealthPlot = async () => {
+    const ctxState = document.getElementById('stateBarChart');
+    const {labels, data} = await getHealthData();
+    await getHealthData();
+    new Chart(ctxState, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Количество',
+                data: data,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
 
 const getAvgBjuData = async () => {
     const avgBjuUrl = `/api/data-tracking/bju/average/?id=${monthlyLogId}`;
@@ -82,7 +105,6 @@ const createAvgBjuPlot = async () => {
             labels: ['Белки', 'Жиры', 'Углеводы'],
             datasets: [{
                 data: data,
-                backgroundColor: ['#34d399', '#fbbf24', '#60a5fa']
             }]
         },
         options: {
@@ -179,6 +201,7 @@ const createGlucoseChart = async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await createAvgBjuPlot();
+    await createHealthPlot();
     await createGlucoseChart();
     await createPressurePlot();
 })
