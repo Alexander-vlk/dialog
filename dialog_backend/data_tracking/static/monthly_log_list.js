@@ -12,6 +12,31 @@ overlay.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
+const monthlyLogId = document.getElementById('monthlyLogId').textContent;
+const pressureUrl = `/api/data-tracking/pressure/?time_period=month&id=${monthlyLogId}`;
+
+const getPressureData = async () => {
+    const pressureResponse = await fetch(pressureUrl)
+    if (!pressureResponse.ok) {
+        console.error(await pressureResponse.text())
+        return;
+    }
+
+    const pressureData = await pressureResponse.json()
+
+    const result = {
+        labels: [],
+        systolicData: [],
+        diastolicData: [],
+    }
+    for (const {created_at, systolic, diastolic} of pressureData) {
+        result.labels.push(created_at)
+        result.systolicData.push(systolic)
+        result.diastolicData.push(diastolic)
+    }
+    return result
+}
+
 const ctxState = document.getElementById('stateBarChart');
 new Chart(ctxState, {
     type: 'bar',
@@ -33,51 +58,56 @@ new Chart(ctxState, {
 
 const ctxBJU = document.getElementById('bjuPieChart');
 new Chart(ctxBJU, {
-type: 'pie',
-data: {
-labels: ['Белки', 'Жиры', 'Углеводы'],
-datasets: [{
-data: [15, 25, 60],
-backgroundColor: ['#34d399', '#fbbf24', '#60a5fa']
-}]
-},
-options: {
-responsive: true,
-plugins: {
-legend: { position: 'bottom' }
-}
-}
+    type: 'pie',
+    data: {
+        labels: ['Белки', 'Жиры', 'Углеводы'],
+        datasets: [{
+            data: [15, 25, 60],
+            backgroundColor: ['#34d399', '#fbbf24', '#60a5fa']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
 });
 
-const ctxPressure = document.getElementById('pressureLineChart');
-new Chart(ctxPressure, {
-type: 'line',
-data: {
-labels: Array.from({length: 30}, (_, i) => i + 1),
-datasets: [{
-label: 'Систолическое',
-data: [120, 125, 130, 122, 126, 118],
-borderColor: '#10b981',
-tension: 0.3,
-fill: false
-}, {
-label: 'Диастолическое',
-data: [80, 83, 85, 79, 81, 78],
-borderColor: '#f87171',
-tension: 0.3,
-fill: false
-}]
-},
-options: {
-responsive: true,
-scales: {
-x: { title: { display: true, text: 'День месяца' } },
-y: { title: { display: true, text: 'мм рт. ст.' } }
+const createPressurePlot = async () => {
+    const ctxPressure = document.getElementById('pressureLineChart');
+    const {labels, systolicData, diastolicData} = await getPressureData();
+    new Chart(ctxPressure, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Систолическое',
+                    data: systolicData,
+                    borderColor: '#10b981',
+                    tension: 0.3,
+                    fill: false
+                },
+                {
+                    label: 'Диастолическое',
+                    data: diastolicData,
+                    borderColor: '#f87171',
+                    tension: 0.3,
+                    fill: false
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { title: { display: true, text: 'День месяца' } },
+                y: { title: { display: true, text: 'мм рт. ст.' } }
+            }
+        }
+    });
 }
-}
-});
 
-const monthlyLogId = document.getElementById('monthlyLogId').textContent;
 const glucoseUrl = `/api/data-tracking/glucose/?time_period=month&id=${monthlyLogId}`;
 
 const getGlucosePerMonthData = async () => {
@@ -128,5 +158,6 @@ const createGlucoseChart = async () => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await createGlucoseChart()
+    await createGlucoseChart();
+    await createPressurePlot();
 })
