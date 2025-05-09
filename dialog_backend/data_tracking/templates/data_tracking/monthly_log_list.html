@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<span id="monthlyLogId">{{ monthly_log.id }}</span>
+<span id="monthlyLogId" class="hidden">{{ monthly_log.id }}</span>
 <div class="min-h-screen bg-gray-100 flex flex-col">
     <header class="bg-white shadow p-4 flex items-center justify-between md:hidden">
         <h1 class="text-xl font-bold">Месячные отчеты</h1>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-lg md:col-span-3">
-                        <h3 class="text-lg font-medium mb-2">Состояния (сонливость, усталость и т.п.)</h3>
+                        <h3 class="text-lg font-medium mb-2">Состояния за месяц</h3>
                         <div class="h-full md:h-64">
                             <canvas id="stateBarChart"></canvas>
                         </div>
