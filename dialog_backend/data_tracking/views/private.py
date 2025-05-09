@@ -82,7 +82,12 @@ class PressureAPIView(APIView):
             OpenApiParameter(
                 'time_period',
                 description='Период, за который должны вернуться данные о давлении',
-                enum=['today'],
+                enum=['today', 'week', 'month'],
+            ),
+            OpenApiParameter(
+                'id',
+                description='Идентификатор объекта, который нужно получить (для параметра "today" не требуется',
+                required=False,
             )
         ],
         examples=[
@@ -178,6 +183,9 @@ class PressureAPIView(APIView):
                 id=query_params.get('id'),
             )
             queryset = queryset.filter(daily_log__weekly_log=weekly_log)
+        elif time_period == 'month':
+            monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=query_params.get('id'))
+            queryset = queryset.filter(daily_log__weekly_log__monthly_log=monthly_log)
 
         return queryset
 
@@ -208,7 +216,8 @@ class GlucoseAPIView(APIView):
             ),
             OpenApiParameter(
                 'id',
-                description='Идентификатор объекта, который нужно получить',
+                description='Идентификатор объекта, который нужно получить (для параметра "today" не требуется',
+                required=False,
             ),
         ],
         examples=[
