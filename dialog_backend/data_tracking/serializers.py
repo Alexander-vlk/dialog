@@ -1,7 +1,6 @@
 from datetime import date, timedelta
 
-from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, QuerySet
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
@@ -14,7 +13,6 @@ from data_tracking.models import (
     Pressure,
     WeeklyLog,
 )
-from data_tracking.templateviews import daily_log
 
 
 class MonthlyLogSerializer(serializers.ModelSerializer):
@@ -313,3 +311,44 @@ class AverageGlucoseSerializer(serializers.Serializer):
             })
 
         return result
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Пример ответа от сервера',
+            description='Базовый ответ',
+            value={
+                'proteins': 92.1,
+                'fats': 80.3,
+                'carbs': 97.6,
+            },
+        ),
+    ],
+)
+class AverageBJUSerializer(serializers.Serializer):
+    """Сериализатор для получения данных о средних БЖУ за период"""
+
+    average_bju = serializers.SerializerMethodField()
+
+    def _get_daily_logs(self, monthly_log: MonthlyLog):
+        """Геттер получения дневного отчета"""
+        user = self.context.get('user')
+
+        return DailyLog.objects.filter(user=user, weekly_log__monthly_log=monthly_log).order_by('date')
+
+    def get_average_bju(self, monthly_log: MonthlyLog):
+        """Метод получения средних БЖУ"""
+        daily_logs = self._get_daily_logs(monthly_log)
+
+        avg_data = daily_logs.aggregate(
+            avg_proteins=Avg('proteins_count'),
+            avg_fats=Avg('fats_count'),
+            avg_carbs=Avg('carbs_count'),
+        )
+
+        return {
+            'proteins': avg_data['avg_proteins'],
+            'fats': avg_data['avg_fats'],
+            'carbs': avg_data['avg_carbs'],
+        }
