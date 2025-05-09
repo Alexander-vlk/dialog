@@ -1,4 +1,5 @@
 from lib2to3.fixes.fix_input import context
+from urllib import request
 
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
@@ -13,14 +14,14 @@ from constants import (
     GLUCOSE_SWAGGER_TAG,
     PRESSURE_SWAGGER_TAG,
     SWAGGER_ERROR_MESSAGES,
-    WEEKLY_LOG_SWAGGER_TAG,
+    WEEKLY_LOG_SWAGGER_TAG, AVERAGE_BJU_SWAGGER_TAG,
 )
 from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog, MonthlyLog
 from data_tracking.serializers import (
     BodyTemperatureSerializer,
     GlucoseSerializer,
     PressureSerializer,
-    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer,
+    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer, AverageBJUSerializer,
 )
 from data_tracking.templateviews import weekly_log
 
@@ -164,7 +165,6 @@ class PressureAPIView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
-
 
     def get_queryset(self):
         """Получение queryset-а"""
@@ -448,4 +448,34 @@ class AverageGlucoseDataAPIView(APIView):
             week_end__gt=timezone.now(),
         )
         serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@extend_schema(
+    tags=[AVERAGE_BJU_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получение информации о среднем БЖУ за месяц',
+    responses={
+        status.HTTP_200_OK: AverageBJUSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class AvgBJUApiView(APIView):
+    """APIView получения данных о среднем БЖУ за месяц"""
+
+    authentication_classes = [SessionAuthentication]
+    serializer_class = AverageBJUSerializer
+
+    @extend_schema(
+        operation_id='Получение данных о средних значениях БЖУ за месяц',
+        tags=[AVERAGE_BJU_SWAGGER_TAG],
+    )
+    def get(self, request):
+        """GET-запрос"""
+        monthly_log = get_object_or_404(
+            MonthlyLog,
+            user=request.user,
+            id=request.query_params.get('id'),
+        )
+        serializer = self.serializer_class(monthly_log, context={'user': request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)
