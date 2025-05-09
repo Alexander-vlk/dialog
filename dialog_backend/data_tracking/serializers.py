@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 
-from django.db.models import Avg, QuerySet
+from django.db.models import Avg, Count, Q
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
@@ -9,6 +9,7 @@ from data_tracking.models import (
     BodyTemperature,
     DailyLog,
     Glucose,
+    Health,
     MonthlyLog,
     Pressure,
     WeeklyLog,
@@ -67,6 +68,43 @@ class WeeklyLogSerializer(serializers.ModelSerializer):
             return WeeklyLog.objects.create(user=user, date=week_start, **validated_data)
 
         return WeeklyLog.objects.create(week_start=week_start, week_end=week_end,**validated_data)
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Пример ответа от сервера',
+            description='Базовый ответ',
+            value=[
+                {
+                    'count': 4,
+                    'name': 'Сонливость',
+                },
+                {
+                    'count': 6,
+                    'name': 'Усталость',
+                },
+            ],
+        ),
+    ],
+    many=True,
+)
+class HealthSerializer(serializers.Serializer):
+    """Сериализатор данных о самочувствии"""
+
+    name = serializers.CharField()
+    count = serializers.IntegerField()
+
+    def get_stats(self, monthly_log):
+        """Получить данные о самочувствии"""
+        daily_logs = DailyLog.objects.filter(user=self.context['user'], weekly_log__monthly_log=monthly_log)
+        queryset = (
+            Health.objects
+            .annotate(count=Count('daily_logs', filter=Q(daily_logs__in=daily_logs)))
+            .values('name', 'count')
+        )
+        return list(queryset)
+
 
 
 class DailyLogSerializer(serializers.ModelSerializer):
