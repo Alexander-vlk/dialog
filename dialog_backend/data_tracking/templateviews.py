@@ -130,10 +130,14 @@ def monthly_log_list(request, monthly_log_id):
     weekly_logs_by_month = WeeklyLog.objects.filter(user=request.user, monthly_log=monthly_log).order_by('week_start')
     daily_logs_by_month = DailyLog.objects.filter(weekly_log__in=weekly_logs_by_month).order_by('-date')
 
-    weight_in_month_start = weekly_logs_by_month.first().weight
-    weight_in_month_end = weekly_logs_by_month.last().weight
+    weight_in_month_start = None
+    weight_in_month_end = None
+    last_bmi = None
+    if weekly_logs_by_month:
+        weight_in_month_start = weekly_logs_by_month.first().weight
+        weight_in_month_end = weekly_logs_by_month.last().weight
 
-    last_bmi = weekly_logs_by_month.last().bmi
+        last_bmi = weekly_logs_by_month.last().bmi
 
     avg_ketones = weekly_logs_by_month.aggregate(Avg('ketones'))
     avg_calories = daily_logs_by_month.aggregate(Avg('calories_count'))
