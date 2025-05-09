@@ -2,6 +2,8 @@ const menuToggle = document.getElementById('menuToggle');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 
+const monthlyLogId = document.getElementById('monthlyLogId').textContent;
+
 menuToggle.addEventListener('click', () => {
     sidebar.classList.toggle('-translate-x-full');
     overlay.classList.toggle('hidden');
@@ -12,7 +14,6 @@ overlay.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
-const monthlyLogId = document.getElementById('monthlyLogId').textContent;
 const pressureUrl = `/api/data-tracking/pressure/?time_period=month&id=${monthlyLogId}`;
 
 const getPressureData = async () => {
@@ -56,23 +57,42 @@ new Chart(ctxState, {
     }
 });
 
-const ctxBJU = document.getElementById('bjuPieChart');
-new Chart(ctxBJU, {
-    type: 'pie',
-    data: {
-        labels: ['Белки', 'Жиры', 'Углеводы'],
-        datasets: [{
-            data: [15, 25, 60],
-            backgroundColor: ['#34d399', '#fbbf24', '#60a5fa']
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { position: 'bottom' }
-        }
+const getAvgBjuData = async () => {
+    const avgBjuUrl = `/api/data-tracking/bju/average/?id=${monthlyLogId}`;
+    const avgBjuResponse = await fetch(avgBjuUrl);
+
+    if (!avgBjuResponse.ok) {
+        console.error(await avgBjuResponse.text())
+        return;
     }
-});
+
+    const avgBjuData = await avgBjuResponse.json()
+    return {
+        labels: Object.keys(avgBjuData.average_bju),
+        data: Object.values(avgBjuData.average_bju),
+    }
+}
+
+const createAvgBjuPlot = async () => {
+    const ctxBJU = document.getElementById('bjuPieChart');
+    const {labels, data} = await getAvgBjuData();
+    new Chart(ctxBJU, {
+        type: 'pie',
+        data: {
+            labels: ['Белки', 'Жиры', 'Углеводы'],
+            datasets: [{
+                data: data,
+                backgroundColor: ['#34d399', '#fbbf24', '#60a5fa']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+}
 
 const createPressurePlot = async () => {
     const ctxPressure = document.getElementById('pressureLineChart');
@@ -158,6 +178,7 @@ const createGlucoseChart = async () => {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await createAvgBjuPlot();
     await createGlucoseChart();
     await createPressurePlot();
 })
