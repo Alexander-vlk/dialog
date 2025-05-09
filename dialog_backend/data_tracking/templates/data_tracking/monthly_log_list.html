@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<span id="monthlyLogId">{{ monthly_log.id }}</span>
 <div class="min-h-screen bg-gray-100 flex flex-col">
     <header class="bg-white shadow p-4 flex items-center justify-between md:hidden">
         <h1 class="text-xl font-bold">Месячные отчеты</h1>
@@ -198,5 +199,5 @@
 </div>
 
 
-<script src="{% static 'montly_log_list.js' %}"></script>
+<script src="{% static 'monthly_log_list.js' %}"></script>
 {% endblock %}
