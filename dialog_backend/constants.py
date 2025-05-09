@@ -48,6 +48,7 @@ DAILY_LOG_SWAGGER_TAG = 'Дневной отчет'
 GLUCOSE_SWAGGER_TAG = 'Глюкоза (уровень сахара в крови)'
 PRESSURE_SWAGGER_TAG = 'Давление'
 BODY_TEMPERATURE_SWAGGER_TAG = 'Температура тела'
+AVERAGE_BJU_SWAGGER_TAG = 'Средние БЖУ'
 
 SWAGGER_ERROR_MESSAGES = {
     status.HTTP_400_BAD_REQUEST: OpenApiResponse(description='Invalid data'),
