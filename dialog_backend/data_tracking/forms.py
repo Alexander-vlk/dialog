@@ -11,6 +11,25 @@ from data_tracking.models import (
 )
 
 
+class MonthlyLogForm(forms.ModelForm):
+    """Форма ежемесячного отчета"""
+
+    class Meta:
+        model = MonthlyLog
+        fields = (
+            'hemoglobin',
+            'cholesterol',
+            'lipid_profile',
+            'microalbuminuria',
+        )
+        widgets = {
+            'hemoglobin': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 1000}),
+            'cholesterol': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
+            'lipid_profile': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
+            'microalbuminuria': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
+        }
+
+
 class WeeklyLogForm(forms.ModelForm):
     """Форма еженедельного отчета"""
 
