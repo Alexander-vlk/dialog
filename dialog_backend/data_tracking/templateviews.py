@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
 
-from data_tracking.forms import DailyLogForm, WeeklyLogForm
+from data_tracking.forms import DailyLogForm, WeeklyLogForm, MonthlyLogForm
 from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog, Health
 
 
@@ -120,9 +120,10 @@ class WeeklyLogListView(ListView):
         )
 
 
+@login_required
+@require_http_methods(['GET', 'POST'])
 def monthly_log_list(request, monthly_log_id):
     """Список ежемесячных отчетов"""
-
     monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=monthly_log_id)
 
     monthly_logs = MonthlyLog.objects.filter(user=request.user).order_by('-created_at')[:10]
@@ -183,3 +184,26 @@ def monthly_log_list(request, monthly_log_id):
     }
 
     return render(request, template_name, context)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def edit_monthly_log(request, monthly_log_id):
+    """View редактирования ежемесячного отчета"""
+    monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=monthly_log_id)
+    if request.method == "GET":
+        form = MonthlyLogForm(instance=monthly_log)
+
+        context_data = {
+            'form': form,
+        }
+        template_name = 'data_tracking/edit_monthly_log.html'
+        return render(request, template_name, context_data)
+
+    form = MonthlyLogForm(request.POST, instance=monthly_log)
+    if not form.is_valid():
+        return HttpResponseBadRequest()
+
+    form.save()
+    reverse_url = reverse('monthly_log', args=[monthly_log.id])
+    return redirect(reverse_url)

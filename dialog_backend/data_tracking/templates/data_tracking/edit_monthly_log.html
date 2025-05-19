@@ -1,0 +1,49 @@
+{% extends 'data_tracking/data_tracking.html' %}
+
+{% load static %}
+
+{% block title %}
+    Редактировать отчет за {{ monthly_log.get_month_display }} {{ monthly_log.year }}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl my-4 mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-semibold">Заполнение месячного отчета</h1>
+        <a
+            href="{% url 'monthly_log' form.instance.id %}"
+            class="text-blue-700 hover:underline transition">
+            К списку отчетов
+        </a>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="{{ form.hemoglobin.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.hemoglobin.label }}</label>
+            {{ form.hemoglobin }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.cholesterol.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.cholesterol.label }}</label>
+            {{ form.cholesterol }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.lipid_profile.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.lipid_profile.label }}</label>
+            {{ form.lipid_profile }}
+        </div>
+
+        <div class="mb-4">
+            <label for="{{ form.microalbuminuria.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ form.microalbuminuria.label }}</label>
+            {{ form.microalbuminuria }}
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <input type="submit" value="Сохранить" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 md:w-xs cursor-pointer transition" />
+        </div>
+    </form>
+</div>
+
+{% endblock %}
