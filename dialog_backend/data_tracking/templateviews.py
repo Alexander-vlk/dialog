@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from data_tracking.forms import DailyLogForm, WeeklyLogForm, MonthlyLogForm
 from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog, Health
@@ -86,6 +86,19 @@ class DailyLogListView(ListView):
             avg_systolic=Avg('pressures__systolic', distinct=True),
             avg_diastolic=Avg('pressures__diastolic', distinct=True),
         ).order_by('-date')
+
+
+class DailyLogDetailView(DetailView):
+    """Страница детальной информации о дневном отчете"""
+
+    template_name = 'data_tracking/daily_log/daily_log_detail.html'
+    context_object_name = 'daily_log'
+    model = DailyLog
+
+    def get_context_data(self, **kwargs):
+        """Получить контекст"""
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class WeeklyLogListView(ListView):
