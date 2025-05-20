@@ -1,0 +1,132 @@
+{% extends 'data_tracking/data_tracking.html' %}
+{% load static %}
+
+{% block title %}
+    Детали дневного отчета — {{ daily_log.date }}
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'daily_log_detail.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto my-6 px-4">
+    <div class="bg-white rounded-2xl shadow-md p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Дневной отчёт за {{ daily_log.date }}</h2>
+            <div class="flex gap-2 flex-wrap justify-end">
+                <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
+                    {{ daily_log.get_mood_display }}
+                </span>
+                {% for health in daily_log.health.all %}
+                    <span class="text-xs px-2 py-1 rounded-full {{ health.color }}">
+                        {{ health.name }}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Основные параметры -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-8">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-gray-700">Калории</h3>
+                <p>{{ daily_log.calories_count }}</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-gray-700">БЖУ</h3>
+                <p>{{ daily_log.proteins_count }} / {{ daily_log.fats_count }} / {{ daily_log.carbs_count }}</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-gray-700">Средняя глюкоза</h3>
+                <p>{{ daily_log.average_glucose|floatformat|default:"Не указано" }}</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-gray-700">Средняя температура</h3>
+                <p>{{ daily_log.avg_temperature|floatformat|default:"Не указано" }}</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold mb-2 text-gray-700">Среднее давление</h3>
+                <p>
+                    {{ daily_log.avg_systolic|floatformat|default:"—" }} /
+                    {{ daily_log.avg_diastolic|floatformat|default:"—" }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Категории записей -->
+        {% if pressure_logs %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Измерения давления</h3>
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full text-sm text-left text-gray-700">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3 font-medium">Время</th>
+                                <th class="p-3 font-medium">Систолическое</th>
+                                <th class="p-3 font-medium">Диастолическое</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for log in pressure_logs %}
+                                <tr>
+                                    <td class="p-3">{{ log.time }}</td>
+                                    <td class="p-3">{{ log.systolic }}</td>
+                                    <td class="p-3">{{ log.diastolic }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if glucose_logs %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Измерения глюкозы</h3>
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full text-sm text-left text-gray-700">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3 font-medium">Время</th>
+                                <th class="p-3 font-medium">Уровень глюкозы</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for log in glucose_logs %}
+                                <tr>
+                                    <td class="p-3">{{ log.time }}</td>
+                                    <td class="p-3">{{ log.value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if temperature_logs %}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Измерения температуры</h3>
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="min-w-full text-sm text-left text-gray-700">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3 font-medium">Время</th>
+                                <th class="p-3 font-medium">Температура</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for log in temperature_logs %}
+                                <tr>
+                                    <td class="p-3">{{ log.time }}</td>
+                                    <td class="p-3">{{ log.value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
