@@ -1,5 +1,4 @@
 {% extends 'data_tracking/data_tracking.html' %}
-
 {% load static %}
 
 {% block title %}
@@ -11,76 +10,68 @@
 {% endblock %}
 
 {% block content %}
-<section class="max-w-2xl mx-auto my-4 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold mb-6 text-center">Список дневных отчетов</h2>
+<section class="max-w-6xl mx-auto my-6 px-4">
+    <h2 class="text-3xl font-bold mb-8 text-center">Список дневных отчетов</h2>
 
-    <div class="flex flex-col gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% for daily_log in daily_logs %}
-            <div class="border rounded-md p-4 shadow-sm hover:shadow-md transition">
-                <div class="flex justify-between items-center mb-2">
-                    <p class="text-sm text-gray-500">{{ daily_log.date }}</p>
-                    <p>
-                    <span class="text-xs px-2 py-1 rounded generalHealth">
-                        {{ daily_log.get_mood_display }}
-                    </span>
-                    {% if daily_log.health %}
-                        {% for health in daily_log.health.all %}
-                            <span class="text-xs px-2 py-1 rounded {{ health.color }}">
-                                {{ health.name }}
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <p class="text-sm text-gray-500 font-medium">{{ daily_log.date }}</p>
+                        <div class="flex gap-2 flex-wrap justify-end">
+                            <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
+                                {{ daily_log.get_mood_display }}
                             </span>
-                        {% endfor %}
-                    {% endif %}
-                    </p>
-                </div>
+                            {% for health in daily_log.health.all %}
+                                <span class="text-xs px-2 py-1 rounded-full {{ health.color }}">
+                                    {{ health.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
 
-                <div class="overflow-x-auto w-full">
-                    <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200 rounded-lg">
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50 w-1/2">Калории</th>
-                                <td class="p-3">{{ daily_log.calories_count }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">БЖУ</th>
-                                <td class="p-3">
-                                {{ daily_log.proteins_count }} /
-                                {{ daily_log.fats_count }} /
-                                {{ daily_log.carbs_count }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Записей о давлении</th>
-                                <td class="p-3">{{ daily_log.pressure_count }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Записей о глюкозе</th>
-                                <td class="p-3">{{ daily_log.glucose_count }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Записей о температуре</th>
-                                <td class="p-3">{{ daily_log.temperature_count }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Средняя глюкоза</th>
-                                <td class="p-3">{{ daily_log.average_glucose|floatformat|default:"Не указано" }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Средняя температура</th>
-                                <td class="p-3">{{ daily_log.avg_temperature|floatformat|default:"Не указано" }}</td>
-                            </tr>
-                            <tr>
-                                <th class="p-3 font-semibold whitespace-nowrap bg-gray-50">Среднее давление</th>
-                                <td class="p-3">
+                    <div class="text-sm space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Калории:</span>
+                            <span>{{ daily_log.calories_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">БЖУ:</span>
+                            <span>{{ daily_log.proteins_count }} / {{ daily_log.fats_count }} / {{ daily_log.carbs_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Давление (записей):</span>
+                            <span>{{ daily_log.pressure_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Глюкоза (записей):</span>
+                            <span>{{ daily_log.glucose_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Температура (записей):</span>
+                            <span>{{ daily_log.temperature_count }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Ср. глюкоза:</span>
+                            <span>{{ daily_log.average_glucose|floatformat|default:"Не указано" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Ср. температура:</span>
+                            <span>{{ daily_log.avg_temperature|floatformat|default:"Не указано" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Ср. давление:</span>
+                            <span>
                                 {{ daily_log.avg_systolic|floatformat|default:"Не указано" }} /
                                 {{ daily_log.avg_diastolic|floatformat|default:"Не указано" }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mt-4 flex justify-end">
-                    <a href="" class="text-blue-600 text-sm hover:underline">Подробнее →</a>
+                <div class="mt-6 text-right">
+                    <a href="{% url 'daily_log_detail' daily_log.pk %}" class="text-blue-600 text-sm font-medium hover:underline">Подробнее →</a>
                 </div>
             </div>
         {% endfor %}
@@ -88,5 +79,4 @@
 </section>
 
 {% include 'pagination.html' %}
-
 {% endblock %}
