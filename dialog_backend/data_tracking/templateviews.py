@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView, DetailView
 
 from data_tracking.forms import DailyLogForm, WeeklyLogForm, MonthlyLogForm
-from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog, Health
+from data_tracking.models import DailyLog, WeeklyLog, MonthlyLog, Health, Glucose, BodyTemperature, Pressure
 
 
 @login_required
@@ -98,6 +98,31 @@ class DailyLogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """Получить контекст"""
         context = super().get_context_data(**kwargs)
+
+        glucose_per_day = Glucose.objects.filter(daily_log=self.object)
+        pressure_per_day = Pressure.objects.filter(daily_log=self.object)
+        temperature_per_day = BodyTemperature.objects.filter(daily_log=self.object)
+
+        context.update({
+            'avg_glucose': glucose_per_day.aggregate(
+                avg_glucose=Avg('level', distinct=True),
+            ),
+            'avg_temperature': temperature_per_day.aggregate(
+                avg_temperature=Avg('temperature', distinct=True),
+            ),
+            'avg_pressure': pressure_per_day.aggregate(
+                avg_systolic=Avg('systolic', distinct=True),
+                avg_diastolic=Avg('diastolic', distinct=True),
+            ),
+
+            'glucose_count': glucose_per_day.count(),
+            'pressure_count': temperature_per_day.count(),
+            'temperature_count': pressure_per_day.count(),
+
+            'pressure_logs': pressure_per_day,
+            'glucose_logs': glucose_per_day,
+            'temperature_logs': temperature_per_day,
+        })
         return context
 
 
