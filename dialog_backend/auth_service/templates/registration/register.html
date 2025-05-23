@@ -14,78 +14,102 @@
             <div>
                 <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 {{ form.username }}
-                <p>{{ form.username.errors }}</p>
+                {% if form.username.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.username.errors }}</p>
+                {% endif %} 
             </div>
 
             <div>
                 <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
                 {{ form.last_name }}
-                <p>{{ form.last_name.errors }}</p>
+                {% if form.last_name.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.last_name.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
                 {{ form.first_name }}
-                <p>{{ form.first_name.errors }}</p>
+                {% if form.first_name.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.first_name.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.patronymic_name.id_for_label }}">{{ form.patronymic_name.label }}</label>
                 {{ form.patronymic_name }}
-                <p>{{ form.patronymic_name.errors }}</p>
+                {% if form.patronymic_name.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.patronymic_name.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 {{ form.email }}
-                <p>{{ form.email.errors }}</p>
+                {% if form.email.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.email.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
                 {{ form.phone_number }}
-                <p>{{ form.phone_number.errors }}</p>
+                {% if form.phone_number.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.phone_number.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
                 {{ form.password1 }}
-                <p>{{ form.password1.errors }}</p>
+                {% if form.password1.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.password1.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
                 {{ form.password2 }}
-                <p>{{ form.password2.errors }}</p>
+                {% if form.password2.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.password2.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
                 {{ form.gender }}
-                <p>{{ form.gender.errors }}</p>
+                {% if form.gender.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.gender.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}</label>
                 {{ form.birth_date }}
-                <p>{{ form.birth_date.errors }}</p>
+                {% if form.birth_date.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.birth_date.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.diabetes_type.id_for_label }}">{{ form.diabetes_type.label }}</label>
                 {{ form.diabetes_type }}
-                <p>{{ form.diabetes_type.errors }}</p>
+                {% if form.diabetes_type.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.diabetes_type.errors }}</p>
+                {% endif %}
             </div>
 
             <div>
                 <label for="{{ form.treatment_type.id_for_label }}">{{ form.treatment_type.label }}</label>
                 {{ form.treatment_type }}
-                <p>{{ form.treatment_type.errors }}</p>
+                {% if form.treatment_type.errors %}
+                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.treatment_type.errors }}</p>
+                {% endif %}
             </div>
 
             {{ form.errors }}
 
-            <div class="flex justify-between items-center text-sm bg-red-200">
+            <div class="flex justify-between items-center text-sm bg-red-500 text-white rounded-sm p-2">
                 {{ form.non_field_errors|safe }}
             </div>
 
