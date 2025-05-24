@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     Регистрация
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -12,106 +18,166 @@
         <form method="POST" action="{% url 'register' %}" class="space-y-4">
             {% csrf_token %}
             <div>
-                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                <label for="{{ form.username.id_for_label }}">
+                    {{ form.username.label }}
+                    {% if form.username.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.username }}
                 {% if form.username.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.username.errors }}</p>
-                {% endif %} 
+                  {{ form.username.errors }}
+                {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                <label for="{{ form.last_name.id_for_label }}">
+                    {{ form.last_name.label }}
+                    {% if form.last_name.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.last_name }}
                 {% if form.last_name.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.last_name.errors }}</p>
+                  {{ form.last_name.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                <label for="{{ form.first_name.id_for_label }}">
+                    {{ form.first_name.label }}
+                    {% if form.first_name.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.first_name }}
                 {% if form.first_name.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.first_name.errors }}</p>
+                  {{ form.first_name.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.patronymic_name.id_for_label }}">{{ form.patronymic_name.label }}</label>
+                <label for="{{ form.patronymic_name.id_for_label }}">
+                    {{ form.patronymic_name.label }}
+                    {% if form.patronymic_name.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.patronymic_name }}
                 {% if form.patronymic_name.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.patronymic_name.errors }}</p>
+                  {{ form.patronymic_name.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                <label for="{{ form.email.id_for_label }}">
+                    {{ form.email.label }}
+                    {% if form.email.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.email }}
                 {% if form.email.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.email.errors }}</p>
+                  {{ form.email.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+                <label for="{{ form.phone_number.id_for_label }}">
+                    {{ form.phone_number.label }}
+                    {% if form.phone_number.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.phone_number }}
                 {% if form.phone_number.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.phone_number.errors }}</p>
+                  {{ form.phone_number.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                <label for="{{ form.password1.id_for_label }}">
+                    {{ form.password1.label }}
+                    {% if form.password1.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.password1 }}
                 {% if form.password1.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.password1.errors }}</p>
+                  {{ form.password1.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                <label for="{{ form.password2.id_for_label }}">
+                    {{ form.password2.label }}
+                    {% if form.password2.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.password2 }}
                 {% if form.password2.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.password2.errors }}</p>
+                  {{ form.password2.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.gender.id_for_label }}">{{ form.gender.label }}</label>
+                <label for="{{ form.gender.id_for_label }}">
+                    {{ form.gender.label }}
+                    {% if form.gender.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.gender }}
                 {% if form.gender.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.gender.errors }}</p>
+                  {{ form.gender.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.birth_date.id_for_label }}">{{ form.birth_date.label }}</label>
+                <label for="{{ form.birth_date.id_for_label }}">
+                    {{ form.birth_date.label }}
+                    {% if form.birth_date.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.birth_date }}
                 {% if form.birth_date.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.birth_date.errors }}</p>
+                  {{ form.birth_date.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.diabetes_type.id_for_label }}">{{ form.diabetes_type.label }}</label>
+                <label for="{{ form.diabetes_type.id_for_label }}">
+                    {{ form.diabetes_type.label }}
+                    {% if form.diabetes_type.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.diabetes_type }}
                 {% if form.diabetes_type.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.diabetes_type.errors }}</p>
+                    {{ form.diabetes_type.errors }}
                 {% endif %}
             </div>
 
             <div>
-                <label for="{{ form.treatment_type.id_for_label }}">{{ form.treatment_type.label }}</label>
+                <label for="{{ form.treatment_type.id_for_label }}">
+                    {{ form.treatment_type.label }}
+                    {% if form.treatment_type.field.required %}
+                        <span class="text-red-500">*</span>
+                    {% endif %}
+                </label>
                 {{ form.treatment_type }}
                 {% if form.treatment_type.errors %}
-                    <p class="bg-red-500 text-white rounded-sm shadow-sm p-2">{{ form.treatment_type.errors }}</p>
+                    {{ form.treatment_type.errors }}
                 {% endif %}
             </div>
 
-            {{ form.errors }}
-
-            <div class="flex justify-between items-center text-sm bg-red-500 text-white rounded-sm p-2">
-                {{ form.non_field_errors|safe }}
-            </div>
+            {% if form.non_field_errors %}
+                <div class="flex justify-between items-center text-sm bg-red-500 text-white rounded-sm p-2">
+                    {{ form.non_field_errors|safe }}
+                </div>
+            {% endif %}
 
             <button type="submit" class="w-full bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 cursor-pointer transition">
                 Зарегистрироваться
