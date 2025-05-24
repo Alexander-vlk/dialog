@@ -46,7 +46,7 @@ class ExtendedUserCreationForm(UserCreationForm):
     email = forms.EmailField(
         required=False,
         label='Электронная почта',
-        widget=forms.TextInput(attrs={'class': TEXT_INPUT_CLASS}),
+        widget=forms.EmailInput(attrs={'class': TEXT_INPUT_CLASS}),
     )
 
     phone_number = forms.CharField(
