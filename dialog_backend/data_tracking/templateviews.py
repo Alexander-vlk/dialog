@@ -74,7 +74,7 @@ class DailyLogListView(ListView):
 
     template_name = 'data_tracking/daily_log_list.html'
     context_object_name = 'daily_logs'
-    paginate_by = 7
+    paginate_by = 8
 
     def get_queryset(self):
         return DailyLog.objects.filter(user=self.request.user).annotate(
