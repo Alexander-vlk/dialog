@@ -64,6 +64,5 @@ jobs:
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
           AUTH_COOKIE_SECURE: 'False'
         run: |
-          python ./dialog_backend/manage.py compilemessages
           python ./dialog_backend/manage.py migrate
           pytest
