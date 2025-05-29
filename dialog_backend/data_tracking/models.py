@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from core.mixins import AutoDateMixin
-from core.validators import validate_positive_float
+from common_utils.mixins import AutoDateMixin
+from common_utils.validators import validate_positive_float
 
 
 class MonthlyLog(AutoDateMixin, models.Model):

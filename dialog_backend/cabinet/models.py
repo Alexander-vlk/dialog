@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from core.mixins import AutoDateMixin
-from core.validators import validate_not_future_date, validate_length
+from common_utils.mixins import AutoDateMixin
+from common_utils.validators import validate_not_future_date, validate_length
 from constants import DIABETES_TYPE_CHOICES, GENDER_CHOICES, TREATMENTS_TYPE_CHOICES
 
 

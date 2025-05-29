@@ -6,7 +6,7 @@ from rest_framework.reverse import reverse_lazy
 from auth_service.forms import ExtendedLoginForm, ExtendedUserCreationForm
 from cabinet.models import UserProfile
 from constants import TWO_WEEKS
-from core.functions import create_logs_for_new_user
+from common_utils.functions import create_logs_for_new_user
 
 
 class UserLoginView(LoginView):
