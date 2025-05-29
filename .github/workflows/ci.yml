@@ -52,7 +52,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: dialog_backend.settings
           SECRET_KEY: test-ci-secret-key
-          ALLOWED_HOSTS: localhost
+          ALLOWED_HOSTS: '*'
           POSTGRES_DB: db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: 1234
