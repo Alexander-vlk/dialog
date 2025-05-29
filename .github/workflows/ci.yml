@@ -2,65 +2,29 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres:14
-        env:
-          POSTGRES_DB: db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+  build:
 
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Run tests
-        env:
-          DJANGO_SETTINGS_MODULE: dialog_backend.settings
-          SECRET_KEY: test-ci-secret-key
-          ALLOWED_HOSTS: '*'
-          POSTGRES_DB: db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_HOST: db
-          POSTGRES_PORT: 5432
-          REDIS_HOST: redis
-          REDIS_PORT: 6379
-          AUTH_COOKIE_SECURE: 'False'
-        run: |
-          python ./dialog_backend/manage.py migrate
-          pytest
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        pytest
