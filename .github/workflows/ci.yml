@@ -48,10 +48,9 @@ jobs:
 
       - name: Run migrations
         run: |
-          python manage.py migrate
+          python ./dialog_backend/manage.py migrate
         working-directory: .
 
       - name: Run tests
         run: |
           pytest
-        working-directory: .
