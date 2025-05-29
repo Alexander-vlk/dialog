@@ -67,5 +67,7 @@ jobs:
           python ./dialog_backend/manage.py migrate
 
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           pytest
