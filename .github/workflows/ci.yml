@@ -13,9 +13,9 @@ jobs:
       db:
         image: postgres:14
         env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
         ports:
           - 5432:5432
         options: >-
@@ -51,17 +51,15 @@ jobs:
       - name: Run tests
         env:
           DJANGO_SETTINGS_MODULE: dialog_backend.settings
-          SECRET_KEY:  ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ secrets.DEGUG }}
-          ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
-          TIME_ZONE: ${{ secrets.TIME_ZONE }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }}
-          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          SECRET_KEY: test-ci-secret-key
+          ALLOWED_HOSTS: localhost
+          POSTGRES_DB: db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+          POSTGRES_HOST: db
+          POSTGRES_PORT: 5432
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
           AUTH_COOKIE_SECURE: 'False'
         run: |
           python ./dialog_backend/manage.py migrate
