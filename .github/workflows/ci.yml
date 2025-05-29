@@ -49,7 +49,9 @@ jobs:
       - name: Run migrations
         run: |
           python manage.py migrate
+        working-directory: .
 
       - name: Run tests
         run: |
           pytest
+        working-directory: .
