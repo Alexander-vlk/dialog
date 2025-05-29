@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = env.bool('DEBUG')
+DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default='localhost')
 
@@ -171,9 +171,9 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_IMPORTS = ['dialog_backend.tasks']
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-LANGUAGE_CODE = env('LANGUAGE_CODE')
+LANGUAGE_CODE = env('LANGUAGE_CODE', default='en-us')
 
-TIME_ZONE = env('TIME_ZONE')
+TIME_ZONE = env('TIME_ZONE', default='UTC')
 
 USE_I18N = True
 
