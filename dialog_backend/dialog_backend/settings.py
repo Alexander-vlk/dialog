@@ -171,7 +171,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_IMPORTS = ['dialog_backend.tasks']
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-LANGUAGE_CODE = env('LANGUAGE_CODE', default='en-us')
+LANGUAGE_CODE = env('LANGUAGE_CODE', default='ru')
 
 TIME_ZONE = env('TIME_ZONE', default='UTC')
 
