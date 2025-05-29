@@ -28,5 +28,5 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: your_project_name.settings
         run: |
-          python manage.py migrate
+          python ./dialog_backend/manage.py migrate
           pytest
