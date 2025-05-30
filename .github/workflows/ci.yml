@@ -6,6 +6,22 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  SECRET_KEY: test
+  DEBUG: 'True'
+  ALLOWED_HOSTS: '*'
+  LANGUAGE_CODE: ru
+  TIME_ZONE: Europe/Moscow
+  POSTGRES_DB: dialog
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: 1234
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  REDIS_HOST: localhost
+  REDIS_PORT: 6379
+  AUTH_COOKIE_SECURE: 'False'
+  PYTHONPATH: ${{ github.workspace }}
+
 jobs:
   check-migrations:
     runs-on: ubuntu-latest
@@ -49,11 +65,11 @@ jobs:
 
       - name: Run migrate from scratch
         run: |
-          python ./dialog_backend/manage.py migrate --noinput
+          python /manage.py migrate --noinput
 
       - name: Check for missing migrations
         run: |
-          python ./dialog_backend/manage.py makemigrations --check --dry-run
+          python /manage.py makemigrations --check --dry-run
 
   lint:
     runs-on: ubuntu-latest
@@ -107,21 +123,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    env:
-      SECRET_KEY: test
-      DEBUG: 'True'
-      ALLOWED_HOSTS: '*'
-      LANGUAGE_CODE: ru
-      TIME_ZONE: Europe/Moscow
-      POSTGRES_DB: dialog
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-      REDIS_HOST: localhost
-      REDIS_PORT: 6379
-      AUTH_COOKIE_SECURE: 'False'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -140,7 +141,5 @@ jobs:
           python ./dialog_backend/manage.py migrate
 
       - name: Run tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
         run: |
           pytest
