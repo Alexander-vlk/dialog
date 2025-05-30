@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from auth_service.serializers import UserSerializer
 from cabinet.models import Allergy
-from cabinet.serializers import AllergySerializer, DiseaseSerializer
+from cabinet.serializers import AllergySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
