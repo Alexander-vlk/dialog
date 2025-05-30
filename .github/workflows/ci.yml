@@ -65,11 +65,11 @@ jobs:
 
       - name: Run migrate from scratch
         run: |
-          python /manage.py migrate --noinput
+          python manage.py migrate --noinput
 
       - name: Check for missing migrations
         run: |
-          python /manage.py makemigrations --check --dry-run
+          python manage.py makemigrations --check --dry-run
 
   lint:
     runs-on: ubuntu-latest
