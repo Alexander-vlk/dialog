@@ -78,3 +78,16 @@ def test_user_has_one_weekly_log_between_two_weeks(user_with_burning_weekly_log)
     assert WeeklyLog.objects.exists()
     call_command('create_weekly_log')
     assert WeeklyLog.objects.count() == 1
+
+
+def test_idempotency_for_command(user_with_weekly_log):
+    """
+    Arrange: Пользователь с актуальным еженедельным отчетом
+    Act: Запуск команды create_weekly_log несколько раз
+    Assert: Количество отчетов не изменилось
+    """
+    call_command('create_weekly_log')
+    call_command('create_weekly_log')
+    call_command('create_weekly_log')
+    call_command('create_weekly_log')
+    assert WeeklyLog.objects.count() == 1
