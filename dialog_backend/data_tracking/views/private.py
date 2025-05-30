@@ -1,5 +1,3 @@
-from lib2to3.fixes.fix_input import context
-from urllib import request
 
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
@@ -23,7 +21,6 @@ from data_tracking.serializers import (
     PressureSerializer,
     WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer, AverageBJUSerializer, HealthSerializer,
 )
-from data_tracking.templateviews import weekly_log
 
 
 @extend_schema(

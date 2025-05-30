@@ -91,7 +91,7 @@ class LogoutAPIView(APIView):
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
-        except Exception as invalid_token:
+        except Exception:
             return Response(
                 {
                     'error': 'Некорректный refresh токен',
