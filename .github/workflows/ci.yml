@@ -49,11 +49,11 @@ jobs:
 
       - name: Run migrate from scratch
         run: |
-          python manage.py migrate --noinput
+          python ./dialog_backend/manage.py migrate --noinput
 
       - name: Check for missing migrations
         run: |
-          python manage.py makemigrations --check --dry-run
+          python ./dialog_backend/manage.py makemigrations --check --dry-run
 
   lint:
     runs-on: ubuntu-latest
