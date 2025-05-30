@@ -27,7 +27,7 @@ class Command(BaseCommand):
             monthly_log.user.id: monthly_log
             for monthly_log in MonthlyLog.objects.filter(month=timezone.now().month, year=timezone.now().year)
         }
-
+        current_time = timezone.now()
         weekly_logs = [
             WeeklyLog(
                 user=user,
@@ -39,7 +39,9 @@ class Command(BaseCommand):
             )
             for user in users
             if not WeeklyLog.objects.filter(
-                user=user, week_start__lte=timezone.now(), week_end__gt=timezone.now()
+                user=user,
+                week_start__lte=current_time,
+                week_end__gte=current_time,
             ).exists()
         ]
 
