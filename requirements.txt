@@ -3,12 +3,14 @@ asgiref==3.8.1
 attrs==25.3.0
 billiard==4.2.1
 celery==5.4.0
+cfgv==3.4.0
 click==8.2.1
 click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 colorama==0.4.6
 cron-descriptor==1.4.5
+distlib==0.3.9
 Django==5.1.5
 django-celery==3.1.17
 django-celery-beat==2.8.1
@@ -23,9 +25,11 @@ djangorestframework_simplejwt==5.4.0
 drf-spectacular==0.28.0
 factory_boy==3.3.3
 Faker==37.3.0
+filelock==3.18.0
 flower==2.0.1
 gunicorn==23.0.0
 humanize==4.12.3
+identify==2.6.12
 inflection==0.5.1
 iniconfig==2.0.0
 jsonschema==4.23.0
@@ -33,10 +37,13 @@ jsonschema-specifications==2025.4.1
 kombu==5.5.1
 mypy==1.16.0
 mypy_extensions==1.1.0
+nodeenv==1.9.1
 packaging==24.2
 pathspec==0.12.1
 pillow==11.1.0
+platformdirs==4.3.8
 pluggy==1.5.0
+pre_commit==4.2.0
 prometheus_client==0.22.0
 prompt_toolkit==3.0.51
 psycopg2==2.9.10
@@ -59,4 +66,5 @@ typing_extensions==4.13.2
 tzdata==2025.1
 uritemplate==4.1.1
 vine==5.1.0
+virtualenv==20.31.2
 wcwidth==0.2.13
