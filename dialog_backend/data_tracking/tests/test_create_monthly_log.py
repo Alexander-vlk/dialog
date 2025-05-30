@@ -6,15 +6,6 @@ from data_tracking.models import MonthlyLog
 pytestmark = [pytest.mark.django_db]
 
 
-@pytest.fixture
-def user_with_monthly_log(user, monthly_log):
-    """Фикстура пользователя с актуальным ежемесячным отчетом"""
-    monthly_log.user = user
-    monthly_log.save()
-
-    return user
-
-
 def test_monthly_logs_creates(user):
     """
     Arrange: Пользователь без актуального ежемесячного отчета
