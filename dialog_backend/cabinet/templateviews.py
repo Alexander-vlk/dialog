@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -8,15 +9,58 @@ from django.views.decorators.http import require_http_methods, require_GET
 from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
 from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature, WeeklyLog
-from sitesettings.models import SliderImage
+from sitesettings.models import (
+    CallToActionBlock,
+    Feature,
+    MainPageFAQ,
+    MainPageSettings,
+    HeroActionBlock,
+    SliderImage,
+)
 
 
 def index(request):
     """View для главной страницы"""
+    slider_images_cache_key = 'v1:main_page:slider_images'
+    hero_action_block_cache_key = 'v1:main_page:hero_action_block'
+    call_action_block_cache_key = 'v1:main_page:call_action_block'
+    features_cache_key = 'v1:main_page:features'
+    faqs_cache_key = 'v1:main_page:faqs'
+    main_page_settings = MainPageSettings.objects.first()
+
+    slider_images = cache.get(slider_images_cache_key)
+    if not slider_images:
+        slider_images = SliderImage.objects.filter(show_on_main_page=True)[:main_page_settings.max_slider_images]
+        cache.set(slider_images_cache_key, slider_images, 10000)
+
+    hero_action_block = cache.get(hero_action_block_cache_key)
+    if not hero_action_block:
+        hero_action_block = HeroActionBlock.objects.first()
+        cache.set(hero_action_block_cache_key, hero_action_block, 10000)
+
+    call_action_block = cache.get(call_action_block_cache_key)
+    if not call_action_block:
+        call_action_block = CallToActionBlock.objects.first()
+        cache.set(call_action_block_cache_key, call_action_block, 10000)
+
+    features = cache.get(features_cache_key)
+    if not features:
+        features = Feature.objects.all()[:main_page_settings.max_functions_count]
+        cache.set(features_cache_key, features, 6000)
+
+    faqs = cache.get(faqs_cache_key)
+    if not faqs:
+        faqs = MainPageFAQ.objects.all()[:main_page_settings.max_faqs_count]
+        cache.set(faqs_cache_key, faqs, 6000)
+
     context = {
-        'rates': Rate.objects.filter(is_visible=True)[:4],
-        'advantages': Advantage.objects.all(),
-        'slider_images': SliderImage.objects.filter(show_on_main_page=True),
+        'rates': Rate.objects.filter(is_visible=True)[:main_page_settings.max_reviews_count],
+        'advantages': Advantage.objects.all()[:main_page_settings.max_advantages_count],
+        'slider_images': slider_images,
+        'hero_action_block': hero_action_block,
+        'call_action_block': call_action_block,
+        'features': features,
+        'faqs': faqs,
     }
     return render(request, 'cabinet/index.html', context)
 
