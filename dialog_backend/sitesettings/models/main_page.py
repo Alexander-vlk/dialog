@@ -77,7 +77,7 @@ class SliderImage(AutoDateMixin):
 
     alt = models.CharField(max_length=100, verbose_name='Альтернативный текст')
     image = models.ImageField(upload_to='slider_images', null=True, blank=True, verbose_name='Изображение')
-    image_url = models.URLField(verbose_name='URL изображения')
+    image_url = models.URLField(verbose_name='URL изображения', blank=True, default='')
 
     show_on_main_page = models.BooleanField(verbose_name='Показывать на главной странице')
 

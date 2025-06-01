@@ -1,10 +1,33 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     DiaLog: контроль за диабетом
 {% endblock %}
 
+{% block head %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+{% endblock %}
+
 {% block content %}
+<div class="swiper w-full" style="height: calc(100vh - 4rem)">
+    <div class="swiper-wrapper">
+        {% for slider_image in slider_images %}
+            <div class="swiper-slide flex items-center justify-center">
+                <img src="{{ slider_image.image.url }}"
+                alt="{{ slider_image.alt }}"
+                class="w-full h-full object-cover" />
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="swiper-button-next text-white"></div>
+    <div class="swiper-button-prev text-white"></div>
+
+    <div class="swiper-pagination"></div>
+</div>
+
 <section class="container mx-auto px-6 py-12">
     <section class="text-center max-w-3xl mx-auto">
         <h1 class="text-4xl font-bold text-gray-900">Контроль диабета — просто и удобно</h1>
@@ -53,4 +76,7 @@
     </section>
 </section>
 
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="{% static 'cabinet/index.js' %}"></script>
 {% endblock %}

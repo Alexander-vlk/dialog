@@ -8,6 +8,7 @@ from django.views.decorators.http import require_http_methods, require_GET
 from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
 from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature, WeeklyLog
+from sitesettings.models import SliderImage
 
 
 def index(request):
@@ -15,6 +16,7 @@ def index(request):
     context = {
         'rates': Rate.objects.filter(is_visible=True)[:4],
         'advantages': Advantage.objects.all(),
+        'slider_images': SliderImage.objects.filter(show_on_main_page=True),
     }
     return render(request, 'cabinet/index.html', context)
 
