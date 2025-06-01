@@ -10,13 +10,14 @@ from common_utils.mixins import AutoDateMixin
 class HeroActionBlock(AutoDateMixin):
     """Модель блока слогана"""
 
-    slogan = models.CharField(max_length=200, verbose_name='Слоган')
-    short_description = models.CharField(max_length=400, verbose_name='Краткое описание')
+    slogan = models.CharField(max_length=200, verbose_name='Слоган', unique=True)
+    short_description = models.CharField(max_length=400, verbose_name='Краткое описание', unique=True)
     button_text = models.CharField(max_length=50, verbose_name='Текст кнопки')
 
     show_on_main_page = models.BooleanField(
         verbose_name='Показывать на главной странице',
         help_text='Показывать на сайте можно не более одного блока',
+        default=False,
     )
 
     class Meta:
@@ -42,8 +43,8 @@ class HeroActionBlock(AutoDateMixin):
 class CallToActionBlock(AutoDateMixin):
     """Модель блока призыва к действию"""
 
-    action_text = models.CharField(max_length=200, verbose_name='Текст призыва')
-    short_description = models.CharField(max_length=400, verbose_name='Краткое описание')
+    action_text = models.CharField(max_length=200, verbose_name='Текст призыва', unique=True)
+    short_description = models.CharField(max_length=400, verbose_name='Краткое описание', unique=True)
     button_text = models.CharField(max_length=50, verbose_name='Текст кнопки')
 
     show_on_main_page = models.BooleanField(

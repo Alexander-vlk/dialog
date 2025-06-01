@@ -154,7 +154,7 @@ class Rate(AutoDateMixin):
 
     text = models.CharField(max_length=1000, validators=[validate_length], verbose_name='Текст')
 
-    is_visible = models.BooleanField(verbose_name='Показывать')
+    is_visible = models.BooleanField(verbose_name='Показывать', default=False)
 
     class Meta:
         verbose_name = 'Отзыв'
