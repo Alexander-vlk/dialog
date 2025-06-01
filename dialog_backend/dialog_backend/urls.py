@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('api/auth_service/', include('auth_service.urls')),
     path('api/data-tracking/', include('data_tracking.urls')),
+    path('api/sitesettings/', include('sitesettings.urls')),
 
     path('', include('cabinet.templateurls')),
     path('', include('auth_service.templateurls')),
