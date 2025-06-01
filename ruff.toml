@@ -1,0 +1,7 @@
+[tool.ruff]
+exclude = [
+    "migrations",
+    "tests/data/",
+    "sitesettings/models/__init__.py",
+    "manage.py",
+]
