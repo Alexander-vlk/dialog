@@ -71,7 +71,7 @@ class CallToActionBlock(AutoDateMixin):
             )
 
 
-class SliderImage(models.Model, AutoDateMixin):
+class SliderImage(AutoDateMixin):
     """Модель изображения к слайдеру"""
 
     alt = models.CharField(max_length=100, verbose_name='Альтернативный текст')
@@ -100,7 +100,7 @@ class SliderImage(models.Model, AutoDateMixin):
             super().save(update_fields=["image_url"])
 
 
-class Feature(models.Model, AutoDateMixin):
+class Feature(AutoDateMixin):
     """Модель функций приложения"""
 
     name = models.CharField(max_length=200, verbose_name='Название')
