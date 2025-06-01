@@ -1,4 +1,3 @@
-[ruff]
 exclude = [
     "migrations",
     "tests/data/",
