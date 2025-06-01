@@ -68,7 +68,6 @@ class MainPageFAQAdmin(admin.ModelAdmin):
         'answer',
     )
 
-
 @admin.register(SliderImage)
 class SliderImageAdmin(admin.ModelAdmin):
     """Админ для модели SliderImage"""
