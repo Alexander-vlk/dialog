@@ -36,5 +36,3 @@ class DailyLogFactory(DjangoModelFactory):
     proteins_count = FuzzyInteger(20, 200)
     fats_count = FuzzyInteger(20, 200)
     carbs_count = FuzzyInteger(20, 200)
-
-    date = timezone.now().date
