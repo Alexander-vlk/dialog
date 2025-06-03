@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="swiper w-full" style="height: calc(100vh - 4rem)">
+<section class="swiper w-full shadow-lg" style="height: calc(100vh - 4rem)">
     <div class="swiper-wrapper">
         {% for slider_image in slider_images %}
             <div class="swiper-slide flex items-center justify-center">
@@ -26,28 +26,37 @@
     <div class="swiper-button-prev text-white"></div>
 
     <div class="swiper-pagination"></div>
-</div>
+</section>
 
-<section class="container mx-auto px-6 py-12">
+<section class="container mx-auto px-6 py-12 mt-16">
     <section class="text-center max-w-3xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900">Контроль диабета — просто и удобно</h1>
-        <p class="text-gray-600 mt-4 text-lg">
-            Следите за своими показателями, анализируйте данные и держите здоровье под контролем
-        </p>
+        <h1 class="text-4xl font-bold text-gray-900">{{ hero_action_block.slogan }}</h1>
+        <p class="text-gray-600 mt-4 text-lg">{{ hero_action_block.short_description }}</p>
         <div class="mt-6">
             <a href="{% url 'register' %}" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 shadow-md transition">
-                Начать бесплатно
+                {{ hero_action_block.button_text }}
             </a>
         </div>
     </section>
 
-    <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        {% for advantage in advantages %}
-            <div class="p-6 bg-white shadow-md rounded-lg">
-                <h3 class="text-xl font-semibold text-blue-600">{{ advantage.title }}</h3>
-                <p class="text-gray-600 mt-2 text-left">{{ advantage.description }}</p>
+    <section class="text-center max-w-6xl mx-auto mt-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-8">Преимущества</h2>
+
+        <div class="advantage-swiper advantage-swiper px-4">
+            <div class="swiper-wrapper mb-12">
+                {% for advantage in advantages %}
+                <div class="swiper-slide h-full">
+                    <div class="h-full min-h-[300px] flex flex-col justify-between p-6 bg-white shadow-md rounded-xl text-left">
+                        <div>
+                            <h3 class="text-xl font-semibold text-blue-600">{{ advantage.title }}</h3>
+                            <p class="text-gray-600 mt-3">{{ advantage.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+            <div class="advantage-swiper-pagination mt-4"></div>
+        </div>
     </section>
 
     <section class="mt-16">
@@ -65,12 +74,22 @@
         </div>
     </section>
 
+    <section class="mt-16">
+        <h2 class="text-3xl font-bold text-gray-900 text-center">Функции</h2>
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for functions in functions %}
+            <div class="bg-white shadow-md p-6 rounded-lg">
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
     <section class="mt-16 text-center">
-        <h2 class="text-3xl font-bold text-gray-900">Начните следить за своим здоровьем уже сегодня!</h2>
-        <p class="text-gray-600 mt-4 text-lg">Присоединяйтесь и получите доступ ко всем возможностям бесплатно</p>
+        <h2 class="text-3xl font-bold text-gray-900">{{ call_action_block.action_text }}</h2>
+        <p class="text-gray-600 mt-4 text-lg">{{ call_action_block.short_description }}</p>
         <div class="mt-6">
             <a href="{% url 'register' %}" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition shadow-md">
-                Зарегистрироваться
+                {{ call_action_block.button_text }}
             </a>
         </div>
     </section>

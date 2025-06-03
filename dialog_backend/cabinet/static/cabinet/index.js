@@ -14,4 +14,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
             prevEl: '.swiper-button-prev',
         },
     });
+    const advantageSwiper = new Swiper('.advantage-swiper', {
+        spaceBetween: 20,
+        initialSlide: 1,
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        pagination: {
+            el: '.advantage-swiper-pagination',
+            clickable: true,
+        },
+    });
 })
