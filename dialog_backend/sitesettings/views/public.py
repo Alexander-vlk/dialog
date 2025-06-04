@@ -5,6 +5,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from constants import SWAGGER_ERROR_MESSAGES
+from cabinet.constants import ADVANTAGES_CACHE_KEY, RATES_CACHE_KEY
+from cabinet.models import Advantage, Rate
+from cabinet.serializers import AdvantageSerializer, RateSerializer
 from sitesettings.constants import (
     CALL_BACK_ACTION_BLOCK_CACHE_KEY,
     FEATURES_CACHE_KEY,
@@ -28,6 +31,38 @@ from sitesettings.serializers import (
     SliderImageSerializer,
 )
 from sitesettings.utils import get_main_page_settings
+
+
+@extend_schema(
+    tags=[MAIN_PAGE_DATA_TAG],
+    methods=['GET'],
+    responses={
+        status.HTTP_200_OK: AdvantageSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class AdvantageAPIView(APIView):
+    """APIVew для получения данных о преимуществах"""
+
+    authentication_classes: list = []
+    permission_classes: list = []
+
+    serializer_class = AdvantageSerializer
+
+    def get(self, request, *args, **kwargs):
+        """GET-запрос"""
+        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        """Получение queryset-а"""
+        advantages_queryset = cache.get(ADVANTAGES_CACHE_KEY)
+        if not advantages_queryset:
+            advantages_queryset = Advantage.objects.all()
+            cache.set(ADVANTAGES_CACHE_KEY, advantages_queryset, 10000)
+
+        return advantages_queryset
 
 
 @extend_schema(
@@ -156,6 +191,37 @@ class MainPageFAQAPIView(APIView):
             cache.set(MAIN_PAGE_FAQ_CACHE_KEY, faq_queryset, 10000)
 
         return faq_queryset
+
+
+@extend_schema(
+    tags=[MAIN_PAGE_DATA_TAG],
+    methods=['GET'],
+    responses={
+        status.HTTP_200_OK: RateSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class RateAPIview(APIView):
+    """APIView для получения данных об отзывах для главной страницы"""
+    authentication_classes: list = []
+    permission_classes: list = []
+
+    serializer_class = RateSerializer
+
+    def get(self, request, *args, **kwargs):
+        """GET-запрос"""
+        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        """Получение queryset-а"""
+        rate_queryset = cache.get(RATES_CACHE_KEY)
+        if not rate_queryset:
+            rate_queryset = Rate.objects.filter(is_visible=True)[:get_main_page_settings().max_reviews_count]
+            cache.set(RATES_CACHE_KEY, rate_queryset, 10000)
+
+        return rate_queryset
 
 
 @extend_schema(
