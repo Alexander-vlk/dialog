@@ -5,14 +5,21 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from constants import SWAGGER_ERROR_MESSAGES
-from sitesettings.constants import MAIN_PAGE_DATA_TAG, FEATURES_CACHE_KEY
+from sitesettings.constants import (
+    CALL_BACK_ACTION_BLOCK_CACHE_KEY,
+    FEATURES_CACHE_KEY,
+    HERO_ACTION_BLOCK_CACHE_KEY,
+    MAIN_PAGE_DATA_TAG,
+)
 from sitesettings.models.main_page import (
     CallToActionBlock,
     Feature,
+    HeroActionBlock,
 )
 from sitesettings.serializers import (
     CallToActionBlockSerializer,
     FeatureSerializer,
+    HeroActionBlockSerializer,
 )
 from sitesettings.utils import get_main_page_settings
 
@@ -35,13 +42,18 @@ class CallToActionBlockView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(instance=self.get_queryset())
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
         """Получить объект блока призыва к действию"""
-        return CallToActionBlock.objects.filter(show_on_main_page=True)
+        call_back_action_block = cache.get(CALL_BACK_ACTION_BLOCK_CACHE_KEY)
+        if not call_back_action_block:
+            call_back_action_block = CallToActionBlock.objects.filter(show_on_main_page=True).first()
+            cache.set(CALL_BACK_ACTION_BLOCK_CACHE_KEY, call_back_action_block, 10000)
+
+        return call_back_action_block
 
 
 @extend_schema(
@@ -74,3 +86,35 @@ class FeatureAPIView(APIView):
             cache.set(FEATURES_CACHE_KEY, features_queryset, 10000)
 
         return features_queryset
+
+
+@extend_schema(
+    tags=[MAIN_PAGE_DATA_TAG],
+    methods=['GET'],
+    responses={
+        status.HTTP_200_OK: HeroActionBlockSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class HeroActionBlockAPIView(APIView):
+    """APIView для получения данных о блоке действия"""
+
+    authentication_classes: list = []
+    permission_classes: list = []
+
+    serializer_class = HeroActionBlockSerializer
+
+    def get(self, request, *args, **kwargs):
+        """GET-запрос"""
+        serializer = self.serializer_class(instance=self.get_queryset())
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        """Получение queryset-а"""
+        hero_action_block = cache.get(HERO_ACTION_BLOCK_CACHE_KEY)
+        if not hero_action_block:
+            hero_action_block = HeroActionBlock.objects.filter(show_on_main_page=True).first()
+            cache.set(HERO_ACTION_BLOCK_CACHE_KEY, hero_action_block, 10000)
+
+        return hero_action_block
