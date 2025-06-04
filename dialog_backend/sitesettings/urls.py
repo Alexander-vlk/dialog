@@ -5,6 +5,7 @@ from sitesettings.views.public import (
     FeatureAPIView,
     HeroActionBlockAPIView,
     MainPageFAQAPIView,
+    SliderImageAPIView,
 )
 
 
@@ -13,4 +14,5 @@ urlpatterns = [
     path('features/', FeatureAPIView.as_view(), name='features'),
     path('hero-action-block/', HeroActionBlockAPIView.as_view(), name='hero_action_block'),
     path('main-page-faq/', MainPageFAQAPIView.as_view(), name='main_page_faq'),
+    path('slider-images/', SliderImageAPIView.as_view(), name='slider_images'),
 ]

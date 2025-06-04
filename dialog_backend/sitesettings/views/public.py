@@ -11,18 +11,21 @@ from sitesettings.constants import (
     HERO_ACTION_BLOCK_CACHE_KEY,
     MAIN_PAGE_DATA_TAG,
     MAIN_PAGE_FAQ_CACHE_KEY,
+    SLIDER_IMAGE_CACHE_KEY,
 )
 from sitesettings.models.main_page import (
     CallToActionBlock,
     Feature,
     HeroActionBlock,
     MainPageFAQ,
+    SliderImage,
 )
 from sitesettings.serializers import (
     CallToActionBlockSerializer,
     FeatureSerializer,
     HeroActionBlockSerializer,
     MainPageFAQSerializer,
+    SliderImageSerializer,
 )
 from sitesettings.utils import get_main_page_settings
 
@@ -151,5 +154,42 @@ class MainPageFAQAPIView(APIView):
         if not faq_queryset:
             faq_queryset = MainPageFAQ.objects.all()[:get_main_page_settings().max_faqs_count]
             cache.set(MAIN_PAGE_FAQ_CACHE_KEY, faq_queryset, 10000)
+
+        return faq_queryset
+
+
+@extend_schema(
+    tags=[MAIN_PAGE_DATA_TAG],
+    methods=['GET'],
+    responses={
+        status.HTTP_200_OK: SliderImageSerializer,
+        **SWAGGER_ERROR_MESSAGES,
+    }
+)
+class SliderImageAPIView(APIView):
+    """APIVew получения изображений для слайдера главной страницы"""
+
+    authentication_classes: list = []
+    permission_classes: list = []
+
+    serializer_class = SliderImageSerializer
+
+    def get(self, request, *args, **kwargs):
+        """GET-запрос"""
+        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        """Получение queryset-а"""
+        faq_queryset = cache.get(SLIDER_IMAGE_CACHE_KEY)
+        if not faq_queryset:
+            faq_queryset = (
+                SliderImage.objects.filter(
+                    show_on_main_page=True,
+                )
+               [:get_main_page_settings().max_slider_images]
+            )
+            cache.set(SLIDER_IMAGE_CACHE_KEY, faq_queryset, 10000)
 
         return faq_queryset
