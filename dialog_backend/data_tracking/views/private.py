@@ -1,26 +1,25 @@
 
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse, OpenApiExample
 from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
+                                   OpenApiResponse, extend_schema)
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from constants import (
-    BODY_TEMPERATURE_SWAGGER_TAG,
-    GLUCOSE_SWAGGER_TAG,
-    PRESSURE_SWAGGER_TAG,
-    SWAGGER_ERROR_MESSAGES,
-    WEEKLY_LOG_SWAGGER_TAG, AVERAGE_BJU_SWAGGER_TAG, HEALTH_SWAGGER_TAG,
-)
-from data_tracking.models import BodyTemperature, Glucose, Pressure, WeeklyLog, MonthlyLog
-from data_tracking.serializers import (
-    BodyTemperatureSerializer,
-    GlucoseSerializer,
-    PressureSerializer,
-    WeeklyLogSerializer, AverageGlucoseSerializer, CaloriesSerializer, AverageBJUSerializer, HealthSerializer,
-)
+from constants import (AVERAGE_BJU_SWAGGER_TAG, BODY_TEMPERATURE_SWAGGER_TAG,
+                       GLUCOSE_SWAGGER_TAG, HEALTH_SWAGGER_TAG,
+                       PRESSURE_SWAGGER_TAG, SWAGGER_ERROR_MESSAGES,
+                       WEEKLY_LOG_SWAGGER_TAG)
+from data_tracking.models import (BodyTemperature, Glucose, MonthlyLog,
+                                  Pressure, WeeklyLog)
+from data_tracking.serializers import (AverageBJUSerializer,
+                                       AverageGlucoseSerializer,
+                                       BodyTemperatureSerializer,
+                                       CaloriesSerializer, GlucoseSerializer,
+                                       HealthSerializer, PressureSerializer,
+                                       WeeklyLogSerializer)
 
 
 @extend_schema(
