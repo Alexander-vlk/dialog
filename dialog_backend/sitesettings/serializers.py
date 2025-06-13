@@ -142,4 +142,4 @@ class SliderImageSerializer(ModelSerializer):
 
     def get_image_url(self, obj):
         """Получить URL изображения"""
-        return urljoin(self.context['host'], obj.image_url)
+        return urljoin(self.context['host'], obj.image.url)
