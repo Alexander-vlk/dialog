@@ -1,5 +1,3 @@
-from urllib.parse import urljoin
-
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
@@ -44,7 +42,7 @@ class CallToActionBlockSerializer(ModelSerializer):
             value={
                 'name': 'Просмотр графиков',
                 'description': 'На основе введенных Вами данных строятся графики',
-                'image_url': 'https://dialog.com/media/functions/graphics_feature.png',
+                'image_url': '/media/functions/graphics_feature.png',
             },
         ),
     ],
@@ -60,7 +58,7 @@ class FeatureSerializer(ModelSerializer):
 
     def get_image_url(self, obj):
         """Получить URL изображения"""
-        return urljoin(self.context['host'], obj.image_url)
+        return obj.image.url
 
 
 @extend_schema_serializer(
@@ -121,11 +119,11 @@ class MainPageFAQSerializer(ModelSerializer):
             value=[
                 {
                     'alt': 'Слайд 1',
-                    'image_url': 'https://dialog.com/media/slider_images/slide1.png',
+                    'image_url': '/media/slider_images/slide1.png',
                 },
                 {
                     'alt': 'Слайд 2',
-                    'image_url': 'https://dialog.com/media/slider_images/slide2.png',
+                    'image_url': '/media/slider_images/slide2.png',
                 },
             ]
         )
@@ -142,4 +140,4 @@ class SliderImageSerializer(ModelSerializer):
 
     def get_image_url(self, obj):
         """Получить URL изображения"""
-        return urljoin(self.context['host'], obj.image.url)
+        return obj.image.url

@@ -51,7 +51,7 @@ class AdvantageAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -115,11 +115,7 @@ class FeatureAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        context = {
-            'host': request.get_host(),
-        }
-
-        serializer = self.serializer_class(context, instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -183,7 +179,7 @@ class MainPageFAQAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -214,7 +210,7 @@ class RateAPIview(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -246,11 +242,7 @@ class SliderImageAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        context = {
-            'host': request.get_host(),
-        }
-
-        serializer = self.serializer_class(context, instance=self.get_queryset(), many=True)
+        serializer = self.serializer_class(self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
