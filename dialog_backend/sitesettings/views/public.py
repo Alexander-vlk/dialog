@@ -115,7 +115,11 @@ class FeatureAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        context = {
+            'host': request.get_host(),
+        }
+
+        serializer = self.serializer_class(context, instance=self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -242,7 +246,11 @@ class SliderImageAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
-        serializer = self.serializer_class(instance=self.get_queryset(), many=True)
+        context = {
+            'host': request.get_host(),
+        }
+
+        serializer = self.serializer_class(context, instance=self.get_queryset(), many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -1,3 +1,6 @@
+from urllib.parse import urljoin
+
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 
@@ -49,9 +52,15 @@ class CallToActionBlockSerializer(ModelSerializer):
 class FeatureSerializer(ModelSerializer):
     """Сериализатор модели Feature"""
 
+    image_url = SerializerMethodField()
+
     class Meta:
         model = Feature
         fields = ('name', 'description', 'image_url')
+
+    def get_image_url(self, obj):
+        """Получить URL изображения"""
+        return urljoin(self.context['host'], obj.image_url)
 
 
 @extend_schema_serializer(
@@ -125,6 +134,12 @@ class MainPageFAQSerializer(ModelSerializer):
 class SliderImageSerializer(ModelSerializer):
     """Сериализатор модели SliderImage"""
 
+    image_url = SerializerMethodField()
+
     class Meta:
         model = SliderImage
         fields = ('alt', 'image_url')
+
+    def get_image_url(self, obj):
+        """Получить URL изображения"""
+        return urljoin(self.context['host'], obj.image_url)
