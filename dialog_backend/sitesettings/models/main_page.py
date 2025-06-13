@@ -1,6 +1,3 @@
-from urllib.parse import urljoin
-
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -77,7 +74,6 @@ class SliderImage(AutoDateMixin):
 
     alt = models.CharField(max_length=100, verbose_name='Альтернативный текст')
     image = models.ImageField(upload_to='slider_images', null=True, blank=True, verbose_name='Изображение')
-    image_url = models.URLField(verbose_name='URL изображения', blank=True, default='')
 
     show_on_main_page = models.BooleanField(verbose_name='Показывать на главной странице')
 
@@ -89,17 +85,6 @@ class SliderImage(AutoDateMixin):
         """Строковое представление модели"""
         return f'{self.alt}'
 
-    def get_image_absolute_url(self) -> str:
-        """Получить абсолютный URL изображения"""
-        return urljoin(settings.MEDIA_URL, self.image.url)
-
-    def save(self, *args, **kwargs):
-        """Расширение метода save"""
-        super().save(*args, **kwargs)
-        if self.image and not self.image_url:
-            self.image_url = self.get_image_absolute_url()
-            super().save(update_fields=["image_url"])
-
 
 class Feature(AutoDateMixin):
     """Модель функций приложения"""
@@ -107,23 +92,10 @@ class Feature(AutoDateMixin):
     name = models.CharField(max_length=200, verbose_name='Название')
     description = models.CharField(max_length=400, verbose_name='Описание')
     image = models.ImageField(upload_to='functions', verbose_name='Изображение')
-    image_url = models.URLField(verbose_name='URL')
 
     class Meta:
         verbose_name = 'Функция приложения'
         verbose_name_plural = 'Функции приложения'
-
-    def get_image_absolute_url(self) -> str:
-        """Получить абсолютный URL изображения"""
-        return urljoin(settings.MEDIA_URL, self.image.url)
-
-    def save(self, *args, **kwargs):
-        """Расширение метода save"""
-        super().save(*args, **kwargs)
-        if self.image and not self.image_url:
-            self.image_url = self.get_image_absolute_url()
-            super().save(update_fields=["image_url"])
-
 
 class MainPageFAQ(AutoDateMixin):
     """Модель FAQ для главной страницы"""
