@@ -8,11 +8,16 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework.response import Response
 from rest_framework import status
 
+from constants import ONE_DAY, TWO_MONTHS
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     """APIView для установки токенов пользователю"""
 
     serializer_class = TokenObtainPairSerializer
+
+    permission_classes: list = []
+    authentication_classes: list = []
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -31,6 +36,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             secure=not settings.DEBUG,
             samesite='Lax',
             path=reverse('token_refresh'),
+            expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
         )
 
         return response
@@ -40,6 +46,9 @@ class CustomTokenRefreshView(TokenRefreshView):
     """APIView для обновления токенов"""
 
     serializer_class = TokenRefreshSerializer
+
+    permission_classes: list = []
+    authentication_classes: list = []
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
