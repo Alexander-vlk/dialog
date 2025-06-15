@@ -3,8 +3,10 @@ from datetime import timedelta
 from drf_spectacular.utils import OpenApiResponse
 from rest_framework import status
 
+HALF_HOUR = timedelta(minutes=30)
 ONE_DAY = timedelta(days=1)
 ONE_WEEK = timedelta(days=7)
+TWO_MONTHS = timedelta(days=60)
 
 TWO_WEEKS = 1209600
 
