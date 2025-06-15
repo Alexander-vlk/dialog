@@ -1,7 +1,7 @@
 import environ
 from pathlib import Path
 
-from constants import ONE_DAY, ONE_WEEK
+from constants import ONE_DAY, HALF_HOUR, TWO_MONTHS
 
 env = environ.Env()
 env.read_env()
@@ -165,8 +165,8 @@ LOGGING = {
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ACCESS_TOKEN_LIFETIME': ONE_DAY,
-    'REFRESH_TOKEN_LIFETIME': ONE_WEEK,
+    'ACCESS_TOKEN_LIFETIME': ONE_DAY if DEBUG else HALF_HOUR,
+    'REFRESH_TOKEN_LIFETIME': TWO_MONTHS,
 }
 
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
