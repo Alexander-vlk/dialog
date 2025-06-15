@@ -1,107 +1,53 @@
-from rest_framework.authentication import authenticate
+from django.conf import settings
+from django.shortcuts import reverse
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
-
-from auth_service.serializers import UserSerializer
 
 
-class RegistrationAPIView(APIView):
-    """APIView для рагистрации пользователей"""
-    
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-            refresh = RefreshToken.for_user(user)
-            
-            refresh.payload.update({
-                'user_id': user.id,
-                'username': user.username,
-            })
-            
-            return Response(
-                {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                },
-                status=status.HTTP_201_CREATED,
-            )
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """APIView для установки токенов пользователю"""
 
+    serializer_class = TokenObtainPairSerializer
 
-class LoginAPIView(APIView):
-    """APIView для аутентификации пользователя"""
-    
-    def post(self, request):
-        data = request.data
-        
-        username = data.get('username', None)
-        password = data.get('password', None)
-        
-        if not username or not password:
-            return Response(
-                {
-                    'error': 'Оба поля должны быть заполнены',
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        
-        user = authenticate(username=username, password=password)
-        
-        if not user:
-            return Response(
-                {
-                    'error': 'Неверные имя пользователя или пароль',
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-            
-        refresh = RefreshToken.for_user(user)
-        
-        refresh.payload.update({
-            'user_id': user.id,
-            'username': user.username,
-        })
-        
-        return Response(
-            {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            },
-            status=status.HTTP_200_OK,
+    def post(self, request, *args, **kwargs):
+        """POST-запрос"""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        access_token = serializer.validated_data.get('access')
+        refresh_token = serializer.validated_data.get('refresh')
+
+        response = Response({'access': access_token}, status=status.HTTP_200_OK)
+
+        response.set_cookie(
+            key='refresh_token',
+            value=refresh_token,
+            httponly=True,
+            secure=not settings.DEBUG,
+            samesite='Lax',
+            path=reverse('token_refresh'),
         )
 
+        return response
 
-class LogoutAPIView(APIView):
-    """APIView для выхода пользователя"""
-    
-    def post(self, request):
-        refresh_token = request.data.get('refresh_token')
-        
+
+class CustomTokenRefreshView(TokenRefreshView):
+    """APIView для обновления токенов"""
+
+    serializer_class = TokenRefreshSerializer
+
+    def post(self, request, *args, **kwargs):
+        """POST-запрос"""
+        refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
-            return Response(
-                {
-                    'error': 'Необходим refresh токен',
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-        except Exception:
-            return Response(
-                {
-                    'error': 'Некорректный refresh токен',
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        
-        return Response(
-            {
-                'success': 'Выход успешно совершен',
-            },
-            status=status.HTTP_200_OK,
-        )
+        serializer = self.get_serializer(data={'refresh': refresh_token})
+        serializer.is_valid(raise_exception=True)
+
+        return Response({'access': serializer.validated_data.get('access')}, status=status.HTTP_200_OK)
