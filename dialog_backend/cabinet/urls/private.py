@@ -9,7 +9,7 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
-    path('users/me', UserDataAPIView.as_view(), name='current_user_data'),
+    path('users/me/', UserDataAPIView.as_view(), name='current_user_data'),
 ]
 
 urlpatterns.extend(router.urls)
