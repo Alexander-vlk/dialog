@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.shortcuts import reverse
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -35,7 +34,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             httponly=True,
             secure=not settings.DEBUG,
             samesite='Lax',
-            path=reverse('token_refresh'),
             expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
         )
 
