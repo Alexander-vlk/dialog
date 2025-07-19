@@ -9,6 +9,12 @@ def validate_not_future_date(validate_date):
         raise ValidationError('Дата не может быть больше текущей')
 
 
+def validate_not_too_old_date(validate_date):
+    """Проверяет, что дата больше 1900 года"""
+    if validate_date > date(1900, 1, 1):
+        raise ValidationError('Дата не может быть меньше 1 января 1900 года')
+
+
 def validate_positive_float(validate_number: float):
     """Проверяет, что число неотрицательное"""
     if validate_number < 0:
