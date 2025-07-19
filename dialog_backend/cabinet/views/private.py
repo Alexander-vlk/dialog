@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from auth_service.serializers import UserSerializer
+from auth_service.serializers import UserResponseSerializer
 from cabinet.constants import USER_SWAGGER_TAG
 from cabinet.serializers import UserDataSerializer
 from constants import SWAGGER_ERROR_MESSAGES
@@ -16,7 +16,7 @@ from constants import SWAGGER_ERROR_MESSAGES
 @extend_schema(
     tags=[USER_SWAGGER_TAG],
     responses={
-        status.HTTP_200_OK: UserSerializer,
+        status.HTTP_200_OK: UserResponseSerializer,
         **SWAGGER_ERROR_MESSAGES,
     }
 )
@@ -25,7 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     model = User
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserResponseSerializer
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAdminUser]
 
