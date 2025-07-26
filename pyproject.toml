@@ -1,0 +1,39 @@
+[project]
+name = "dialog"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "alex_barmen",email = "www.lad282@gmail.com"}
+]
+readme = "README.md"
+requires-python = "3.12"
+dependencies = [
+    "django (>=5.2.4,<6.0.0)",
+    "djangorestframework (>=3.16.0,<4.0.0)",
+    "djangorestframework-simplejwt (>=5.5.0,<6.0.0)",
+    "psycopg2 (>=2.9.10,<3.0.0)",
+    "redis (>=6.2.0,<7.0.0)",
+    "celery (>=5.5.3,<6.0.0)",
+    "drf-spectacular (>=0.28.0,<0.29.0)",
+    "pillow (>=11.3.0,<12.0.0)",
+    "flower (>=2.0.1,<3.0.0)",
+    "django-environ (>=0.12.0,<0.13.0)",
+    "django-cors-headers (>=4.7.0,<5.0.0)",
+    "rabbitmq (>=0.2.0,<0.3.0)",
+    "django-celery-beat (>=2.8.1,<3.0.0)",
+    "django-redis (>=6.0.0,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group."=dev".dependencies]
+pytest = "^8.4.1"
+pre-commit = "^4.2.0"
+ruff = "^0.12.4"
+mypy = "^1.17.0"
+factory-boy = "^3.3.3"
+django-debug-toolbar = "^5.2.0"
+

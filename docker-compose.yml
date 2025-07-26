@@ -1,15 +1,11 @@
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python3 manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
+    command: poetry run python3 manage.py runserver 0.0.0.0:8040
     volumes:
-      - ./dialog_backend:/app
-    env_file:
-      - ./dialog_backend/dialog_backend/.env
+      - ./:/homme/django/dialog_backend
     depends_on:
       - db
       - redis
