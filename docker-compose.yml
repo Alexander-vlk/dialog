@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     command: poetry run python3 manage.py runserver 0.0.0.0:8040
     volumes:
-      - ./:/homme/django/dialog_backend
+      - ./:/home/django/dialog_backend
     ports:
       - "8040:8040"
     depends_on:
@@ -18,16 +18,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql@14/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=dialog
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1234}
+      - POSTGRES_DB=${POSTGRES_DB:-dialog}
 
   redis:
     image: redis:7
     container_name: redis_cache
     restart: always
-    env_file:
-      - ./dialog_backend/dialog_backend/.env
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -36,8 +34,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER:-guest}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS:-guest}
 
   celery:
     build:
@@ -46,8 +44,6 @@ services:
     command: celery -A dialog_backend worker --loglevel=info
     volumes:
       - ./dialog_backend:/app
-    env_file:
-      - ./dialog_backend/dialog_backend/.env
     depends_on:
       - db
       - rabbitmq
@@ -68,13 +64,12 @@ services:
   flower:
     image: mher/flower
     environment:
-        - CELERY_BROKER_URL=pyamqp://guest@rabbitmq//
-        - FLOWER_PORT=5555
+        - CELERY_BROKER_URL=pyamqp://${RABBITMQ_DEFAULT_USER:-guest}@rabbitmq//
+        - FLOWER_PORT=${FLOWER_PORT:-5555}
     ports:
-        - 5555:5555
+        - "5555:5555"
     depends_on:
         - rabbitmq
-
 
 volumes:
   postgres_data:
