@@ -6,6 +6,8 @@ services:
     command: poetry run python3 manage.py runserver 0.0.0.0:8040
     volumes:
       - ./:/homme/django/dialog_backend
+    ports:
+      - "8040:8040"
     depends_on:
       - db
       - redis
