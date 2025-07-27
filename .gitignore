@@ -129,6 +129,7 @@ celerybeat.pid
 
 # Environments
 dialog_backend/dialog_backend/.env
+.env
 .venv
 env/
 venv/
