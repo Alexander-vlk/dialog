@@ -4,7 +4,6 @@ from django.views.generic import CreateView
 from rest_framework.reverse import reverse_lazy
 
 from auth_service.forms import ExtendedLoginForm, ExtendedUserCreationForm
-from cabinet.models import UserProfile
 from constants import TWO_WEEKS
 from common_utils.functions import create_logs_for_new_user
 
@@ -50,15 +49,15 @@ class UserRegisterView(CreateView):
         user.email = form.cleaned_data.get('email', '')
         user.save()
 
-        UserProfile.objects.create(
-            user=user,
-            patronymic_name=form.cleaned_data.get('patronymic_name', ''),
-            gender=form.cleaned_data.get('gender'),
-            birth_date=form.cleaned_data.get('birth_date'),
-            diabetes_type=form.cleaned_data.get('diabetes_type'),
-            treatment_type=form.cleaned_data.get('treatment_type'),
-            phone_number=form.cleaned_data.get('phone_number'),
-        )
+        # UserProfile.objects.create(
+        #     user=user,
+        #     patronymic_name=form.cleaned_data.get('patronymic_name', ''),
+        #     gender=form.cleaned_data.get('gender'),
+        #     birth_date=form.cleaned_data.get('birth_date'),
+        #     diabetes_type=form.cleaned_data.get('diabetes_type'),
+        #     treatment_type=form.cleaned_data.get('treatment_type'),
+        #     phone_number=form.cleaned_data.get('phone_number'),
+        # )
 
         login(self.request, user)
 
@@ -73,5 +72,5 @@ class UserPasswordChangeView(PasswordChangeView):
     template_name = 'registration/change_password.html'
 
     def get_success_url(self):
-        cabinet_url = reverse_lazy('cabinet', args=[self.request.user.userprofile.id])
+        cabinet_url = reverse_lazy('cabinet', args=[self.request.user.id])
         return f'{cabinet_url}?success_change_password=true'

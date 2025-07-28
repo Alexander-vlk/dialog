@@ -98,6 +98,8 @@ CACHES = {
     }
 }
 
+AUTH_USER_MODEL = 'auth_service.AppUser'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
