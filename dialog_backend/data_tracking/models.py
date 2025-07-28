@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 
+from auth_service.models import AppUser
 from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_positive_float
 
@@ -25,7 +25,7 @@ class MonthlyLog(AutoDateMixin, models.Model):
     }
 
     user = models.ForeignKey(
-        to=User,
+        to=AppUser,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -83,7 +83,7 @@ class WeeklyLog(AutoDateMixin):
     """Модель еженедельного отчета"""
 
     user = models.ForeignKey(
-        to=User,
+        to=AppUser,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -178,21 +178,21 @@ class DailyLog(AutoDateMixin):
         GREAT: 'Прекрасное',
     }
 
+    user = models.ForeignKey(
+        to=AppUser,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Пользователь',
+        related_name='daily_logs',
+    )
+
     weekly_log = models.ForeignKey(
         to=WeeklyLog,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name='Недельный отчет',
-    )
-
-    user = models.ForeignKey(
-        to=User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name='Пользователь',
-        related_name='daily_logs',
     )
 
     calories_count = models.PositiveSmallIntegerField(
@@ -273,7 +273,7 @@ class Glucose(AutoDateMixin):
     """Модель для уровня глюкозы"""
 
     user = models.ForeignKey(
-        to=User,
+        to=AppUser,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -303,7 +303,7 @@ class Pressure(AutoDateMixin):
     """Модель для замеров давления"""
 
     user = models.ForeignKey(
-        to=User,
+        to=AppUser,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -338,7 +338,7 @@ class BodyTemperature(AutoDateMixin):
     """Модель для замера температуры тела"""
 
     user = models.ForeignKey(
-        to=User,
+        to=AppUser,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

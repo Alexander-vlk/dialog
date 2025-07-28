@@ -1,6 +1,6 @@
 import pytest
 
-from factories import UserFactory, UserProfileFactory
+from factories import UserFactory
 
 
 @pytest.fixture
@@ -11,8 +11,3 @@ def user():
 @pytest.fixture
 def inactive_user():
     return UserFactory(is_active=False)
-
-
-@pytest.fixture
-def user_profile():
-    return UserProfileFactory()

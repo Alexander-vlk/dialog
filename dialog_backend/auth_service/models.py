@@ -30,6 +30,8 @@ class AppUser(AbstractUser, AutoDateMixin):
     birth_date = models.DateField(
         verbose_name='Дата рождения',
         validators=[validate_not_future_date],
+        null=True,
+        blank=True,
     )
     diabetes_type = models.CharField(
         max_length=20,

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from cabinet.models import Advantage, Allergy, Disease, UserProfile, Rate
+from cabinet.models import Advantage, Allergy, Disease, Rate
 
 
 @admin.register(Advantage)
@@ -24,14 +24,6 @@ class DiseaseAdmin(admin.ModelAdmin):
     """Админ для модели Disease"""
 
     list_display = ['name', 'updated_at', 'created_at']
-
-
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    """Админ для модели UserProfile"""
-    
-    list_display = ['user__username', 'gender', 'diabetes_type', 'updated_at']
-    raw_id_fields = ['user']
 
 
 @admin.register(Rate)

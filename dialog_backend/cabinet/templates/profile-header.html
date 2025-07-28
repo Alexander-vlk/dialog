@@ -4,8 +4,8 @@
     <a href="{% url 'cabinet' %}" class="flex items-center bg-blue-700 rounded-full text-white pl-1 pr-3 h-10 shadow-sm">
         <div class="w-8 h-8 rounded-full overflow-hidden">
             <img
-                {% if request.user.userprofile.image %}
-                src="{{ request.user.userprofile.image.url }}"
+                {% if request.user.image %}
+                src="{{ request.user.image.url }}"
                 {% else %}
                 src="{% static 'img/default-avatar.png' %}"
                 {% endif %}

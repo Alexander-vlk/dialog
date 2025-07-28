@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods, require_GET
 
-from cabinet.forms import UserProfileEditForm
 from cabinet.models import Rate, Advantage
 from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature, WeeklyLog
 from sitesettings.models import (
@@ -114,7 +113,7 @@ def cabinet(request):
     ).first()
 
     context = {
-        'cabinet': request.user.userprofile,
+        'cabinet': request.user,
         'daily_log': daily_log,
         'weekly_log': weekly_log,
         'glucose_per_day_count': glucose_per_day_count,
@@ -123,30 +122,3 @@ def cabinet(request):
     }
 
     return render(request, 'cabinet/cabinet.html', context)
-
-
-@require_http_methods(['GET', 'POST'])
-@login_required
-def edit_profile(request):
-    """View редактирования профиля"""
-    if request.method == 'POST':
-        form = UserProfileEditForm(request.POST, request.FILES, instance=request.user.userprofile)
-        if form.is_valid():
-            form.save()
-            request.user.username = form.cleaned_data['username']
-            request.user.email = form.cleaned_data['email']
-            request.user.first_name = form.cleaned_data['first_name']
-            request.user.last_name = form.cleaned_data['last_name']
-            request.user.save()
-
-            cabinet_url = reverse('cabinet')
-            return redirect(f'{cabinet_url}?success_edit_profile=true')
-
-    form = UserProfileEditForm(instance=request.user.userprofile)
-
-    template = 'cabinet/edit_profile.html'
-    context = {
-        'form': form,
-    }
-    return render(request, template, context)
-
