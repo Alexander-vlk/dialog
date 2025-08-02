@@ -57,6 +57,8 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = ["https://dialog.com"]
+
 ROOT_URLCONF = 'dialog_backend.urls'
 
 TEMPLATES = [
