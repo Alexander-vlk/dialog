@@ -25,32 +25,9 @@ _Версия: **1.0**_
 
 ## Запуск проекта
 
-- В `dialog_backend/dialog_backend/` создайте `.env` файл со следующим содержимым:
-```dotenv
-# django project settings
-SECRET_KEY=
-DEBUG=
-ALLOWED_HOSTS=
-LANGUAGE_CODE=
-TIME_ZONE=
-
-# postgres config
-POSTGRES_DB=
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_HOST=
-POSTGRES_PORT=
-
-# redis config
-REDIS_HOST=
-REDIS_PORT=
-
-# jwt
-AUTH_COOKIE_SECURE=
-```
-- запустить сборку docker-контейнеров `docker compose build`
+- в проекте нужно добавить 2 `.env` файла: первый - в корне репозитория, второй - в `dialog_backend/`, их содержимое можно взять в файлах `.example.env`
+- запустить сборку docker-контейнеров `docker compose build` (возможно, надо будет создать `network` с названием `dialog_network`)
 - далее запустите команду `docker compose up`
-- готово
 
 ### Запуск nginx
 - в `/etc/hosts` добавить:
@@ -97,6 +74,15 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocola
 ```powershell
 choco install mkcert 
 ```
+
+- Запускаем `nginx` в контейнере (демоном)
+```bash
+docker compose up -d
+```
+
+### Дополнительно
+
+Frontend проекта находится в репозитории `dialog_frontend`
 
 ### Особенности проекта
 
