@@ -52,6 +52,52 @@ AUTH_COOKIE_SECURE=
 - далее запустите команду `docker compose up`
 - готово
 
+### Запуск nginx
+- в `/etc/hosts` добавить:
+```text
+<IP-адрес> dialog.com
+```
+- в отдельном контейнере необходимо создать файлы `site.conf` (скопировать туда содержимое файла из этого репозитория) и файл `docker-compose.yaml` со следующим содержимым:
+
+```yaml
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./site.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    extra_hosts:
+      - "dialog.com:host-gateway"
+    networks:
+      - dialog_network
+
+networks:
+  dialog_network:
+    external: true
+```
+
+- В папке с конфигурацией nginx создать папку `ssl/`
+- Сгенерировать сертификат, например, следующей командой (на Windows):
+```bash
+mkcert -cert-file ssl/dialog.crt -key-file ssl/dialog.key dialog.com
+```
+
+Предварительно надо установить `mkcert` следующим образом:
+- В PowerShell от имени администратора установить `Chocolatey`
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; `
+[System.Net.ServicePointManager]::SecurityProtocol = `
+[System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+- Установить сам `mkcert`
+```powershell
+choco install mkcert 
+```
+
 ### Особенности проекта
 
 Серверная часть (backend) написана на **Python/Django**, API реализован с помощью **Django REST Framework**  
