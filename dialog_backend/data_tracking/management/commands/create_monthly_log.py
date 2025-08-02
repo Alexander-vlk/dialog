@@ -1,10 +1,10 @@
 import logging
 
-from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 from django.db.models import Q
 from django.utils import timezone
 
+from auth_service.models import AppUser
 from constants import BATCH_SIZE
 from data_tracking.models import MonthlyLog
 
@@ -19,7 +19,7 @@ class Command(BaseCommand):
         """Метод выполнения команды"""
         logger.info('Start command create_monthly_log')
 
-        users = User.objects.filter(
+        users = AppUser.objects.filter(
             Q(is_staff=False) | Q(is_superuser=True),
             is_active=True,
         )

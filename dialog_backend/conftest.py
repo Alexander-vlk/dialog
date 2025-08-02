@@ -1,13 +1,13 @@
 import pytest
 
-from factories import UserFactory
+from factories import AppUserFactory
 
 
 @pytest.fixture
 def user():
-    return UserFactory()
+    return AppUserFactory()
 
 
 @pytest.fixture
 def inactive_user():
-    return UserFactory(is_active=False)
+    return AppUserFactory(is_active=False)
