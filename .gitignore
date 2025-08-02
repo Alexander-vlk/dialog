@@ -174,3 +174,5 @@ cython_debug/
 .idea
 
 */media/*
+
+dialog_backend/static/
