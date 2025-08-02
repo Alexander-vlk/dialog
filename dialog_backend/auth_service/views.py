@@ -13,10 +13,10 @@ from constants import ONE_DAY, TWO_MONTHS
 class CustomTokenObtainPairView(TokenObtainPairView):
     """APIView для установки токенов пользователю"""
 
-    serializer_class = TokenObtainPairSerializer
+    serializer_class = TokenObtainPairSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes: list = []  # type: ignore
+    authentication_classes: list = []  # type: ignore
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -43,10 +43,10 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class CustomTokenRefreshView(TokenRefreshView):
     """APIView для обновления токенов"""
 
-    serializer_class = TokenRefreshSerializer
+    serializer_class = TokenRefreshSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes: list = []  # type: ignore
+    authentication_classes: list = []  # type: ignore
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
