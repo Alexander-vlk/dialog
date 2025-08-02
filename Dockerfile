@@ -25,5 +25,5 @@ RUN apt-get update && \
     python3 -m venv $VIRTUAL_ENV
 
 WORKDIR /homme/django/dialog_backend
-COPY pyproject.toml poetry.lock /
+COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-interaction --no-root --no-ansi

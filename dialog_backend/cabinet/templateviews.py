@@ -1,10 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django.views.decorators.http import require_http_methods, require_GET
+from django.views.decorators.http import require_GET
 
 from cabinet.models import Rate, Advantage
 from data_tracking.models import DailyLog, Glucose, Pressure, BodyTemperature, WeeklyLog
