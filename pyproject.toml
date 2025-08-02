@@ -44,7 +44,7 @@ django-debug-toolbar = "^5.2.0"
 [tool.mypy]
 ignore_missing_imports = true
 
-[tool.pytest]
+[tool.pytest.ini_options]
 pythonpath = "./dialog_backend"
 DJANGO_SETTINGS_MODULE = "dialog_backend.settings"
 python_files = "tests.py test_*.py *_tests.py"
