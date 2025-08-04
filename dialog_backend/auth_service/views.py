@@ -18,18 +18,23 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     permission_classes: list = []  # type: ignore
     authentication_classes: list = []  # type: ignore
 
+    refresh_token_cookie_name = 'refresh_token'
+
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
+        if self.refresh_token_cookie_name in request.COOKIES:
+            return Response({'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         access_token = serializer.validated_data.get('access')
         refresh_token = serializer.validated_data.get('refresh')
 
-        response = Response({'access': access_token}, status=status.HTTP_200_OK)
+        response = Response({'access': access_token}, status=status.HTTP_301_MOVED_PERMANENTLY)
 
         response.set_cookie(
-            key='refresh_token',
+            key=self.refresh_token_cookie_name,
             value=refresh_token,
             httponly=True,
             secure=not settings.DEBUG,
