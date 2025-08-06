@@ -1,4 +1,7 @@
 from django.conf import settings
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -7,6 +10,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework.response import Response
 from rest_framework import status
 
+from auth_service.models import AppUser
 from constants import ONE_DAY, TWO_MONTHS
 
 
@@ -63,3 +67,14 @@ class CustomTokenRefreshView(TokenRefreshView):
         serializer.is_valid(raise_exception=True)
 
         return Response({'access': serializer.validated_data.get('access')}, status=status.HTTP_200_OK)
+
+
+class HealthCheckAPIView(APIView):
+    """APIView для проверки, что аутентификация работает, и пользователь есть в request.user"""
+
+    authentication_classes: list = [JWTAuthentication]
+    permission_classes: list = [IsAuthenticated]
+
+    def get(self, request):
+        """GET-запрос"""
+        return Response(status=status.HTTP_200_OK)
