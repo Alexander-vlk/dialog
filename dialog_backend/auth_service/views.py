@@ -35,7 +35,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         access_token = serializer.validated_data.get('access')
         refresh_token = serializer.validated_data.get('refresh')
 
-        response = Response({'access': access_token}, status=status.HTTP_301_MOVED_PERMANENTLY)
+        response = Response({'access': access_token}, status=status.HTTP_200_OK)
 
         response.set_cookie(
             key=self.refresh_token_cookie_name,
