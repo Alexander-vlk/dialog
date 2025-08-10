@@ -12,7 +12,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework.response import Response
 from rest_framework import status
 
-from auth_service.models import AppUser
 from constants import ONE_DAY, TWO_MONTHS
 
 
