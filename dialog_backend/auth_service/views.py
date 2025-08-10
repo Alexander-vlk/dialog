@@ -1,7 +1,9 @@
 from django.conf import settings
+from jwt import InvalidTokenError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -67,6 +69,26 @@ class CustomTokenRefreshView(TokenRefreshView):
         serializer.is_valid(raise_exception=True)
 
         return Response({'access': serializer.validated_data.get('access')}, status=status.HTTP_200_OK)
+
+
+class LogoutAPIView(APIView):
+    """APIView для выхода пользователя из профиля"""
+
+    authentication_classes: list = [JWTAuthentication]
+    permission_classes: list = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        """POST-запрос"""
+        refresh_token = request.COOKIES.get('refresh_token')
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except InvalidTokenError:
+            return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+        response = Response(status=status.HTTP_205_RESET_CONTENT)
+        response.delete_cookie('refresh_token')
+        return response
 
 
 class HealthCheckAPIView(APIView):
