@@ -97,6 +97,11 @@ class Feature(AutoDateMixin):
         verbose_name = 'Функция приложения'
         verbose_name_plural = 'Функции приложения'
 
+    def __str__(self):
+        """Строковое представление"""
+        return self.name
+
+
 class MainPageFAQ(AutoDateMixin):
     """Модель FAQ для главной страницы"""
 
