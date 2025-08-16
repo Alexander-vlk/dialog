@@ -93,7 +93,7 @@ class CallToActionBlockView(APIView):
         call_back_action_block = cache.get(CALL_BACK_ACTION_BLOCK_CACHE_KEY)
         if not call_back_action_block:
             call_back_action_block = CallToActionBlock.objects.filter(show_on_main_page=True).first()
-            cache.set(CALL_BACK_ACTION_BLOCK_CACHE_KEY, call_back_action_block, 10000 if settings.DEBUG else 10)
+            cache.set(CALL_BACK_ACTION_BLOCK_CACHE_KEY, call_back_action_block, 10000 if not settings.DEBUG else 10)
 
         return call_back_action_block
 
@@ -125,7 +125,7 @@ class FeatureAPIView(APIView):
         features_queryset = cache.get(FEATURES_CACHE_KEY)
         if not features_queryset:
             features_queryset = Feature.objects.all()[:get_main_page_settings().max_functions_count]
-            cache.set(FEATURES_CACHE_KEY, features_queryset, 10000 if settings.DEBUG else 10)
+            cache.set(FEATURES_CACHE_KEY, features_queryset, 10000 if not settings.DEBUG else 10)
 
         return features_queryset
 
@@ -157,7 +157,7 @@ class HeroActionBlockAPIView(APIView):
         hero_action_block = cache.get(HERO_ACTION_BLOCK_CACHE_KEY)
         if not hero_action_block:
             hero_action_block = HeroActionBlock.objects.filter(show_on_main_page=True).first()
-            cache.set(HERO_ACTION_BLOCK_CACHE_KEY, hero_action_block, 10000 if settings.DEBUG else 10)
+            cache.set(HERO_ACTION_BLOCK_CACHE_KEY, hero_action_block, 10000 if not settings.DEBUG else 10)
 
         return hero_action_block
 
@@ -189,7 +189,7 @@ class MainPageFAQAPIView(APIView):
         faq_queryset = cache.get(MAIN_PAGE_FAQ_CACHE_KEY)
         if not faq_queryset:
             faq_queryset = MainPageFAQ.objects.all()[:get_main_page_settings().max_faqs_count]
-            cache.set(MAIN_PAGE_FAQ_CACHE_KEY, faq_queryset, 10000 if settings.DEBUG else 10)
+            cache.set(MAIN_PAGE_FAQ_CACHE_KEY, faq_queryset, 10000 if not settings.DEBUG else 10)
 
         return faq_queryset
 
@@ -220,7 +220,7 @@ class RateAPIview(APIView):
         rate_queryset = cache.get(RATES_CACHE_KEY)
         if not rate_queryset:
             rate_queryset = Rate.objects.filter(is_visible=True)[:get_main_page_settings().max_reviews_count]
-            cache.set(RATES_CACHE_KEY, rate_queryset, 10000 if settings.DEBUG else 10)
+            cache.set(RATES_CACHE_KEY, rate_queryset, 10000 if not settings.DEBUG else 10)
 
         return rate_queryset
 
@@ -257,6 +257,6 @@ class SliderImageAPIView(APIView):
                 )
                [:get_main_page_settings().max_slider_images]
             )
-            cache.set(SLIDER_IMAGE_CACHE_KEY, faq_queryset, 10000 if settings.DEBUG else 10)
+            cache.set(SLIDER_IMAGE_CACHE_KEY, faq_queryset, 10000 if not settings.DEBUG else 10)
 
         return faq_queryset
