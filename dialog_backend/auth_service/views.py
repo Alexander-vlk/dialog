@@ -1,4 +1,5 @@
 from django.conf import settings
+from drf_spectacular.utils import extend_schema
 from jwt import InvalidTokenError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -12,7 +13,9 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework.response import Response
 from rest_framework import status
 
-from constants import ONE_DAY, TWO_MONTHS
+from auth_service.serializers import AccessTokenResponseSerializer, UserRegistrationRequestSerializer
+from cabinet.constants import USER_SWAGGER_TAG
+from constants import ONE_DAY, TWO_MONTHS, SWAGGER_ERROR_MESSAGES
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -20,8 +23,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
     serializer_class = TokenObtainPairSerializer  # type: ignore
 
-    permission_classes: list = []  # type: ignore
-    authentication_classes: list = []  # type: ignore
+    permission_classes: list = []
+    authentication_classes: list = []
 
     refresh_token_cookie_name = 'refresh_token'
 
@@ -36,7 +39,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         access_token = serializer.validated_data.get('access')
         refresh_token = serializer.validated_data.get('refresh')
 
-        response = Response({'access': access_token}, status=status.HTTP_200_OK)
+        response_serializer = AccessTokenResponseSerializer(instance={'access': access_token})
+        response = Response(response_serializer.data, status.HTTP_200_OK)
 
         response.set_cookie(
             key=self.refresh_token_cookie_name,
@@ -50,13 +54,37 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         return response
 
 
+class UserRegistrationAPIView(APIView):
+    """APIView для регистрации пользователя"""
+
+    permission_classes: list = []
+    authentication_classes: list = []
+
+    serializer_class = AccessTokenResponseSerializer
+
+    @extend_schema(
+        operation_id='Регистрация нового пользователя',
+        description='Регистрация нового пользователя на основе отправленных ему данных и простановка токенов',
+        tags=[USER_SWAGGER_TAG],
+        methods=['POST'],
+        request=UserRegistrationRequestSerializer,
+        responses={
+            status.HTTP_201_CREATED: AccessTokenResponseSerializer,
+            **SWAGGER_ERROR_MESSAGES,
+        }
+    )
+    def post(self, request):
+        """POST-запрос"""
+        return Response(status.HTTP_201_CREATED)
+
+
 class CustomTokenRefreshView(TokenRefreshView):
     """APIView для обновления токенов"""
 
     serializer_class = TokenRefreshSerializer  # type: ignore
 
-    permission_classes: list = []  # type: ignore
-    authentication_classes: list = []  # type: ignore
+    permission_classes: list = []
+    authentication_classes: list = []
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""

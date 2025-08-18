@@ -47,3 +47,9 @@ class AppUserResponseSerializer(serializers.Serializer):
     birth_date = serializers.DateField(help_text='Дата рождения')
     diagnosis_date = serializers.DateField(help_text='Дата постановки диагноза')
     treatment_type = serializers.ChoiceField(help_text='Тип лечения', choices=TREATMENTS_TYPE_CHOICES, allow_blank=True)
+
+
+class AccessTokenResponseSerializer(serializers.Serializer):
+    """Сериализатор для access_token"""
+
+    access = serializers.CharField(max_length=1000, help_text='Access-токен')

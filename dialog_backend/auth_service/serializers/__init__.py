@@ -1,2 +1,7 @@
-from auth_service.serializers.request_serializers import *  # noqa: F403
-from auth_service.serializers.response_serializers import UserResponseSerializer  # noqa: F401
+from .request_serializers import UserRegistrationRequestSerializer
+from .response_serializers import AccessTokenResponseSerializer
+
+__all__ = [
+    'AccessTokenResponseSerializer',
+    'UserRegistrationRequestSerializer',
+]
