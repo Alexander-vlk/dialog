@@ -68,8 +68,10 @@ class UserRegistrationAPIView(APIView):
         serializer = UserRegistrationRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        serializer.save()
+
         new_user_username = serializer.validated_data.get('username')
-        new_user_password = serializer.validated_data.get('password1')
+        new_user_password = serializer.validated_data.get('password')
 
         token_serializer = TokenObtainPairSerializer(
             data={
