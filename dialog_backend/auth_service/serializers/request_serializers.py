@@ -121,4 +121,5 @@ class UserRegistrationRequestSerializer(serializers.ModelSerializer):
             diabetes_type=validated_data['diabetes_type'],
             diagnosis_date=validated_data['diagnosis_date'],
             treatment_type=validated_data['treatment_type'],
+            image=validated_data['image'],
         )

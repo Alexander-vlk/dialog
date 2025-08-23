@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
 from jwt import InvalidTokenError
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -46,6 +47,8 @@ class UserRegistrationAPIView(APIView):
 
     permission_classes: list = []
     authentication_classes: list = []
+
+    parser_classes= [MultiPartParser]
 
     serializer_class = AccessTokenResponseSerializer
 
