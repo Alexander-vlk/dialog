@@ -3,7 +3,7 @@ import datetime
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
 
-from constants import GENDER_CHOICES, TREATMENTS_TYPE_CHOICES, DIABETES_TYPE_CHOICES
+from auth_service.models import AppUser
 
 
 @extend_schema_serializer(
@@ -31,30 +31,15 @@ from constants import GENDER_CHOICES, TREATMENTS_TYPE_CHOICES, DIABETES_TYPE_CHO
         )
     ]
 )
-class UserRegistrationRequestSerializer(serializers.Serializer):
+class UserRegistrationRequestSerializer(serializers.ModelSerializer):
     """Сериализатор запроса для регистрации пользователя"""
-
-    username = serializers.CharField(help_text='Имя пользователя')
-    password1 = serializers.CharField(help_text='Пароль')
-    password2 = serializers.CharField(help_text='Пароль (еще раз)')
-
-    first_name = serializers.CharField(help_text='Имя', max_length=50)
-    last_name = serializers.CharField(help_text='Фамилия', max_length=50)
-    patronymic_name = serializers.CharField(help_text='Отчество', max_length=50)
-
-    phone_number = serializers.CharField(help_text='Номер телефона', max_length=13)
-    email = serializers.EmailField(help_text='Email')
-    gender = serializers.ChoiceField(help_text='Пол', choices=GENDER_CHOICES)
-    birthday = serializers.DateField(help_text='Дата рождения')
-
-    diabetes_type = serializers.ChoiceField(help_text='Тип диабета', choices=DIABETES_TYPE_CHOICES, allow_blank=True)
-    diagnosis_date = serializers.DateField(help_text='Дата постановки диагноза', allow_null=True)
-    treatment_type = serializers.ChoiceField(help_text='Тип лечения', choices=TREATMENTS_TYPE_CHOICES, allow_blank=True)
-
-    profile_image = serializers.ImageField(help_text='Фото профиля', allow_null=True)
 
     remember = serializers.BooleanField(help_text='Запомнить меня')
     agreed_with_privacy = serializers.BooleanField(help_text='Согласен с политикой конфиденциальности')
+
+    class Meta:
+        model = AppUser
+        fields = '__all__'
 
     def validate_birthday(self, birthday):
         """Проверить дату рождения"""

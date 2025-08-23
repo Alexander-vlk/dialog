@@ -1,4 +1,3 @@
-from django.conf import settings
 from drf_spectacular.utils import extend_schema
 from jwt import InvalidTokenError
 from rest_framework.permissions import IsAuthenticated
@@ -13,9 +12,11 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework.response import Response
 from rest_framework import status
 
+from auth_service.constants import REFRESH_TOKEN_COOKIE_NAME
 from auth_service.serializers import AccessTokenResponseSerializer, UserRegistrationRequestSerializer
+from auth_service.services import authenticate_user
 from cabinet.constants import USER_SWAGGER_TAG
-from constants import ONE_DAY, TWO_MONTHS, SWAGGER_ERROR_MESSAGES
+from constants import SWAGGER_ERROR_MESSAGES
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -26,11 +27,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     permission_classes: list = []
     authentication_classes: list = []
 
-    refresh_token_cookie_name = 'refresh_token'
-
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
-        if self.refresh_token_cookie_name in request.COOKIES:
+        if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
             return Response({'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
@@ -39,19 +38,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         access_token = serializer.validated_data.get('access')
         refresh_token = serializer.validated_data.get('refresh')
 
-        response_serializer = AccessTokenResponseSerializer(instance={'access': access_token})
-        response = Response(response_serializer.data, status.HTTP_200_OK)
-
-        response.set_cookie(
-            key=self.refresh_token_cookie_name,
-            value=refresh_token,
-            httponly=True,
-            secure=not settings.DEBUG,
-            samesite='Lax',
-            expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
-        )
-
-        return response
+        return authenticate_user(request, access_token, refresh_token)
 
 
 class UserRegistrationAPIView(APIView):
@@ -75,7 +62,27 @@ class UserRegistrationAPIView(APIView):
     )
     def post(self, request):
         """POST-запрос"""
-        return Response(status.HTTP_201_CREATED)
+        if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
+            return Response({'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = UserRegistrationRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        new_user_username = serializer.validated_data.get('username')
+        new_user_password = serializer.validated_data.get('password1')
+
+        token_serializer = TokenObtainPairSerializer(
+            data={
+                'username': new_user_username,
+                'password': new_user_password,
+            },
+        )
+        token_serializer.is_valid(raise_exception=True)
+
+        access_token = token_serializer.validated_data.get('access')
+        refresh_token = token_serializer.validated_data.get('refresh')
+
+        return authenticate_user(request, access_token, refresh_token)
 
 
 class CustomTokenRefreshView(TokenRefreshView):
