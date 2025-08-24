@@ -18,7 +18,7 @@ from constants import SWAGGER_ERROR_MESSAGES
     },
 )
 class AppUserAPIView(APIView):
-    """APIViwe для данных о пользователе"""
+    """APIView для данных о пользователе"""
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
