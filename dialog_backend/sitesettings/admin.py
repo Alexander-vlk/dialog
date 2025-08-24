@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db import models
+from django import forms
 
 from sitesettings.models.site_settings import MainPageSettings
 from sitesettings.models.main_page import (
@@ -33,7 +35,13 @@ class CallToActionBlockAdmin(admin.ModelAdmin):
         'action_text',
         'show_on_main_page',
     )
+    list_display_links = ['action_text']
     list_filter = ('show_on_main_page',)
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
 
 @admin.register(Feature)
@@ -44,6 +52,11 @@ class FeatureAdmin(admin.ModelAdmin):
         'name',
         'description',
     )
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
 
 @admin.register(HeroActionBlock)
@@ -56,6 +69,11 @@ class HeroActionBlockAdmin(admin.ModelAdmin):
         'show_on_main_page',
     )
     list_filter = ('show_on_main_page',)
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
 
 @admin.register(MainPageFAQ)
@@ -67,6 +85,13 @@ class MainPageFAQAdmin(admin.ModelAdmin):
         'question',
         'answer',
     )
+    list_display_links = ['question']
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
+
 
 @admin.register(SliderImage)
 class SliderImageAdmin(admin.ModelAdmin):
@@ -77,4 +102,10 @@ class SliderImageAdmin(admin.ModelAdmin):
         'alt',
         'show_on_main_page',
     )
+    list_display_links = ['alt']
     list_filter = ('show_on_main_page',)
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }

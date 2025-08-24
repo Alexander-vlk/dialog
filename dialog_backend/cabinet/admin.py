@@ -1,4 +1,6 @@
+from django import forms
 from django.contrib import admin
+from django.db import models
 
 from cabinet.models import Advantage, Allergy, Disease, Rate
 
@@ -9,6 +11,11 @@ class AdvantageAdmin(admin.ModelAdmin):
 
     list_display = ['order_num', 'title', 'description']
     list_display_links = ['title']
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
 
 
@@ -30,6 +37,11 @@ class DiseaseAdmin(admin.ModelAdmin):
 class RateAdmin(admin.ModelAdmin):
     list_display = ['id', 'user_info', 'text', 'is_visible']
     list_display_links = ['id', 'user_info']
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
     @admin.display(description='Пользователь')
     def user_info(self, obj):
