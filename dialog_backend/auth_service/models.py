@@ -47,12 +47,13 @@ class AppUser(AbstractUser, AutoDateMixin):
         blank=True,
     )
 
-    treatment_type = models.CharField(
-        verbose_name="Тип лечения",
-        max_length=20,
-        choices=TREATMENTS_TYPE_CHOICES,
-        default="",
+    treatment_type = models.ForeignKey(
+        "cabinet.TreatmentType",
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
+        verbose_name="Тип лечения",
+        related_name="users",
     )
 
     phone_number = models.CharField(

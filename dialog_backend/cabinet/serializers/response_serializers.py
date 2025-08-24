@@ -1,39 +1,7 @@
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
 
-from cabinet.models import Advantage, Allergy, Disease, Rate
-
-
-class AllergySerializer(serializers.ModelSerializer):
-    """Сериализатор для модели Allergy"""
-
-    class Meta:
-        model = Allergy
-        fields = ("name",)
-
-    def create(self, validated_data):
-        allergy = super().create(validated_data)
-        user = self.context["request"].user
-        if user.is_authenticated:
-            allergy.users.add(user)
-        allergy.save()
-        return allergy
-
-
-class DiseaseSerializer(serializers.ModelSerializer):
-    """Сериализатор для модели Disease"""
-
-    class Meta:
-        model = Disease
-        fields = ("name",)
-
-    def create(self, validated_data):
-        disease = super().create(validated_data)
-        user = self.context["request"].user
-        if user.is_authenticated:
-            disease.users.add(user)
-        disease.save()
-        return disease
+from cabinet.models import Advantage, Rate
 
 
 @extend_schema_serializer(
@@ -53,7 +21,7 @@ class DiseaseSerializer(serializers.ModelSerializer):
         ),
     ],
 )
-class AdvantageSerializer(serializers.ModelSerializer):
+class AdvantageResponseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Advantage"""
 
     image_url = serializers.SerializerMethodField()
@@ -96,9 +64,38 @@ class AdvantageSerializer(serializers.ModelSerializer):
         ),
     ],
 )
-class RateSerializer(serializers.ModelSerializer):
+class RateResponseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Rate"""
 
     class Meta:
         model = Rate
         fields = ("user_info", "text")
+
+
+@extend_schema_serializer(
+    many=True,
+    examples=[
+        OpenApiExample(
+            "Базовый ответ",
+            value=[
+                {
+                    "name": "not_set",
+                    "humanized_name": "Не указывать",
+                },
+                {
+                    "name": "insulin_therapy",
+                    "humanized_name": "Инсулинотерапия",
+                },
+                {
+                    "name": "preparations",
+                    "humanized_name": "Препараты",
+                },
+            ],
+        ),
+    ],
+)
+class TreatmentTypeResponseSerializer(serializers.Serializer):
+    """Сериализатор модели TreatmentType"""
+
+    name = serializers.CharField(help_text="Поле, отправляемое на бекенд")
+    humanized_name = serializers.CharField(help_text="Человекочитаемое название")

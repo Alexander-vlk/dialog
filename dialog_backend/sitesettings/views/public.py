@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from constants import SWAGGER_ERROR_MESSAGES
 from cabinet.constants import ADVANTAGES_CACHE_KEY, RATES_CACHE_KEY
 from cabinet.models import Advantage, Rate
-from cabinet.serializers import AdvantageSerializer, RateSerializer
+from cabinet.serializers import AdvantageResponseSerializer, RateResponseSerializer
 from sitesettings.constants import (
     CALL_BACK_ACTION_BLOCK_CACHE_KEY,
     FEATURES_CACHE_KEY,
@@ -38,7 +38,7 @@ from sitesettings.utils import get_main_page_settings
     tags=[MAIN_PAGE_DATA_TAG],
     methods=["GET"],
     responses={
-        status.HTTP_200_OK: AdvantageSerializer,
+        status.HTTP_200_OK: AdvantageResponseSerializer,
         **SWAGGER_ERROR_MESSAGES,
     },
 )
@@ -48,7 +48,7 @@ class AdvantageAPIView(APIView):
     authentication_classes: list = []
     permission_classes: list = []
 
-    serializer_class = AdvantageSerializer
+    serializer_class = AdvantageResponseSerializer
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
@@ -226,7 +226,7 @@ class MainPageFAQAPIView(APIView):
     tags=[MAIN_PAGE_DATA_TAG],
     methods=["GET"],
     responses={
-        status.HTTP_200_OK: RateSerializer,
+        status.HTTP_200_OK: RateResponseSerializer,
         **SWAGGER_ERROR_MESSAGES,
     },
 )
@@ -236,7 +236,7 @@ class RateAPIview(APIView):
     authentication_classes: list = []
     permission_classes: list = []
 
-    serializer_class = RateSerializer
+    serializer_class = RateResponseSerializer
 
     def get(self, request, *args, **kwargs):
         """GET-запрос"""
