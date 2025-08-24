@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: ruff_check
         name: ruff check
-        entry: ruff check .
+        entry: python -m ruff check .
         exclude: /migrations/|wsgi.py
         language: system
         types: [python]
@@ -12,7 +12,7 @@ repos:
     hooks:
       - id: ruff_format
         name: ruff format
-        entry: ruff format .
+        entry: python -m ruff format .
         exclude: /migrations/|wsgi.py
         language: system
         types: [ python ]
@@ -21,6 +21,6 @@ repos:
     hooks:
       - id: mypy
         name: mypy
-        entry: mypy . --ignore-missing-imports
+        entry: python -m mypy . --ignore-missing-imports
         language: system
         types: [ python ]
