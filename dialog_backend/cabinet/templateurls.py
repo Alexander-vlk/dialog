@@ -8,10 +8,16 @@ from cabinet.templateviews import (
 )
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('cabinet/', cabinet, name='cabinet'),
-
-    path('cabinet/daily_log/filled/', get_daily_log_fill_status, name='get_daily_log_fill_status'),
-
-    path('cabinet/weekly_log/fill/', get_weekly_log_fill_status, name='get_weekly_log_fill_status'),
+    path("", index, name="index"),
+    path("cabinet/", cabinet, name="cabinet"),
+    path(
+        "cabinet/daily_log/filled/",
+        get_daily_log_fill_status,
+        name="get_daily_log_fill_status",
+    ),
+    path(
+        "cabinet/weekly_log/fill/",
+        get_weekly_log_fill_status,
+        name="get_weekly_log_fill_status",
+    ),
 ]

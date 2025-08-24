@@ -9,7 +9,9 @@ from constants import TWO_MONTHS, ONE_DAY
 
 def authenticate_user(request, access_token, refresh_token) -> Response:
     """Аутентифицировать пользователя"""
-    response_serializer = AccessTokenResponseSerializer(instance={'access': access_token})
+    response_serializer = AccessTokenResponseSerializer(
+        instance={"access": access_token}
+    )
     response = Response(response_serializer.data, status.HTTP_201_CREATED)
 
     response.set_cookie(
@@ -17,8 +19,8 @@ def authenticate_user(request, access_token, refresh_token) -> Response:
         value=refresh_token,
         httponly=True,
         secure=not settings.DEBUG,
-        samesite='Lax',
-        expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
+        samesite="Lax",
+        expires=TWO_MONTHS if request.data.get("remember") else ONE_DAY,
     )
 
     return response

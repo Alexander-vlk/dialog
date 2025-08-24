@@ -9,11 +9,11 @@ class AllergySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Allergy
-        fields = ('name',)
+        fields = ("name",)
 
     def create(self, validated_data):
         allergy = super().create(validated_data)
-        user = self.context['request'].user
+        user = self.context["request"].user
         if user.is_authenticated:
             allergy.users.add(user)
         allergy.save()
@@ -25,11 +25,11 @@ class DiseaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Disease
-        fields = ('name',)
+        fields = ("name",)
 
     def create(self, validated_data):
         disease = super().create(validated_data)
-        user = self.context['request'].user
+        user = self.context["request"].user
         if user.is_authenticated:
             disease.users.add(user)
         disease.save()
@@ -40,14 +40,14 @@ class DiseaseSerializer(serializers.ModelSerializer):
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value=[
                 {
-                    'title': 'Преимущество 1',
-                    'description': 'Описание преимущества',
-                    'image_url': 'https://dialog.com/media/advantages/advantage1.png',
-                    'order_num': 1,
+                    "title": "Преимущество 1",
+                    "description": "Описание преимущества",
+                    "image_url": "https://dialog.com/media/advantages/advantage1.png",
+                    "order_num": 1,
                 },
             ],
         ),
@@ -60,37 +60,37 @@ class AdvantageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advantage
-        fields = ('title', 'description', 'image_url', 'order_num')
+        fields = ("title", "description", "image_url", "order_num")
 
     def get_image_url(self, obj):
         """Получить url изображения"""
-        return obj.image.url if obj.image else ''
+        return obj.image.url if obj.image else ""
 
 
 @extend_schema_serializer(
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value=[
                 {
-                    'user_info': 'Тестина Тестова',
-                    'text': 'Текст отзыва',
+                    "user_info": "Тестина Тестова",
+                    "text": "Текст отзыва",
                 },
                 {
-                    'user_info': 'Тестина',
-                    'text': 'Текст отзыва',
+                    "user_info": "Тестина",
+                    "text": "Текст отзыва",
                 },
             ],
         ),
         OpenApiExample(
-            'Анонимный отзыв',
-            description='Пример ответа от сервера, если отзыв оставлен анонимным пользователем',
+            "Анонимный отзыв",
+            description="Пример ответа от сервера, если отзыв оставлен анонимным пользователем",
             value=[
                 {
-                    'user_info': 'Аноним',
-                    'text': 'Текст отзыва',
+                    "user_info": "Аноним",
+                    "text": "Текст отзыва",
                 },
             ],
         ),
@@ -101,4 +101,4 @@ class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rate
-        fields = ('user_info', 'text')
+        fields = ("user_info", "text")

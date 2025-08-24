@@ -1,34 +1,51 @@
-
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
-                                   OpenApiResponse, extend_schema)
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+)
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from constants import (AVERAGE_BJU_SWAGGER_TAG, BODY_TEMPERATURE_SWAGGER_TAG,
-                       GLUCOSE_SWAGGER_TAG, HEALTH_SWAGGER_TAG,
-                       PRESSURE_SWAGGER_TAG, SWAGGER_ERROR_MESSAGES,
-                       WEEKLY_LOG_SWAGGER_TAG)
-from data_tracking.models import (BodyTemperature, Glucose, MonthlyLog,
-                                  Pressure, WeeklyLog)
-from data_tracking.serializers import (AverageBJUSerializer,
-                                       AverageGlucoseSerializer,
-                                       BodyTemperatureSerializer,
-                                       CaloriesSerializer, GlucoseSerializer,
-                                       HealthSerializer, PressureSerializer,
-                                       WeeklyLogSerializer)
+from constants import (
+    AVERAGE_BJU_SWAGGER_TAG,
+    BODY_TEMPERATURE_SWAGGER_TAG,
+    GLUCOSE_SWAGGER_TAG,
+    HEALTH_SWAGGER_TAG,
+    PRESSURE_SWAGGER_TAG,
+    SWAGGER_ERROR_MESSAGES,
+    WEEKLY_LOG_SWAGGER_TAG,
+)
+from data_tracking.models import (
+    BodyTemperature,
+    Glucose,
+    MonthlyLog,
+    Pressure,
+    WeeklyLog,
+)
+from data_tracking.serializers import (
+    AverageBJUSerializer,
+    AverageGlucoseSerializer,
+    BodyTemperatureSerializer,
+    CaloriesSerializer,
+    GlucoseSerializer,
+    HealthSerializer,
+    PressureSerializer,
+    WeeklyLogSerializer,
+)
 
 
 @extend_schema(
     tags=[WEEKLY_LOG_SWAGGER_TAG],
-    methods=['GET'],
+    methods=["GET"],
     responses={
         status.HTTP_200_OK: WeeklyLogSerializer,
         **SWAGGER_ERROR_MESSAGES,
-    }
+    },
 )
 class WeeklyLogAPIView(APIView):
     """APIView для еженедельного отчета"""
@@ -37,13 +54,15 @@ class WeeklyLogAPIView(APIView):
     serializer_class = WeeklyLogSerializer
 
     @extend_schema(
-        operation_id='Получение информации о недельном отчете',
+        operation_id="Получение информации о недельном отчете",
         tags=[WEEKLY_LOG_SWAGGER_TAG],
-        description='Получение данных о текущем недельном отчете',
+        description="Получение данных о текущем недельном отчете",
     )
     def get(self, request):
         """GET-запрос"""
-        serializer = self.serializer_class(self.get_queryset(), context={'user': request.user})
+        serializer = self.serializer_class(
+            self.get_queryset(), context={"user": request.user}
+        )
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -58,12 +77,12 @@ class WeeklyLogAPIView(APIView):
 
 @extend_schema(
     tags=[PRESSURE_SWAGGER_TAG],
-    methods=['OPTIONS', 'GET', 'POST'],
+    methods=["OPTIONS", "GET", "POST"],
     responses={
         status.HTTP_200_OK: PressureSerializer,
         **SWAGGER_ERROR_MESSAGES,
     },
-    description='Данные о давлении',
+    description="Данные о давлении",
 )
 class PressureAPIView(APIView):
     """APIView для получения данных о давлении"""
@@ -73,54 +92,54 @@ class PressureAPIView(APIView):
     serializer_class = PressureSerializer
 
     @extend_schema(
-        operation_id='Получение данных о давлении',
+        operation_id="Получение данных о давлении",
         tags=[PRESSURE_SWAGGER_TAG],
         parameters=[
             OpenApiParameter(
-                'time_period',
-                description='Период, за который должны вернуться данные о давлении',
-                enum=['today', 'week', 'month'],
+                "time_period",
+                description="Период, за который должны вернуться данные о давлении",
+                enum=["today", "week", "month"],
             ),
             OpenApiParameter(
-                'id',
+                "id",
                 description='Идентификатор объекта, который нужно получить (для параметра "today" не требуется',
                 required=False,
-            )
+            ),
         ],
         examples=[
             OpenApiExample(
-                'Ответ с tima_period=today',
+                "Ответ с tima_period=today",
                 value=[
                     {
-                        'created_at': '10:00',
-                        'systolic': 120,
-                        'diastolic': 80,
+                        "created_at": "10:00",
+                        "systolic": 120,
+                        "diastolic": 80,
                     },
                     {
-                        'created_at': '20:00',
-                        'systolic': 130,
-                        'diastolic': 85,
-                    }
-                ]
+                        "created_at": "20:00",
+                        "systolic": 130,
+                        "diastolic": 85,
+                    },
+                ],
             ),
             OpenApiExample(
-                'Ответ без параметров',
-                description='Возвращает вообще все данные о давлении за все время',
+                "Ответ без параметров",
+                description="Возвращает вообще все данные о давлении за все время",
                 value=[
                     {
-                        'created_at': '10:00',
-                        'systolic': 120,
-                        'diastolic': 80,
+                        "created_at": "10:00",
+                        "systolic": 120,
+                        "diastolic": 80,
                     },
                     {
-                        'created_at': '20:00',
-                        'systolic': 130,
-                        'diastolic': 85,
+                        "created_at": "20:00",
+                        "systolic": 130,
+                        "diastolic": 85,
                     },
                     {
-                        'created_at': '20:00',
-                        'systolic': 110,
-                        'diastolic': 75,
+                        "created_at": "20:00",
+                        "systolic": 110,
+                        "diastolic": 75,
                     },
                 ],
             ),
@@ -133,21 +152,23 @@ class PressureAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(
-        operation_id='Отправка данных о давлении',
+        operation_id="Отправка данных о давлении",
         tags=[PRESSURE_SWAGGER_TAG],
         examples=[
             OpenApiExample(
-                'Отправка данных о давлении',
+                "Отправка данных о давлении",
                 value={
-                    'systolic': 120,
-                    'diastolic': 80,
+                    "systolic": 120,
+                    "diastolic": 80,
                 },
             ),
         ],
     )
     def post(self, request):
         """POST-запрос"""
-        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        serializer = self.serializer_class(
+            data=request.data, context={"user": request.user}
+        )
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -157,7 +178,10 @@ class PressureAPIView(APIView):
         """OPTIONS-запрос"""
 
         response_data = {
-            'show_pressure_plot': Pressure.objects.filter(created_at=timezone.now()).count() >= 2,
+            "show_pressure_plot": Pressure.objects.filter(
+                created_at=timezone.now()
+            ).count()
+            >= 2,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -169,18 +193,20 @@ class PressureAPIView(APIView):
 
         queryset = Pressure.objects.filter(user=request.user)
 
-        time_period = query_params.get('time_period')
-        if time_period == 'today':
+        time_period = query_params.get("time_period")
+        if time_period == "today":
             queryset = queryset.filter(daily_log__date=timezone.now())
-        elif time_period == 'week':
+        elif time_period == "week":
             weekly_log = get_object_or_404(
                 WeeklyLog,
                 user=request.user,
-                id=query_params.get('id'),
+                id=query_params.get("id"),
             )
             queryset = queryset.filter(daily_log__weekly_log=weekly_log)
-        elif time_period == 'month':
-            monthly_log = get_object_or_404(MonthlyLog, user=request.user, id=query_params.get('id'))
+        elif time_period == "month":
+            monthly_log = get_object_or_404(
+                MonthlyLog, user=request.user, id=query_params.get("id")
+            )
             queryset = queryset.filter(daily_log__weekly_log__monthly_log=monthly_log)
 
         return queryset
@@ -188,12 +214,12 @@ class PressureAPIView(APIView):
 
 @extend_schema(
     tags=[GLUCOSE_SWAGGER_TAG],
-    methods=['OPTIONS', 'GET', 'POST'],
+    methods=["OPTIONS", "GET", "POST"],
     responses={
         status.HTTP_200_OK: GlucoseSerializer,
         **SWAGGER_ERROR_MESSAGES,
     },
-    description='Process body temperature data',
+    description="Process body temperature data",
 )
 class GlucoseAPIView(APIView):
     """APIView для получения данных о глюкозе"""
@@ -202,49 +228,49 @@ class GlucoseAPIView(APIView):
     serializer_class = GlucoseSerializer
 
     @extend_schema(
-        operation_id='Получение данных о глюкозе (уровне сахара в крови)',
+        operation_id="Получение данных о глюкозе (уровне сахара в крови)",
         tags=[GLUCOSE_SWAGGER_TAG],
         parameters=[
             OpenApiParameter(
-                'time_period',
-                description='Период, за который должны вернуться данные о глюкозе (уровне сахара в крови)',
-                enum=['today', 'week', 'month'],
+                "time_period",
+                description="Период, за который должны вернуться данные о глюкозе (уровне сахара в крови)",
+                enum=["today", "week", "month"],
             ),
             OpenApiParameter(
-                'id',
+                "id",
                 description='Идентификатор объекта, который нужно получить (для параметра "today" не требуется',
                 required=False,
             ),
         ],
         examples=[
             OpenApiExample(
-                'Ответ с tima_period=today',
+                "Ответ с tima_period=today",
                 value=[
                     {
-                        'created_at': '10:00',
-                        'level': 3.6,
+                        "created_at": "10:00",
+                        "level": 3.6,
                     },
                     {
-                        'created_at': '20:00',
-                        'level': 3.6,
+                        "created_at": "20:00",
+                        "level": 3.6,
                     },
                 ],
             ),
             OpenApiExample(
-                'Ответ без параметров',
-                description='Возвращает вообще все данные о давлении за все время',
+                "Ответ без параметров",
+                description="Возвращает вообще все данные о давлении за все время",
                 value=[
                     {
-                        'created_at': '10:00',
-                        'level': 3.6,
+                        "created_at": "10:00",
+                        "level": 3.6,
                     },
                     {
-                        'created_at': '20:00',
-                        'level': 3.6,
+                        "created_at": "20:00",
+                        "level": 3.6,
                     },
                     {
-                        'created_at': '20:00',
-                        'level': 3.6,
+                        "created_at": "20:00",
+                        "level": 3.6,
                     },
                 ],
             ),
@@ -257,20 +283,22 @@ class GlucoseAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(
-        operation_id='Обработка данных о глюкозе (уровне сахара в крови)',
+        operation_id="Обработка данных о глюкозе (уровне сахара в крови)",
         tags=[GLUCOSE_SWAGGER_TAG],
         examples=[
             OpenApiExample(
-                'Пример входных данных',
+                "Пример входных данных",
                 value={
-                    'level': 3.6,
+                    "level": 3.6,
                 },
             ),
         ],
     )
     def post(self, request):
         """POST-запрос"""
-        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        serializer = self.serializer_class(
+            data=request.data, context={"user": request.user}
+        )
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -280,7 +308,10 @@ class GlucoseAPIView(APIView):
         """OPTIONS-запрос"""
 
         response_data = {
-            'show_pressure_plot': Glucose.objects.filter(created_at=timezone.now()).count() >= 2,
+            "show_pressure_plot": Glucose.objects.filter(
+                created_at=timezone.now()
+            ).count()
+            >= 2,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -292,21 +323,21 @@ class GlucoseAPIView(APIView):
 
         queryset = Glucose.objects.filter(user=request.user)
 
-        time_period = query_params.get('time_period')
-        if time_period == 'today':
+        time_period = query_params.get("time_period")
+        if time_period == "today":
             queryset = queryset.filter(daily_log__date=timezone.now())
-        elif time_period == 'week':
+        elif time_period == "week":
             weekly_log = get_object_or_404(
                 WeeklyLog,
                 user=request.user,
-                id=query_params.get('id'),
+                id=query_params.get("id"),
             )
             queryset = queryset.filter(daily_log__weekly_log=weekly_log)
-        elif time_period == 'month':
+        elif time_period == "month":
             monthly_log = get_object_or_404(
                 MonthlyLog,
                 user=request.user,
-                id=query_params.get('id'),
+                id=query_params.get("id"),
             )
             weekly_logs = WeeklyLog.objects.filter(monthly_log=monthly_log)
             queryset = queryset.filter(daily_log__weekly_log__in=weekly_logs)
@@ -316,12 +347,12 @@ class GlucoseAPIView(APIView):
 
 @extend_schema(
     tags=[BODY_TEMPERATURE_SWAGGER_TAG],
-    methods=['OPTIONS', 'GET', 'POST'],
+    methods=["OPTIONS", "GET", "POST"],
     responses={
         status.HTTP_200_OK: BodyTemperatureSerializer,
         **SWAGGER_ERROR_MESSAGES,
     },
-    description='Process body temperature data',
+    description="Process body temperature data",
 )
 class BodyTemperatureAPIView(APIView):
     """APIView для получения данных о температуре тела"""
@@ -330,11 +361,11 @@ class BodyTemperatureAPIView(APIView):
     serializer_class = BodyTemperatureSerializer
 
     @extend_schema(
-        operation_id='get_body_temperature_data',
+        operation_id="get_body_temperature_data",
         tags=[BODY_TEMPERATURE_SWAGGER_TAG],
-        description='Returns list of data about body temperature',
+        description="Returns list of data about body temperature",
         parameters=[
-            OpenApiParameter('time_period'),
+            OpenApiParameter("time_period"),
         ],
     )
     def get(self, request):
@@ -344,17 +375,21 @@ class BodyTemperatureAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(
-        operation_id='create_body_temperature_data',
+        operation_id="create_body_temperature_data",
         tags=[BODY_TEMPERATURE_SWAGGER_TAG],
-        description='Create new body temperature data',
+        description="Create new body temperature data",
         responses={
-            status.HTTP_201_CREATED: OpenApiResponse(description='Successfully created'),
+            status.HTTP_201_CREATED: OpenApiResponse(
+                description="Successfully created"
+            ),
             **SWAGGER_ERROR_MESSAGES,
         },
     )
     def post(self, request):
         """POST-запрос"""
-        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        serializer = self.serializer_class(
+            data=request.data, context={"user": request.user}
+        )
 
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -364,7 +399,10 @@ class BodyTemperatureAPIView(APIView):
         """OPTIONS-запрос"""
 
         response_data = {
-            'show_pressure_plot': BodyTemperature.objects.filter(created_at=timezone.now()).count() >= 2,
+            "show_pressure_plot": BodyTemperature.objects.filter(
+                created_at=timezone.now()
+            ).count()
+            >= 2,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -376,8 +414,8 @@ class BodyTemperatureAPIView(APIView):
 
         queryset = BodyTemperature.objects.filter(user=request.user)
 
-        time_period = query_params.get('time_period')
-        if time_period == 'today':
+        time_period = query_params.get("time_period")
+        if time_period == "today":
             queryset = queryset.filter(daily_log__date=timezone.now())
 
         return queryset
@@ -385,12 +423,12 @@ class BodyTemperatureAPIView(APIView):
 
 @extend_schema(
     tags=[WEEKLY_LOG_SWAGGER_TAG],
-    methods=['GET'],
-    description='Получение данных о калориях за неделю',
+    methods=["GET"],
+    description="Получение данных о калориях за неделю",
     responses={
         status.HTTP_200_OK: AverageGlucoseSerializer,
         **SWAGGER_ERROR_MESSAGES,
-    }
+    },
 )
 class CaloriesAPIView(APIView):
     """APIView для получения данных о калориях"""
@@ -399,7 +437,7 @@ class CaloriesAPIView(APIView):
     serializer_class = CaloriesSerializer
 
     @extend_schema(
-        operation_id='Получение списка данных о калориях за неделю',
+        operation_id="Получение списка данных о калориях за неделю",
         tags=[WEEKLY_LOG_SWAGGER_TAG],
     )
     def get(self, request):
@@ -411,19 +449,21 @@ class CaloriesAPIView(APIView):
             week_end__gt=timezone.now(),
         )
 
-        serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
+        serializer = self.serializer_class(
+            current_weekly_log, context={"user": request.user}
+        )
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(
     tags=[GLUCOSE_SWAGGER_TAG],
-    methods=['GET'],
-    description='Получение среднего значения глюкозы за указанный период',
+    methods=["GET"],
+    description="Получение среднего значения глюкозы за указанный период",
     responses={
         status.HTTP_200_OK: AverageGlucoseSerializer,
         **SWAGGER_ERROR_MESSAGES,
-    }
+    },
 )
 class AverageGlucoseDataAPIView(APIView):
     """APIView получения данных о средней глюкозе за указанный период"""
@@ -432,7 +472,7 @@ class AverageGlucoseDataAPIView(APIView):
     serializer_class = AverageGlucoseSerializer
 
     @extend_schema(
-        operation_id='Получение списка данных о среднем уровне глюкозы за день за указанный период',
+        operation_id="Получение списка данных о среднем уровне глюкозы за день за указанный период",
         tags=[GLUCOSE_SWAGGER_TAG],
     )
     def get(self, request):
@@ -443,18 +483,20 @@ class AverageGlucoseDataAPIView(APIView):
             week_start__lte=timezone.now(),
             week_end__gt=timezone.now(),
         )
-        serializer = self.serializer_class(current_weekly_log, context={'user': request.user})
+        serializer = self.serializer_class(
+            current_weekly_log, context={"user": request.user}
+        )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(
     tags=[AVERAGE_BJU_SWAGGER_TAG],
-    methods=['GET'],
-    description='Получение информации о среднем БЖУ за месяц',
+    methods=["GET"],
+    description="Получение информации о среднем БЖУ за месяц",
     responses={
         status.HTTP_200_OK: AverageBJUSerializer,
         **SWAGGER_ERROR_MESSAGES,
-    }
+    },
 )
 class AvgBJUApiView(APIView):
     """APIView получения данных о среднем БЖУ за месяц"""
@@ -463,7 +505,7 @@ class AvgBJUApiView(APIView):
     serializer_class = AverageBJUSerializer
 
     @extend_schema(
-        operation_id='Получение данных о средних значениях БЖУ за месяц',
+        operation_id="Получение данных о средних значениях БЖУ за месяц",
         tags=[AVERAGE_BJU_SWAGGER_TAG],
     )
     def get(self, request):
@@ -471,20 +513,20 @@ class AvgBJUApiView(APIView):
         monthly_log = get_object_or_404(
             MonthlyLog,
             user=request.user,
-            id=request.query_params.get('id'),
+            id=request.query_params.get("id"),
         )
-        serializer = self.serializer_class(monthly_log, context={'user': request.user})
+        serializer = self.serializer_class(monthly_log, context={"user": request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(
     tags=[HEALTH_SWAGGER_TAG],
-    methods=['GET'],
-    description='Получение информации о самочувствии',
+    methods=["GET"],
+    description="Получение информации о самочувствии",
     responses={
         status.HTTP_200_OK: HealthSerializer,
         **SWAGGER_ERROR_MESSAGES,
-    }
+    },
 )
 class HealthAPIView(APIView):
     """APIView для получения данных о самочувствии"""
@@ -493,7 +535,7 @@ class HealthAPIView(APIView):
     serializer_class = HealthSerializer
 
     @extend_schema(
-        operation_id='Получение данных о самочувствии',
+        operation_id="Получение данных о самочувствии",
         tags=[HEALTH_SWAGGER_TAG],
     )
     def get(self, request):
@@ -501,9 +543,9 @@ class HealthAPIView(APIView):
         monthly_log = get_object_or_404(
             MonthlyLog,
             user=request.user,
-            id=request.query_params.get('id'),
+            id=request.query_params.get("id"),
         )
-        serializer = HealthSerializer(context={'user': request.user})
+        serializer = HealthSerializer(context={"user": request.user})
         data = serializer.get_stats(monthly_log)
         response = HealthSerializer(data, many=True)
 

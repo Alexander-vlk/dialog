@@ -1,7 +1,7 @@
-MAIN_PAGE_DATA_TAG = 'Данные для главной страницы'
-CALL_BACK_ACTION_BLOCK_CACHE_KEY = 'main_page:call_back_action_block:v2'
-FEATURES_CACHE_KEY = 'main_page:features:v2'
-HERO_ACTION_BLOCK_CACHE_KEY = 'main_page:hero_action_block:v2'
-MAIN_PAGE_FAQ_CACHE_KEY = 'main_page:faq:v3'
-SLIDER_IMAGE_CACHE_KEY = 'main_page:slider_images:v3'
-MAIN_PAGE_SETTINGS_CACHE_KEY = 'main_page:settings:v2'
+MAIN_PAGE_DATA_TAG = "Данные для главной страницы"
+CALL_BACK_ACTION_BLOCK_CACHE_KEY = "main_page:call_back_action_block:v2"
+FEATURES_CACHE_KEY = "main_page:features:v2"
+HERO_ACTION_BLOCK_CACHE_KEY = "main_page:hero_action_block:v2"
+MAIN_PAGE_FAQ_CACHE_KEY = "main_page:faq:v3"
+SLIDER_IMAGE_CACHE_KEY = "main_page:slider_images:v3"
+MAIN_PAGE_SETTINGS_CACHE_KEY = "main_page:settings:v2"

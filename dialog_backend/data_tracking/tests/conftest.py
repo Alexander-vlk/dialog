@@ -1,6 +1,10 @@
 import pytest
 
-from data_tracking.tests.factories import DailyLogFactory, MonthlyLogFactory, WeeklyLogFactory
+from data_tracking.tests.factories import (
+    DailyLogFactory,
+    MonthlyLogFactory,
+    WeeklyLogFactory,
+)
 
 
 @pytest.fixture

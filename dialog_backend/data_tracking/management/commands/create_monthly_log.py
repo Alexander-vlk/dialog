@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Метод выполнения команды"""
-        logger.info('Start command create_monthly_log')
+        logger.info("Start command create_monthly_log")
 
         users = AppUser.objects.filter(
             Q(is_staff=False) | Q(is_superuser=True),
@@ -30,9 +30,11 @@ class Command(BaseCommand):
                 month=timezone.now().month,
             )
             for user in users
-            if not MonthlyLog.objects.filter(user=user, month=timezone.now().month).exists()
+            if not MonthlyLog.objects.filter(
+                user=user, month=timezone.now().month
+            ).exists()
         ]
 
         MonthlyLog.objects.bulk_create(monthly_logs, batch_size=BATCH_SIZE)
 
-        logger.info('Finish command create_monthly_log')
+        logger.info("Finish command create_monthly_log")

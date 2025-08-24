@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from data_tracking.models import MonthlyLog, WeeklyLog, DailyLog
 
+
 def create_logs_for_new_user(user: User):
     """Создает отчеты для нового пользователя"""
     monthly_log = MonthlyLog.objects.create(

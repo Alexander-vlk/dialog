@@ -7,7 +7,7 @@ router = SimpleRouter()
 
 
 urlpatterns = [
-    path('api/users/', AppUserAPIView.as_view(), name='user_me'),
+    path("api/users/", AppUserAPIView.as_view(), name="user_me"),
 ]
 
 urlpatterns.extend(router.urls)

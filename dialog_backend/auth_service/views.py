@@ -9,12 +9,18 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer,
+    TokenRefreshSerializer,
+)
 from rest_framework.response import Response
 from rest_framework import status
 
 from auth_service.constants import REFRESH_TOKEN_COOKIE_NAME
-from auth_service.serializers import AccessTokenResponseSerializer, UserRegistrationRequestSerializer
+from auth_service.serializers import (
+    AccessTokenResponseSerializer,
+    UserRegistrationRequestSerializer,
+)
 from auth_service.services import authenticate_user
 from cabinet.constants import USER_SWAGGER_TAG
 from constants import SWAGGER_ERROR_MESSAGES
@@ -31,13 +37,15 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
         if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
-            return Response({'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "already_authenticated"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        access_token = serializer.validated_data.get('access')
-        refresh_token = serializer.validated_data.get('refresh')
+        access_token = serializer.validated_data.get("access")
+        refresh_token = serializer.validated_data.get("refresh")
 
         return authenticate_user(request, access_token, refresh_token)
 
@@ -48,44 +56,46 @@ class UserRegistrationAPIView(APIView):
     permission_classes: list = []
     authentication_classes: list = []
 
-    parser_classes= [MultiPartParser]
+    parser_classes = [MultiPartParser]
 
     serializer_class = AccessTokenResponseSerializer
 
     @extend_schema(
-        operation_id='Регистрация нового пользователя',
-        description='Регистрация нового пользователя на основе отправленных ему данных и простановка токенов',
+        operation_id="Регистрация нового пользователя",
+        description="Регистрация нового пользователя на основе отправленных ему данных и простановка токенов",
         tags=[USER_SWAGGER_TAG],
-        methods=['POST'],
+        methods=["POST"],
         request=UserRegistrationRequestSerializer,
         responses={
             status.HTTP_201_CREATED: AccessTokenResponseSerializer,
             **SWAGGER_ERROR_MESSAGES,
-        }
+        },
     )
     def post(self, request):
         """POST-запрос"""
         if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
-            return Response({'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "already_authenticated"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         serializer = UserRegistrationRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
-        new_user_username = serializer.validated_data.get('username')
-        new_user_password = serializer.validated_data.get('password')
+        new_user_username = serializer.validated_data.get("username")
+        new_user_password = serializer.validated_data.get("password")
 
         token_serializer = TokenObtainPairSerializer(
             data={
-                'username': new_user_username,
-                'password': new_user_password,
+                "username": new_user_username,
+                "password": new_user_password,
             },
         )
         token_serializer.is_valid(raise_exception=True)
 
-        access_token = token_serializer.validated_data.get('access')
-        refresh_token = token_serializer.validated_data.get('refresh')
+        access_token = token_serializer.validated_data.get("access")
+        refresh_token = token_serializer.validated_data.get("refresh")
 
         return authenticate_user(request, access_token, refresh_token)
 
@@ -100,14 +110,17 @@ class CustomTokenRefreshView(TokenRefreshView):
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
-        refresh_token = request.COOKIES.get('refresh_token')
+        refresh_token = request.COOKIES.get("refresh_token")
         if not refresh_token:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        serializer = self.get_serializer(data={'refresh': refresh_token})
+        serializer = self.get_serializer(data={"refresh": refresh_token})
         serializer.is_valid(raise_exception=True)
 
-        return Response({'access': serializer.validated_data.get('access')}, status=status.HTTP_200_OK)
+        return Response(
+            {"access": serializer.validated_data.get("access")},
+            status=status.HTTP_200_OK,
+        )
 
 
 class LogoutAPIView(APIView):
@@ -118,15 +131,17 @@ class LogoutAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
-        refresh_token = request.COOKIES.get('refresh_token')
+        refresh_token = request.COOKIES.get("refresh_token")
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
         except InvalidTokenError:
-            return Response({'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         response = Response(status=status.HTTP_205_RESET_CONTENT)
-        response.delete_cookie('refresh_token')
+        response.delete_cookie("refresh_token")
         return response
 
 

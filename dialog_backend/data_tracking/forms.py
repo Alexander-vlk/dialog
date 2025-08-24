@@ -7,7 +7,7 @@ from data_tracking.models import (
     MonthlyLog,
     Glucose,
     Pressure,
-    BodyTemperature
+    BodyTemperature,
 )
 
 
@@ -17,16 +17,24 @@ class MonthlyLogForm(forms.ModelForm):
     class Meta:
         model = MonthlyLog
         fields = (
-            'hemoglobin',
-            'cholesterol',
-            'lipid_profile',
-            'microalbuminuria',
+            "hemoglobin",
+            "cholesterol",
+            "lipid_profile",
+            "microalbuminuria",
         )
         widgets = {
-            'hemoglobin': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 1000}),
-            'cholesterol': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
-            'lipid_profile': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
-            'microalbuminuria': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
+            "hemoglobin": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "step": 0.1, "min": 0, "max": 1000}
+            ),
+            "cholesterol": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "step": 0.1, "min": 0, "max": 100}
+            ),
+            "lipid_profile": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "step": 0.1, "min": 0, "max": 100}
+            ),
+            "microalbuminuria": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "step": 0.1, "min": 0, "max": 100}
+            ),
         }
 
 
@@ -36,14 +44,20 @@ class WeeklyLogForm(forms.ModelForm):
     class Meta:
         model = WeeklyLog
         fields = (
-            'weight',
-            'bmi',
-            'ketones',
+            "weight",
+            "bmi",
+            "ketones",
         )
         widgets = {
-            'weight': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'min': 0, 'max': 1000}),
-            'bmi': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'step': 0.1, 'min': 0, 'max': 100}),
-            'ketones': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS, 'min': 0, 'max': 10}),
+            "weight": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "min": 0, "max": 1000}
+            ),
+            "bmi": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "step": 0.1, "min": 0, "max": 100}
+            ),
+            "ketones": forms.NumberInput(
+                attrs={"class": TEXT_INPUT_CLASS, "min": 0, "max": 10}
+            ),
         }
 
 
@@ -53,25 +67,25 @@ class DailyLogForm(forms.ModelForm):
     class Meta:
         model = DailyLog
         fields = (
-            'calories_count',
-            'proteins_count',
-            'fats_count',
-            'carbs_count',
-            'mood',
-            'health',
-            'physical_activity',
-            'additional_info',
+            "calories_count",
+            "proteins_count",
+            "fats_count",
+            "carbs_count",
+            "mood",
+            "health",
+            "physical_activity",
+            "additional_info",
         )
 
         widgets = {
-            'calories_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
-            'proteins_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
-            'fats_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
-            'carbs_count': forms.NumberInput(attrs={'class': TEXT_INPUT_CLASS}),
-            'mood': forms.Select(attrs={'class': SELECT_INPUT_CLASS}),
-            'health': forms.SelectMultiple(attrs={'class': SELECT_INPUT_CLASS}),
-            'physical_activity': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
-            'additional_info': forms.Textarea(attrs={'class': TEXTAREA_INPUT_CLASS}),
+            "calories_count": forms.NumberInput(attrs={"class": TEXT_INPUT_CLASS}),
+            "proteins_count": forms.NumberInput(attrs={"class": TEXT_INPUT_CLASS}),
+            "fats_count": forms.NumberInput(attrs={"class": TEXT_INPUT_CLASS}),
+            "carbs_count": forms.NumberInput(attrs={"class": TEXT_INPUT_CLASS}),
+            "mood": forms.Select(attrs={"class": SELECT_INPUT_CLASS}),
+            "health": forms.SelectMultiple(attrs={"class": SELECT_INPUT_CLASS}),
+            "physical_activity": forms.Textarea(attrs={"class": TEXTAREA_INPUT_CLASS}),
+            "additional_info": forms.Textarea(attrs={"class": TEXTAREA_INPUT_CLASS}),
         }
 
 
@@ -80,7 +94,7 @@ class GlucoseForm(forms.ModelForm):
 
     class Meta:
         model = Glucose
-        fields = ('level',)
+        fields = ("level",)
 
 
 class PressureForm(forms.ModelForm):
@@ -88,7 +102,7 @@ class PressureForm(forms.ModelForm):
 
     class Meta:
         model = Pressure
-        fields = ('systolic', 'diastolic')
+        fields = ("systolic", "diastolic")
 
 
 class BodyTemperatureForm(forms.ModelForm):
@@ -96,4 +110,4 @@ class BodyTemperatureForm(forms.ModelForm):
 
     class Meta:
         model = BodyTemperature
-        fields = ('temperature',)
+        fields = ("temperature",)

@@ -6,7 +6,7 @@ from rest_framework import serializers
 def drf_validate_password(password, password_repeat) -> None:
     """Проверить пароль"""
     if password != password_repeat:
-        raise serializers.ValidationError('Пароли не совпадают')
+        raise serializers.ValidationError("Пароли не совпадают")
 
     try:
         validate_password(password)

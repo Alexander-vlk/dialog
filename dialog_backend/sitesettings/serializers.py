@@ -15,12 +15,12 @@ from sitesettings.models.main_page import (
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value={
-                'action_text': 'Начните следить за своим здоровьем уже сегодня!',
-                'short_description': 'Присоединяйтесь и получите доступ ко всем возможностям бесплатно',
-                'button_text': 'Зарегистрироваться',
+                "action_text": "Начните следить за своим здоровьем уже сегодня!",
+                "short_description": "Присоединяйтесь и получите доступ ко всем возможностям бесплатно",
+                "button_text": "Зарегистрироваться",
             },
         ),
     ],
@@ -30,19 +30,19 @@ class CallToActionBlockSerializer(ModelSerializer):
 
     class Meta:
         model = CallToActionBlock
-        fields = ('action_text', 'short_description', 'button_text')
+        fields = ("action_text", "short_description", "button_text")
 
 
 @extend_schema_serializer(
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value={
-                'name': 'Просмотр графиков',
-                'description': 'На основе введенных Вами данных строятся графики',
-                'image_url': '/media/functions/graphics_feature.png',
+                "name": "Просмотр графиков",
+                "description": "На основе введенных Вами данных строятся графики",
+                "image_url": "/media/functions/graphics_feature.png",
             },
         ),
     ],
@@ -54,7 +54,7 @@ class FeatureSerializer(ModelSerializer):
 
     class Meta:
         model = Feature
-        fields = ('name', 'description', 'image_url')
+        fields = ("name", "description", "image_url")
 
     def get_image_url(self, obj):
         """Получить URL изображения"""
@@ -65,12 +65,12 @@ class FeatureSerializer(ModelSerializer):
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value={
-                'slogan': 'Контроль диабета — просто и удобно',
-                'short_description': 'Следите за своими показателями, анализируйте данные и держите здоровье под контролем',
-                'button_text': 'Начать бесплатно',
+                "slogan": "Контроль диабета — просто и удобно",
+                "short_description": "Следите за своими показателями, анализируйте данные и держите здоровье под контролем",
+                "button_text": "Начать бесплатно",
             },
         ),
     ],
@@ -80,23 +80,23 @@ class HeroActionBlockSerializer(ModelSerializer):
 
     class Meta:
         model = HeroActionBlock
-        fields = ('slogan', 'short_description', 'button_text')
+        fields = ("slogan", "short_description", "button_text")
 
 
 @extend_schema_serializer(
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value=[
                 {
-                    'question': 'Вопрос 1',
-                    'answer': 'Ответ 1',
+                    "question": "Вопрос 1",
+                    "answer": "Ответ 1",
                 },
                 {
-                    'question': 'Вопрос 2',
-                    'answer': 'Ответ 2',
+                    "question": "Вопрос 2",
+                    "answer": "Ответ 2",
                 },
             ],
         ),
@@ -107,27 +107,27 @@ class MainPageFAQSerializer(ModelSerializer):
 
     class Meta:
         model = MainPageFAQ
-        fields = ('question', 'answer')
+        fields = ("question", "answer")
 
 
 @extend_schema_serializer(
     many=True,
     examples=[
         OpenApiExample(
-            'Пример ответа от сервера',
-            description='Базовый ответ',
+            "Пример ответа от сервера",
+            description="Базовый ответ",
             value=[
                 {
-                    'alt': 'Слайд 1',
-                    'image_url': '/media/slider_images/slide1.png',
+                    "alt": "Слайд 1",
+                    "image_url": "/media/slider_images/slide1.png",
                 },
                 {
-                    'alt': 'Слайд 2',
-                    'image_url': '/media/slider_images/slide2.png',
+                    "alt": "Слайд 2",
+                    "image_url": "/media/slider_images/slide2.png",
                 },
-            ]
+            ],
         )
-    ]
+    ],
 )
 class SliderImageSerializer(ModelSerializer):
     """Сериализатор модели SliderImage"""
@@ -136,7 +136,7 @@ class SliderImageSerializer(ModelSerializer):
 
     class Meta:
         model = SliderImage
-        fields = ('alt', 'image_url')
+        fields = ("alt", "image_url")
 
     def get_image_url(self, obj):
         """Получить URL изображения"""
