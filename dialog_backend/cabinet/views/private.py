@@ -39,7 +39,7 @@ class AppUserAPIView(APIView):
             "birth_date": self.request.user.birth_date,
             "diabetes_type": self.request.user.diabetes_type,
             "diagnosis_date": self.request.user.diagnosis_date,
-            "treatment_type": self.request.user.treatment_type.name,
+            "treatment_type": self.request.user.treatment_type.name if self.request.user.treatment_type else None,
             "phone_number": self.request.user.phone_number,
         }
 
