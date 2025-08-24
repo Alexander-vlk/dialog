@@ -3,24 +3,24 @@ repos:
     hooks:
       - id: ruff_check
         name: ruff check
-        entry: python -m ruff check .
+        entry: app poetry run ruff check .
         exclude: /migrations/|wsgi.py
-        language: system
+        language: docker_image
         types: [python]
 
   - repo: local
     hooks:
       - id: ruff_format
         name: ruff format
-        entry: python -m ruff format .
+        entry: app poetry run ruff format .
         exclude: /migrations/|wsgi.py
-        language: system
+        language: docker_image
         types: [ python ]
 
   - repo: local
     hooks:
       - id: mypy
         name: mypy
-        entry: python -m mypy . --ignore-missing-imports
-        language: system
+        entry: app poetry run mypy . --ignore-missing-imports
+        language: docker_image
         types: [ python ]
