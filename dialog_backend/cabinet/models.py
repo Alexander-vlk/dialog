@@ -14,7 +14,7 @@ class DiabetesType(AutoDateMixin):
     class Meta:
         verbose_name = "Тип диабета"
         verbose_name_plural = "Типы диабета"
-        ordering = ["name"]
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
@@ -29,7 +29,7 @@ class TreatmentType(AutoDateMixin):
     class Meta:
         verbose_name = "Тип лечения"
         verbose_name_plural = "Типы лечения"
-        ordering = ["name"]
+        ordering = ["id"]
 
     def __str__(self):
         return self.name

@@ -1,7 +1,7 @@
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
 
-from cabinet.models import Advantage, Rate, TreatmentType
+from cabinet.models import Advantage, Rate, TreatmentType, DiabetesType
 
 
 @extend_schema_serializer(
@@ -99,4 +99,34 @@ class TreatmentTypeResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TreatmentType
+        fields = ['slug', 'name']
+
+
+@extend_schema_serializer(
+    many=True,
+    examples=[
+        OpenApiExample(
+            "Базовый ответ",
+            value=[
+                {
+                    "slug": "first_type",
+                    "name": "Первого типа",
+                },
+                {
+                    "slug": "second_type",
+                    "name": "Второго типа",
+                },
+                {
+                    "slug": "gestational",
+                    "name": "Гестационный",
+                },
+            ],
+        ),
+    ],
+)
+class DiabetesTypeResponseSerializer(serializers.ModelSerializer):
+    """Сериализатор модели DiabetesType"""
+
+    class Meta:
+        model = DiabetesType
         fields = ['slug', 'name']
