@@ -33,12 +33,13 @@ class AppUser(AbstractUser, AutoDateMixin):
         null=True,
         blank=True,
     )
-    diabetes_type = models.CharField(
-        max_length=20,
-        choices=DIABETES_TYPE_CHOICES,
-        verbose_name="Тип диабета",
+    diabetes_type = models.ForeignKey(
+        'cabinet.DiabetesType',
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
-        default="",
+        verbose_name='Тип диабета',
+        related_name='users',
     )
     diagnosis_date = models.DateField(
         verbose_name="Дата постановки диагноза",
@@ -46,7 +47,6 @@ class AppUser(AbstractUser, AutoDateMixin):
         null=True,
         blank=True,
     )
-
     treatment_type = models.ForeignKey(
         "cabinet.TreatmentType",
         on_delete=models.SET_NULL,
@@ -55,7 +55,6 @@ class AppUser(AbstractUser, AutoDateMixin):
         verbose_name="Тип лечения",
         related_name="users",
     )
-
     phone_number = models.CharField(
         max_length=15,
         verbose_name="Номер телефона",

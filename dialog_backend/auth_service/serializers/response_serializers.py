@@ -47,9 +47,7 @@ class AppUserResponseSerializer(serializers.Serializer):
     gender = serializers.ChoiceField(help_text="Пол", choices=GENDER_CHOICES)
     birth_date = serializers.DateField(help_text="Дата рождения")
     diagnosis_date = serializers.DateField(help_text="Дата постановки диагноза")
-    treatment_type = serializers.ChoiceField(
-        help_text="Тип лечения", choices=TREATMENTS_TYPE_CHOICES, allow_blank=True
-    )
+    treatment_type = serializers.CharField(help_text="Тип лечения", allow_blank=True)
 
 
 class AccessTokenResponseSerializer(serializers.Serializer):

@@ -2,7 +2,22 @@ from django import forms
 from django.contrib import admin
 from django.db import models
 
-from cabinet.models import Advantage, Allergy, Disease, Rate, TreatmentType
+from cabinet.models import Advantage, Allergy, Disease, Rate, TreatmentType, DiabetesType
+
+
+@admin.register(DiabetesType)
+class DiabetesTypeAdmin(admin.ModelAdmin):
+    """Админ для модели TreatmentType"""
+
+    list_display = ['name', 'slug']
+    formfield_overrides = {
+        models.CharField: {
+            "widget": forms.Textarea(),
+        },
+        models.SlugField: {
+            'widget': forms.Textarea(),
+        },
+    }
 
 
 @admin.register(TreatmentType)

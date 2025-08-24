@@ -5,6 +5,21 @@ from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_length
 
 
+class DiabetesType(AutoDateMixin):
+    """Модель типов диабета"""
+
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="Слаг названия")
+    name = models.CharField(max_length=100, unique=True, verbose_name="Название")
+
+    class Meta:
+        verbose_name = "Тип диабета"
+        verbose_name_plural = "Типы диабета"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class TreatmentType(AutoDateMixin):
     """Модель типов лечения"""
 
