@@ -31,8 +31,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
     serializer_class = TokenObtainPairSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes = ()
+    authentication_classes = ()
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -105,8 +105,8 @@ class CustomTokenRefreshView(TokenRefreshView):
 
     serializer_class = TokenRefreshSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes = ()
+    authentication_classes = ()
 
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
