@@ -41,6 +41,9 @@ mypy = "^1.17.0"
 factory-boy = "^3.3.3"
 django-debug-toolbar = "^5.2.0"
 
+[tool.ruff.format]
+exclude = ["*/migrations/*", "wsgi.py"]
+
 [tool.mypy]
 ignore_missing_imports = true
 
