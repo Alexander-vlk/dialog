@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from constants import (
     AVERAGE_BJU_SWAGGER_TAG,
@@ -501,7 +502,7 @@ class AverageGlucoseDataAPIView(APIView):
 class AvgBJUApiView(APIView):
     """APIView получения данных о среднем БЖУ за месяц"""
 
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [JWTAuthentication]
     serializer_class = AverageBJUSerializer
 
     @extend_schema(
