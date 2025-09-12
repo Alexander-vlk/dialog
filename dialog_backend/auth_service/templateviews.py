@@ -4,8 +4,8 @@ from django.views.generic import CreateView
 from rest_framework.reverse import reverse_lazy
 
 from auth_service.forms import ExtendedLoginForm, ExtendedUserCreationForm
+from auth_service.services import create_logs_for_new_user
 from constants import TWO_WEEKS
-from common_utils.functions import create_logs_for_new_user
 
 
 class UserLoginView(LoginView):
@@ -48,16 +48,6 @@ class UserRegisterView(CreateView):
         user.last_name = form.cleaned_data.get("last_name", "")
         user.email = form.cleaned_data.get("email", "")
         user.save()
-
-        # UserProfile.objects.create(
-        #     user=user,
-        #     patronymic_name=form.cleaned_data.get('patronymic_name', ''),
-        #     gender=form.cleaned_data.get('gender'),
-        #     birth_date=form.cleaned_data.get('birth_date'),
-        #     diabetes_type=form.cleaned_data.get('diabetes_type'),
-        #     treatment_type=form.cleaned_data.get('treatment_type'),
-        #     phone_number=form.cleaned_data.get('phone_number'),
-        # )
 
         login(self.request, user)
 
