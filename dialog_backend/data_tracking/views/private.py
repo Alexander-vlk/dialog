@@ -511,11 +511,7 @@ class AvgBJUApiView(APIView):
     )
     def get(self, request):
         """GET-запрос"""
-        monthly_log = get_object_or_404(
-            MonthlyLog,
-            user=request.user,
-            id=request.query_params.get("id"),
-        )
+        monthly_log = MonthlyLog.objects.filter(user=request.user).last()
         serializer = self.serializer_class(monthly_log, context={"user": request.user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
