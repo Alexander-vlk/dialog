@@ -2,7 +2,7 @@ from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 
 from rest_framework import serializers
 
-from constants import GENDER_CHOICES, TREATMENTS_TYPE_CHOICES
+from constants import GENDER_CHOICES
 
 
 @extend_schema_serializer(

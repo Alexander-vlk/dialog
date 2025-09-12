@@ -3,7 +3,7 @@ from django.db import models
 
 from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_not_future_date
-from constants import DIABETES_TYPE_CHOICES, GENDER_CHOICES
+from constants import GENDER_CHOICES
 
 
 class AppUser(AbstractUser, AutoDateMixin):

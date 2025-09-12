@@ -21,7 +21,7 @@ from auth_service.serializers import (
     AccessTokenResponseSerializer,
     UserRegistrationRequestSerializer,
 )
-from auth_service.services import authenticate_user
+from auth_service.services import authenticate_user, create_logs_for_new_user
 from cabinet.constants import USER_SWAGGER_TAG
 from constants import SWAGGER_ERROR_MESSAGES
 
@@ -31,9 +31,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
     serializer_class = TokenObtainPairSerializer  # type: ignore
 
-    permission_classes = ()
-    authentication_classes = ()
+    permission_classes: list = []
+    authentication_classes: list = []
 
+    @extend_schema(
+        'Установка пары токенов',
+        methods=['POST'],
+    )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
         if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
@@ -81,7 +85,8 @@ class UserRegistrationAPIView(APIView):
         serializer = UserRegistrationRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        serializer.save()
+        new_user = serializer.save()
+        create_logs_for_new_user(new_user)
 
         new_user_username = serializer.validated_data.get("username")
         new_user_password = serializer.validated_data.get("password")
@@ -105,9 +110,13 @@ class CustomTokenRefreshView(TokenRefreshView):
 
     serializer_class = TokenRefreshSerializer  # type: ignore
 
-    permission_classes = ()
-    authentication_classes = ()
+    permission_classes: list = []
+    authentication_classes: list = []
 
+    @extend_schema(
+        'Обновление access-токена',
+        methods=['POST'],
+    )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
         refresh_token = request.COOKIES.get("refresh_token")
@@ -129,6 +138,10 @@ class LogoutAPIView(APIView):
     authentication_classes: list = [JWTAuthentication]
     permission_classes: list = [IsAuthenticated]
 
+    @extend_schema(
+        'Выполнение выхода пользователя из системы',
+        methods=['POST'],
+    )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
         refresh_token = request.COOKIES.get("refresh_token")
@@ -151,6 +164,10 @@ class HealthCheckAPIView(APIView):
     authentication_classes: list = [JWTAuthentication]
     permission_classes: list = [IsAuthenticated]
 
+    @extend_schema(
+        operation_id='Проверка доступности сервера',
+        methods=['GET'],
+    )
     def get(self, request):
         """GET-запрос"""
         return Response(status=status.HTTP_200_OK)
