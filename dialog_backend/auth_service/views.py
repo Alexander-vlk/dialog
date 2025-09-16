@@ -127,7 +127,7 @@ class CustomTokenRefreshView(TokenRefreshView):
         serializer.is_valid(raise_exception=True)
 
         return Response(
-            {"access": serializer.validated_data.get("access")},
+            {"access": serializer.validated_data['access']},
             status=status.HTTP_200_OK,
         )
 
