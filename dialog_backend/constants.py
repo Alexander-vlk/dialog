@@ -56,6 +56,7 @@ PRESSURE_SWAGGER_TAG = 'Давление'
 BODY_TEMPERATURE_SWAGGER_TAG = 'Температура тела'
 BJU_SWAGGER_TAG = 'БЖУ'
 HEALTH_SWAGGER_TAG = 'Состояние здоровья'
+MOOD_SWAGGER_TAG = 'Настроение'
 
 SWAGGER_ERROR_MESSAGES = {
     status.HTTP_400_BAD_REQUEST: OpenApiResponse(description='Invalid data'),
