@@ -13,7 +13,7 @@ from data_tracking.models import DailyLog, MonthlyLog, WeeklyLog
 def authenticate_user(request, access_token, refresh_token) -> Response:
     """Аутентифицировать пользователя"""
     response_serializer = AccessTokenResponseSerializer(
-        instance={"access": access_token}
+        instance={'access': access_token}
     )
     response = Response(response_serializer.data, status.HTTP_201_CREATED)
 
@@ -22,8 +22,8 @@ def authenticate_user(request, access_token, refresh_token) -> Response:
         value=refresh_token,
         httponly=True,
         secure=not settings.DEBUG,
-        samesite="Lax",
-        expires=TWO_MONTHS if request.data.get("remember") else ONE_DAY,
+        samesite='Lax',
+        expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
     )
 
     return response
