@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from constants import (
-    AVERAGE_BJU_SWAGGER_TAG,
+    BJU_SWAGGER_TAG,
     BODY_TEMPERATURE_SWAGGER_TAG,
     GLUCOSE_SWAGGER_TAG,
     HEALTH_SWAGGER_TAG,
@@ -491,7 +491,7 @@ class AverageGlucoseDataAPIView(APIView):
 
 
 @extend_schema(
-    tags=[AVERAGE_BJU_SWAGGER_TAG],
+    tags=[BJU_SWAGGER_TAG],
     methods=["GET"],
     description="Получение информации о среднем БЖУ за месяц",
     responses={
@@ -507,7 +507,7 @@ class AvgBJUApiView(APIView):
 
     @extend_schema(
         operation_id="Получение данных о средних значениях БЖУ за месяц",
-        tags=[AVERAGE_BJU_SWAGGER_TAG],
+        tags=[BJU_SWAGGER_TAG],
     )
     def get(self, request):
         """GET-запрос"""
