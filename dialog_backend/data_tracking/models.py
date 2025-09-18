@@ -142,6 +142,15 @@ class Health(AutoDateMixin):
         max_length=50,
         verbose_name='Цвет',
         help_text='Tailwind-класс',
+        default='',
+        blank=True,
+    )
+    bg_color = models.CharField(
+        max_length=50,
+        verbose_name='Цвет фона',
+        help_text='Tailwind-класс',
+        default='',
+        blank=True,
     )
 
     class Meta:
