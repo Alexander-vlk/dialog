@@ -9,7 +9,7 @@ from data_tracking.models import (
     BodyTemperature,
     DailyLog,
     Glucose,
-    Health,
+    Mood,
     MonthlyLog,
     Pressure,
     WeeklyLog,
@@ -101,10 +101,43 @@ class HealthSerializer(serializers.Serializer):
         daily_logs = DailyLog.objects.filter(
             user=self.context["user"], weekly_log__monthly_log=monthly_log
         )
-        queryset = Health.objects.annotate(
+        queryset = Mood.objects.annotate(
             count=Count("daily_logs", filter=Q(daily_logs__in=daily_logs))
         ).values("name", "count")
         return list(queryset)
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Базовый ответ',
+            value=[
+                {
+                    'name': 'Спокоен',
+                    'color': 'text-blue-700',
+                    'bg_color': 'text-blue-100',
+                },
+                {
+                    'name': 'Гнев',
+                    'color': 'text-red-700',
+                    'bg_color': 'text-red-100',
+                },
+                {
+                    'name': 'Радость',
+                    'color': 'text-green-700',
+                    'bg_color': 'text-green-100',
+                },
+            ],
+        ),
+    ],
+    many=True,
+)
+class MoodSerializer(serializers.ModelSerializer):
+    """Сериализатор модели Mood"""
+
+    class Meta:
+        model = Mood
+        fields = ('name', 'color', 'bg_color')
 
 
 class DailyLogSerializer(serializers.ModelSerializer):
