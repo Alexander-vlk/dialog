@@ -131,7 +131,7 @@ class WeeklyLog(AutoDateMixin):
         )
 
 
-class Health(AutoDateMixin):
+class Mood(AutoDateMixin):
     """Модель самочувствия"""
 
     name = models.CharField(
@@ -214,7 +214,7 @@ class DailyLog(AutoDateMixin):
         default=NORMAL,
     )
     health = models.ManyToManyField(
-        to=Health,
+        to=Mood,
         related_name='daily_logs',
         blank=True,
         verbose_name='Самочувствие',
