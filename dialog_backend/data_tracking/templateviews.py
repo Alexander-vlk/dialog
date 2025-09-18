@@ -12,7 +12,7 @@ from data_tracking.models import (
     DailyLog,
     WeeklyLog,
     MonthlyLog,
-    Health,
+    Mood,
     Glucose,
     BodyTemperature,
     Pressure,
@@ -196,7 +196,7 @@ def monthly_log_list(request, monthly_log_id):
     avg_calories = daily_logs_by_month.aggregate(Avg("calories_count"))
 
     most_common_health = (
-        Health.objects.annotate(
+        Mood.objects.annotate(
             num_logs=Count(
                 "daily_logs",
                 filter=Q(
