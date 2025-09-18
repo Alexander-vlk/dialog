@@ -1,3 +1,5 @@
-ADVANTAGES_CACHE_KEY = "main_page:advantages:v2"
-RATES_CACHE_KEY = "main_page:rates"
-USER_SWAGGER_TAG = "Пользователи"
+ADVANTAGES_CACHE_KEY = 'main_page:advantages:v2'
+RATES_CACHE_KEY = 'main_page:rates'
+USER_SWAGGER_TAG = 'Пользователи'
+AUTH_SERVICE_SWAGGER_TAG = 'Auth Service'
+HEALTHCHECK_SWAGGER_TAG = 'Healthcheck'

@@ -22,7 +22,7 @@ from auth_service.serializers import (
     UserRegistrationRequestSerializer,
 )
 from auth_service.services import authenticate_user, create_logs_for_new_user
-from cabinet.constants import USER_SWAGGER_TAG
+from cabinet.constants import AUTH_SERVICE_SWAGGER_TAG, HEALTHCHECK_SWAGGER_TAG
 from constants import SWAGGER_ERROR_MESSAGES
 
 
@@ -37,6 +37,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     @extend_schema(
         'Установка пары токенов',
         methods=['POST'],
+        tags=[AUTH_SERVICE_SWAGGER_TAG],
     )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -67,7 +68,7 @@ class UserRegistrationAPIView(APIView):
     @extend_schema(
         operation_id="Регистрация нового пользователя",
         description="Регистрация нового пользователя на основе отправленных ему данных и простановка токенов",
-        tags=[USER_SWAGGER_TAG],
+        tags=[AUTH_SERVICE_SWAGGER_TAG],
         methods=["POST"],
         request=UserRegistrationRequestSerializer,
         responses={
@@ -116,6 +117,7 @@ class CustomTokenRefreshView(TokenRefreshView):
     @extend_schema(
         'Обновление access-токена',
         methods=['POST'],
+        tags=[AUTH_SERVICE_SWAGGER_TAG],
     )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -141,6 +143,7 @@ class LogoutAPIView(APIView):
     @extend_schema(
         'Выполнение выхода пользователя из системы',
         methods=['POST'],
+        tags=[AUTH_SERVICE_SWAGGER_TAG],
     )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
@@ -167,6 +170,7 @@ class HealthCheckAPIView(APIView):
     @extend_schema(
         operation_id='Проверка доступности сервера',
         methods=['GET'],
+        tags=[HEALTHCHECK_SWAGGER_TAG],
     )
     def get(self, request):
         """GET-запрос"""
