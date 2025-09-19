@@ -34,6 +34,19 @@ DIABETES_TYPE_CHOICES = {
     NO_DIABETES: 'Не болею диабетом',
 }
 
+TERRIBLE = 1
+BAD = 2
+NORMAL = 3
+GOOD = 4
+GREAT = 5
+GENERAL_HEALTH_CHOICES = {
+    TERRIBLE: 'Ужасное',
+    BAD: 'Плохое',
+    NORMAL: 'Нормальное',
+    GOOD: 'Хорошее',
+    GREAT: 'Прекрасное',
+}
+
 NOT_SET = 'not_set'
 INSULIN_THERAPY = 'insulin_therapy'
 PREPARATIONS = 'preparations'

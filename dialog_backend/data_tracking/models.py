@@ -4,6 +4,7 @@ from django.utils import timezone
 from auth_service.models import AppUser
 from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_positive_float
+from constants import GENERAL_HEALTH_CHOICES, NORMAL
 
 
 class MonthlyLog(AutoDateMixin, models.Model):
@@ -163,19 +164,6 @@ class Mood(AutoDateMixin):
 
 class DailyLog(AutoDateMixin):
     """Модель ежедневного отчета"""
-
-    TERRIBLE = 1
-    BAD = 2
-    NORMAL = 3
-    GOOD = 4
-    GREAT = 5
-    GENERAL_HEALTH_CHOICES = {
-        TERRIBLE: 'Ужасное',
-        BAD: 'Плохое',
-        NORMAL: 'Нормальное',
-        GOOD: 'Хорошее',
-        GREAT: 'Прекрасное',
-    }
 
     user = models.ForeignKey(
         to=AppUser,
