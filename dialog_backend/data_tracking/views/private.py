@@ -609,7 +609,7 @@ class DailyLogAPIView(APIView):
         },
     )
     def put(self, request):
-        """POST-запрос"""
+        """PUT-запрос"""
         request_serializer = DailyLogRequestSerializer(data=request.data)
         request_serializer.is_valid(raise_exception=True)
 
