@@ -22,14 +22,14 @@ class MonthlyLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = MonthlyLog
         fields = (
-            "hemoglobin",
-            "cholesterol",
-            "lipid_profile",
-            "microalbuminuria",
+            'hemoglobin',
+            'cholesterol',
+            'lipid_profile',
+            'microalbuminuria',
         )
 
     def create(self, validated_data):
-        user = self.context["request"].user
+        user = self.context['request'].user
         if user.is_authenticated:
             return MonthlyLog.objects.create(user=user, **validated_data)
 
@@ -42,23 +42,23 @@ class WeeklyLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeeklyLog
         fields = (
-            "weight",
-            "bmi",
-            "ketones",
-            "avg_data",
+            'weight',
+            'bmi',
+            'ketones',
+            'avg_data',
         )
 
     def get_avg_data(self, obj):
-        user = self.context.get("user")
+        user = self.context.get('user')
         return DailyLog.objects.filter(weekly_log=obj, user=user).aggregate(
-            avg_calories=Avg("calories_count"),
-            avg_proteins=Avg("proteins_count"),
-            avg_fats=Avg("fats_count"),
-            avg_carbs=Avg("carbs_count"),
+            avg_calories=Avg('calories_count'),
+            avg_proteins=Avg('proteins_count'),
+            avg_fats=Avg('fats_count'),
+            avg_carbs=Avg('carbs_count'),
         )
 
     def create(self, validated_data):
-        user = self.context["request"].user
+        user = self.context['request'].user
         week_start = date.today()
         week_end = week_start + timedelta(days=7)
         if user.is_authenticated:
@@ -74,16 +74,16 @@ class WeeklyLogSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Пример ответа от сервера",
-            description="Базовый ответ",
+            'Пример ответа от сервера',
+            description='Базовый ответ',
             value=[
                 {
-                    "count": 4,
-                    "name": "Сонливость",
+                    'count': 4,
+                    'name': 'Сонливость',
                 },
                 {
-                    "count": 6,
-                    "name": "Усталость",
+                    'count': 6,
+                    'name': 'Усталость',
                 },
             ],
         ),
@@ -99,11 +99,11 @@ class HealthSerializer(serializers.Serializer):
     def get_stats(self, monthly_log):
         """Получить данные о самочувствии"""
         daily_logs = DailyLog.objects.filter(
-            user=self.context["user"], weekly_log__monthly_log=monthly_log
+            user=self.context['user'], weekly_log__monthly_log=monthly_log
         )
         queryset = Mood.objects.annotate(
-            count=Count("daily_logs", filter=Q(daily_logs__in=daily_logs))
-        ).values("name", "count")
+            count=Count('daily_logs', filter=Q(daily_logs__in=daily_logs))
+        ).values('name', 'count')
         return list(queryset)
 
 
@@ -146,33 +146,33 @@ class DailyLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = DailyLog
         fields = (
-            "calories_count",
-            "proteins_count",
-            "fats_count",
-            "carbs_count",
-            "general_health",
-            "physical_activity",
-            "additional_info",
+            'calories_count',
+            'proteins_count',
+            'fats_count',
+            'carbs_count',
+            'general_health',
+            'physical_activity',
+            'additional_info',
         )
 
     def validate_date(self, value):
-        user = self.context["request"].user
+        user = self.context['request'].user
         if (
             user.is_authenticated
             and DailyLog.objects.filter(user=user, date=value).exists()
         ):
             raise serializers.ValidationError(
-                "Дневной отчет для этого дня уже существует"
+                'Дневной отчет для этого дня уже существует'
             )
         if value > date.today():
             raise serializers.ValidationError(
-                "Нельзя создать дневной отчет для еще не наступившего дня"
+                'Нельзя создать дневной отчет для еще не наступившего дня'
             )
 
         return value
 
     def create(self, validated_data):
-        user = self.context["request"].user
+        user = self.context['request'].user
         if user.is_authenticated:
             return DailyLog.objects.create(
                 user=user,
@@ -184,12 +184,12 @@ class DailyLogSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Return data example",
-            description="Return temperature and creation date (format: HH:MM)",
-            summary="Data for plots",
+            'Return data example',
+            description='Return temperature and creation date (format: HH:MM)',
+            summary='Data for plots',
             value={
-                "created_at": "10:00",
-                "temperature": 36.6,
+                'created_at': '10:00',
+                'temperature': 36.6,
             },
         ),
     ],
@@ -199,18 +199,18 @@ class BodyTemperatureSerializer(serializers.ModelSerializer):
     """Сериализатор модели BodyTemperature"""
 
     created_at = serializers.DateTimeField(
-        format="%H:%M", required=False, read_only=True
+        format='%H:%M', required=False, read_only=True
     )
 
     class Meta:
         model = BodyTemperature
         fields = (
-            "created_at",
-            "temperature",
+            'created_at',
+            'temperature',
         )
 
     def create(self, validated_data):
-        user = self.context.get("user")
+        user = self.context.get('user')
 
         if not user:
             return BodyTemperature.objects.create(
@@ -234,12 +234,12 @@ class BodyTemperatureSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Return data example",
-            description="Two fields: creation date and glucose level, need for plot creation",
-            summary="Data for plots",
+            'Return data example',
+            description='Two fields: creation date and glucose level, need for plot creation',
+            summary='Data for plots',
             value={
-                "created_at": "23:00",
-                "level": 3.4,
+                'created_at': '23:00',
+                'level': 3.4,
             },
         ),
     ],
@@ -249,18 +249,18 @@ class GlucoseSerializer(serializers.ModelSerializer):
     """Сериализатор модели Glucose"""
 
     created_at = serializers.DateTimeField(
-        format="%H:%M (%d.%m)", required=False, read_only=True
+        format='%H:%M (%d.%m)', required=False, read_only=True
     )
 
     class Meta:
         model = Glucose
         fields = (
-            "created_at",
-            "level",
+            'created_at',
+            'level',
         )
 
     def create(self, validated_data):
-        user = self.context.get("user")
+        user = self.context.get('user')
         if not user:
             return Glucose.objects.create(**validated_data)
 
@@ -274,13 +274,13 @@ class GlucoseSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Return data example",
-            description="Two fields: creation date, systolic and diastolic pressure",
-            summary="Data for plot",
+            'Return data example',
+            description='Two fields: creation date, systolic and diastolic pressure',
+            summary='Data for plot',
             value={
-                "created_at": "23:00",
-                "systolic": 120,
-                "diastolic": 80,
+                'created_at': '23:00',
+                'systolic': 120,
+                'diastolic': 80,
             },
         )
     ],
@@ -290,19 +290,19 @@ class PressureSerializer(serializers.ModelSerializer):
     """Сериализатор модели Pressure"""
 
     created_at = serializers.DateTimeField(
-        format="%H:%M (%d.%m)", required=False, read_only=True
+        format='%H:%M (%d.%m)', required=False, read_only=True
     )
 
     class Meta:
         model = Pressure
         fields = (
-            "created_at",
-            "systolic",
-            "diastolic",
+            'created_at',
+            'systolic',
+            'diastolic',
         )
 
     def create(self, validated_data):
-        user = self.context.get("user")
+        user = self.context.get('user')
         if not user:
             return Pressure.objects.create(**validated_data)
 
@@ -316,15 +316,15 @@ class PressureSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Пример возвращаемых данных",
+            'Пример возвращаемых данных',
             value=[
                 {
-                    "calories": 2100,
-                    "date": "12.04",
+                    'calories': 2100,
+                    'date': '12.04',
                 },
                 {
-                    "calories": 2200,
-                    "date": "13.04",
+                    'calories': 2200,
+                    'date': '13.04',
                 },
             ],
         )
@@ -337,18 +337,18 @@ class CaloriesSerializer(serializers.Serializer):
 
     def get_calories_per_day(self, weekly_log: WeeklyLog):
         """Геттер калорий за день"""
-        user = self.context.get("user")
+        user = self.context.get('user')
 
         daily_logs_in_week = (
             DailyLog.objects.filter(user=user, weekly_log=weekly_log)
-            .values("date", "calories_count")
-            .order_by("date")
+            .values('date', 'calories_count')
+            .order_by('date')
         )
 
         return [
             {
-                "calories": daily_log_in_week.get("calories_count"),
-                "date": daily_log_in_week.get("date").strftime("%d.%m"),
+                'calories': daily_log_in_week.get('calories_count'),
+                'date': daily_log_in_week.get('date').strftime('%d.%m'),
             }
             for daily_log_in_week in daily_logs_in_week
         ]
@@ -357,16 +357,16 @@ class CaloriesSerializer(serializers.Serializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Пример ответа от сервера",
-            description="Базовый ответ",
+            'Пример ответа от сервера',
+            description='Базовый ответ',
             value=[
                 {
-                    "level": 3.0,
-                    "date": "12.04",
+                    'level': 3.0,
+                    'date': '12.04',
                 },
                 {
-                    "level": 3.5,
-                    "date": "13.04",
+                    'level': 3.5,
+                    'date': '13.04',
                 },
             ],
         ),
@@ -379,24 +379,24 @@ class AverageGlucoseSerializer(serializers.Serializer):
 
     def _get_daily_logs(self, weekly_log: WeeklyLog):
         """Геттер получения дневного отчета"""
-        user = self.context.get("user")
+        user = self.context.get('user')
 
         return DailyLog.objects.filter(user=user, weekly_log=weekly_log).order_by(
-            "date"
+            'date'
         )
 
     def get_average_glucose_per_day(self, weekly_log: WeeklyLog):
         """Геттер получения среднего уровня глюкозы за каждый день в течение недели"""
         daily_logs = self._get_daily_logs(weekly_log).annotate(
-            avg_glucose_level=Avg("glucoses__level")
+            avg_glucose_level=Avg('glucoses__level')
         )
 
         result = []
         for log in daily_logs:
             result.append(
                 {
-                    "level": log.avg_glucose_level,
-                    "date": log.date.strftime("%d.%m"),
+                    'level': log.avg_glucose_level,
+                    'date': log.date.strftime('%d.%m'),
                 }
             )
 
@@ -406,12 +406,12 @@ class AverageGlucoseSerializer(serializers.Serializer):
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            "Пример ответа от сервера",
-            description="Базовый ответ",
+            'Пример ответа от сервера',
+            description='Базовый ответ',
             value={
-                "proteins": 92.1,
-                "fats": 80.3,
-                "carbs": 97.6,
+                'proteins': 92.1,
+                'fats': 80.3,
+                'carbs': 97.6,
             },
         ),
     ],
@@ -423,24 +423,24 @@ class AverageBJUSerializer(serializers.Serializer):
 
     def _get_daily_logs(self, monthly_log: MonthlyLog):
         """Геттер получения дневного отчета"""
-        user = self.context.get("user")
+        user = self.context.get('user')
 
         return DailyLog.objects.filter(
             user=user, weekly_log__monthly_log=monthly_log
-        ).order_by("date")
+        ).order_by('date')
 
     def get_average_bju(self, monthly_log: MonthlyLog):
         """Метод получения средних БЖУ"""
         daily_logs = self._get_daily_logs(monthly_log)
 
         avg_data = daily_logs.aggregate(
-            avg_proteins=Avg("proteins_count"),
-            avg_fats=Avg("fats_count"),
-            avg_carbs=Avg("carbs_count"),
+            avg_proteins=Avg('proteins_count'),
+            avg_fats=Avg('fats_count'),
+            avg_carbs=Avg('carbs_count'),
         )
 
         return {
-            "proteins": avg_data["avg_proteins"],
-            "fats": avg_data["avg_fats"],
-            "carbs": avg_data["avg_carbs"],
+            'proteins': avg_data['avg_proteins'],
+            'fats': avg_data['avg_fats'],
+            'carbs': avg_data['avg_carbs'],
         }
