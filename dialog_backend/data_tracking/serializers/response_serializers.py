@@ -23,7 +23,7 @@ from data_tracking.models import DailyLog
                 'user': 1,
                 'weekly_log': 3,
                 'health': [],
-            }
+            },
         ),
     ],
 )

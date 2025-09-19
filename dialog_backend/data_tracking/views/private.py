@@ -571,7 +571,9 @@ class DailyLogAPIView(APIView):
     )
     def options(self, request, *args, **kwargs):
         """OPTIONS-запрос"""
-        current_daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now())
+        current_daily_log = DailyLog.objects.filter(
+            user=request.user, date=timezone.now()
+        )
         if not current_daily_log.exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -590,7 +592,9 @@ class DailyLogAPIView(APIView):
     def get(self, request):
         """GET-запрос"""
         serializer = self.serializer_class(
-            instance=DailyLog.objects.filter(user=request.user, date=timezone.now()).first(),
+            instance=DailyLog.objects.filter(
+                user=request.user, date=timezone.now()
+            ).first(),
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -603,7 +607,9 @@ class DailyLogAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        current_daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now())
+        current_daily_log = DailyLog.objects.filter(
+            user=request.user, date=timezone.now()
+        )
         current_daily_log.update(**serializer.validated_data)
 
         return Response(status=status.HTTP_200_OK)
