@@ -34,7 +34,11 @@ class DailyLogRequestSerializer(serializers.Serializer):
     fats_count = serializers.IntegerField(help_text='Количество жиров')
     carbs_count = serializers.IntegerField(help_text='Количество углеводов')
     mood = serializers.IntegerField(help_text='Настроение')
-    health = serializers.ManyRelatedField(help_text='ID статусов самочувствия', allow_empty=True)
+    health = serializers.ListField(
+        help_text='ID статусов самочувствия',
+        child=serializers.IntegerField(),
+        allow_empty=True,
+    )
     physical_activity = serializers.CharField(help_text='Физическая активность', max_length=2000, allow_blank=True)
     additional_info = serializers.CharField(help_text='Дополнительная информация', max_length=2000, allow_blank=True)
     date = serializers.DateField(help_text='Дата замера', allow_null=True)
