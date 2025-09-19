@@ -6,8 +6,8 @@ from .response_serializers import (
 )
 
 __all__ = [
-    "AdvantageResponseSerializer",
+    'AdvantageResponseSerializer',
     'DiabetesTypeResponseSerializer',
-    "RateResponseSerializer",
-    "TreatmentTypeResponseSerializer",
+    'RateResponseSerializer',
+    'TreatmentTypeResponseSerializer',
 ]

@@ -43,14 +43,14 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         """POST-запрос"""
         if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
             return Response(
-                {"detail": "already_authenticated"}, status=status.HTTP_400_BAD_REQUEST
+                {'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST
             )
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        access_token = serializer.validated_data.get("access")
-        refresh_token = serializer.validated_data.get("refresh")
+        access_token = serializer.validated_data.get('access')
+        refresh_token = serializer.validated_data.get('refresh')
 
         return authenticate_user(request, access_token, refresh_token)
 
@@ -66,10 +66,10 @@ class UserRegistrationAPIView(APIView):
     serializer_class = AccessTokenResponseSerializer
 
     @extend_schema(
-        operation_id="Регистрация нового пользователя",
-        description="Регистрация нового пользователя на основе отправленных ему данных и простановка токенов",
+        operation_id='Регистрация нового пользователя',
+        description='Регистрация нового пользователя на основе отправленных ему данных и простановка токенов',
         tags=[AUTH_SERVICE_SWAGGER_TAG],
-        methods=["POST"],
+        methods=['POST'],
         request=UserRegistrationRequestSerializer,
         responses={
             status.HTTP_201_CREATED: AccessTokenResponseSerializer,
@@ -80,7 +80,7 @@ class UserRegistrationAPIView(APIView):
         """POST-запрос"""
         if REFRESH_TOKEN_COOKIE_NAME in request.COOKIES:
             return Response(
-                {"detail": "already_authenticated"}, status=status.HTTP_400_BAD_REQUEST
+                {'detail': 'already_authenticated'}, status=status.HTTP_400_BAD_REQUEST
             )
 
         serializer = UserRegistrationRequestSerializer(data=request.data)
@@ -89,19 +89,19 @@ class UserRegistrationAPIView(APIView):
         new_user = serializer.save()
         create_logs_for_new_user(new_user)
 
-        new_user_username = serializer.validated_data.get("username")
-        new_user_password = serializer.validated_data.get("password")
+        new_user_username = serializer.validated_data.get('username')
+        new_user_password = serializer.validated_data.get('password')
 
         token_serializer = TokenObtainPairSerializer(
             data={
-                "username": new_user_username,
-                "password": new_user_password,
+                'username': new_user_username,
+                'password': new_user_password,
             },
         )
         token_serializer.is_valid(raise_exception=True)
 
-        access_token = token_serializer.validated_data.get("access")
-        refresh_token = token_serializer.validated_data.get("refresh")
+        access_token = token_serializer.validated_data.get('access')
+        refresh_token = token_serializer.validated_data.get('refresh')
 
         return authenticate_user(request, access_token, refresh_token)
 
@@ -121,15 +121,15 @@ class CustomTokenRefreshView(TokenRefreshView):
     )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
-        refresh_token = request.COOKIES.get("refresh_token")
+        refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-        serializer = self.get_serializer(data={"refresh": refresh_token})
+        serializer = self.get_serializer(data={'refresh': refresh_token})
         serializer.is_valid(raise_exception=True)
 
         return Response(
-            {"access": serializer.validated_data['access']},
+            {'access': serializer.validated_data['access']},
             status=status.HTTP_200_OK,
         )
 
@@ -147,17 +147,17 @@ class LogoutAPIView(APIView):
     )
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
-        refresh_token = request.COOKIES.get("refresh_token")
+        refresh_token = request.COOKIES.get('refresh_token')
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
         except InvalidTokenError:
             return Response(
-                {"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST
+                {'detail': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST
             )
 
         response = Response(status=status.HTTP_205_RESET_CONTENT)
-        response.delete_cookie("refresh_token")
+        response.delete_cookie('refresh_token')
         return response
 
 

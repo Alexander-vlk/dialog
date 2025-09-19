@@ -19,11 +19,11 @@ from sitesettings.models import (
 
 def index(request):
     """View для главной страницы"""
-    slider_images_cache_key = "v1:main_page:slider_images"
-    hero_action_block_cache_key = "v1:main_page:hero_action_block"
-    call_action_block_cache_key = "v1:main_page:call_action_block"
-    features_cache_key = "v1:main_page:features"
-    faqs_cache_key = "v1:main_page:faqs"
+    slider_images_cache_key = 'v1:main_page:slider_images'
+    hero_action_block_cache_key = 'v1:main_page:hero_action_block'
+    call_action_block_cache_key = 'v1:main_page:call_action_block'
+    features_cache_key = 'v1:main_page:features'
+    faqs_cache_key = 'v1:main_page:faqs'
     main_page_settings = MainPageSettings.objects.first()
 
     slider_images = cache.get(slider_images_cache_key)
@@ -54,19 +54,19 @@ def index(request):
         cache.set(faqs_cache_key, faqs, 6000)
 
     context = {
-        "rates": Rate.objects.filter(is_visible=True)[
+        'rates': Rate.objects.filter(is_visible=True)[
             : main_page_settings.max_reviews_count
         ],
-        "advantages": Advantage.objects.all()[
+        'advantages': Advantage.objects.all()[
             : main_page_settings.max_advantages_count
         ],
-        "slider_images": slider_images,
-        "hero_action_block": hero_action_block,
-        "call_action_block": call_action_block,
-        "features": features,
-        "faqs": faqs,
+        'slider_images': slider_images,
+        'hero_action_block': hero_action_block,
+        'call_action_block': call_action_block,
+        'features': features,
+        'faqs': faqs,
     }
-    return render(request, "cabinet/index.html", context)
+    return render(request, 'cabinet/index.html', context)
 
 
 @require_GET
@@ -75,7 +75,7 @@ def get_daily_log_fill_status(request):
     """Получение статуса заполнения дневного отчета"""
     daily_log = get_object_or_404(DailyLog, user=request.user, date=timezone.now())
 
-    return JsonResponse({"is_filled": daily_log.is_filled})
+    return JsonResponse({'is_filled': daily_log.is_filled})
 
 
 @require_GET
@@ -90,16 +90,16 @@ def get_weekly_log_fill_status(request):
         week_end__gt=timezone.now(),
     )
 
-    status = "late"
+    status = 'late'
     if weekly_log.week_end > timezone.now():
-        status = "early"
+        status = 'early'
     elif weekly_log.week_end == timezone.now():
-        status = "in_time"
+        status = 'in_time'
 
     return JsonResponse(
         {
-            "status": status,
-            "is_filled": weekly_log.is_filled,
+            'status': status,
+            'is_filled': weekly_log.is_filled,
         }
     )
 
@@ -122,12 +122,12 @@ def cabinet(request):
     ).first()
 
     context = {
-        "cabinet": request.user,
-        "daily_log": daily_log,
-        "weekly_log": weekly_log,
-        "glucose_per_day_count": glucose_per_day_count,
-        "pressure_per_day_count": pressure_per_day_count,
-        "temperature_per_day_count": temperature_per_day_count,
+        'cabinet': request.user,
+        'daily_log': daily_log,
+        'weekly_log': weekly_log,
+        'glucose_per_day_count': glucose_per_day_count,
+        'pressure_per_day_count': pressure_per_day_count,
+        'temperature_per_day_count': temperature_per_day_count,
     }
 
-    return render(request, "cabinet/cabinet.html", context)
+    return render(request, 'cabinet/cabinet.html', context)

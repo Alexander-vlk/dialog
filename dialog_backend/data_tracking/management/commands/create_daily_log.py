@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Метод выполнения команды"""
-        logger.info("Start command create_daily_log")
+        logger.info('Start command create_daily_log')
 
         users = AppUser.objects.filter(
             Q(is_staff=False) | Q(is_superuser=True),
@@ -49,4 +49,4 @@ class Command(BaseCommand):
 
         DailyLog.objects.bulk_create(daily_logs, batch_size=BATCH_SIZE)
 
-        logger.info("Finish command create_daily_log")
+        logger.info('Finish command create_daily_log')

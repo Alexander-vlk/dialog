@@ -10,7 +10,7 @@ from data_tracking.serializers import MoodSerializer
 
 @extend_schema(
     tags=[HEALTH_SWAGGER_TAG],
-    methods=["GET"],
+    methods=['GET'],
     description='Справочник - виды самочувствия',
     responses={
         status.HTTP_200_OK: MoodSerializer,

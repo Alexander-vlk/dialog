@@ -17,12 +17,12 @@ class MainPageSettingsAdmin(admin.ModelAdmin):
     """Админ для модели MainPageSettings"""
 
     list_display = (
-        "id",
-        "max_slider_images",
-        "max_advantages_count",
-        "max_functions_count",
-        "max_reviews_count",
-        "max_faqs_count",
+        'id',
+        'max_slider_images',
+        'max_advantages_count',
+        'max_functions_count',
+        'max_reviews_count',
+        'max_faqs_count',
     )
 
 
@@ -31,15 +31,15 @@ class CallToActionBlockAdmin(admin.ModelAdmin):
     """Админ для модели CallToActionBlock"""
 
     list_display = (
-        "id",
-        "action_text",
-        "show_on_main_page",
+        'id',
+        'action_text',
+        'show_on_main_page',
     )
-    list_display_links = ["action_text"]
-    list_filter = ("show_on_main_page",)
+    list_display_links = ['action_text']
+    list_filter = ('show_on_main_page',)
     formfield_overrides = {
         models.CharField: {
-            "widget": forms.Textarea(),
+            'widget': forms.Textarea(),
         },
     }
 
@@ -49,12 +49,12 @@ class FeatureAdmin(admin.ModelAdmin):
     """Админ для модели Feature"""
 
     list_display = (
-        "name",
-        "description",
+        'name',
+        'description',
     )
     formfield_overrides = {
         models.CharField: {
-            "widget": forms.Textarea(),
+            'widget': forms.Textarea(),
         },
     }
 
@@ -64,14 +64,14 @@ class HeroActionBlockAdmin(admin.ModelAdmin):
     """Админ для модели HeroActionBlock"""
 
     list_display = (
-        "slogan",
-        "short_description",
-        "show_on_main_page",
+        'slogan',
+        'short_description',
+        'show_on_main_page',
     )
-    list_filter = ("show_on_main_page",)
+    list_filter = ('show_on_main_page',)
     formfield_overrides = {
         models.CharField: {
-            "widget": forms.Textarea(),
+            'widget': forms.Textarea(),
         },
     }
 
@@ -81,14 +81,14 @@ class MainPageFAQAdmin(admin.ModelAdmin):
     """Админ для модели MainPageFAQ"""
 
     list_display = (
-        "id",
-        "question",
-        "answer",
+        'id',
+        'question',
+        'answer',
     )
-    list_display_links = ["question"]
+    list_display_links = ['question']
     formfield_overrides = {
         models.CharField: {
-            "widget": forms.Textarea(),
+            'widget': forms.Textarea(),
         },
     }
 
@@ -98,14 +98,14 @@ class SliderImageAdmin(admin.ModelAdmin):
     """Админ для модели SliderImage"""
 
     list_display = (
-        "id",
-        "alt",
-        "show_on_main_page",
+        'id',
+        'alt',
+        'show_on_main_page',
     )
-    list_display_links = ["alt"]
-    list_filter = ("show_on_main_page",)
+    list_display_links = ['alt']
+    list_filter = ('show_on_main_page',)
     formfield_overrides = {
         models.CharField: {
-            "widget": forms.Textarea(),
+            'widget': forms.Textarea(),
         },
     }

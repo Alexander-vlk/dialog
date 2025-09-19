@@ -6,6 +6,7 @@ from data_tracking.views.private import (
     AverageGlucoseDataAPIView,
     BodyTemperatureAPIView,
     CaloriesAPIView,
+    DailyLogAPIView,
     GlucoseAPIView,
     HealthAPIView,
     PressureAPIView,
@@ -25,5 +26,6 @@ urlpatterns = [
     path('bju/average/', AvgBJUApiView.as_view(), name='bju-average'),
     path('health/', HealthAPIView.as_view(), name='health'),
     path('mood/', MoodAPIView.as_view(), name='mood'),
+    path('daily-log/', DailyLogAPIView.as_view(), name='daily_log'),
     path('weekly-log/', WeeklyLogAPIView.as_view(), name='weekly_log'),
 ]

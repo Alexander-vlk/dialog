@@ -61,8 +61,14 @@ MOOD_SWAGGER_TAG = 'Настроение'
 SWAGGER_ERROR_MESSAGES = {
     status.HTTP_400_BAD_REQUEST: OpenApiResponse(description='Invalid data'),
     status.HTTP_401_UNAUTHORIZED: OpenApiResponse(description='Not authenticated'),
-    status.HTTP_403_FORBIDDEN: OpenApiResponse(description='You have no access to this resource'),
+    status.HTTP_403_FORBIDDEN: OpenApiResponse(
+        description='You have no access to this resource'
+    ),
     status.HTTP_404_NOT_FOUND: OpenApiResponse(description='Not found'),
-    status.HTTP_405_METHOD_NOT_ALLOWED: OpenApiResponse(description='Method not allowed'),
-    status.HTTP_500_INTERNAL_SERVER_ERROR: OpenApiResponse(description='Internal server error'),
+    status.HTTP_405_METHOD_NOT_ALLOWED: OpenApiResponse(
+        description='Method not allowed'
+    ),
+    status.HTTP_500_INTERNAL_SERVER_ERROR: OpenApiResponse(
+        description='Internal server error'
+    ),
 }

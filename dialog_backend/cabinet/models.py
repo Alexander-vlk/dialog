@@ -8,13 +8,13 @@ from common_utils.validators import validate_length
 class DiabetesType(AutoDateMixin):
     """Модель типов диабета"""
 
-    slug = models.SlugField(max_length=100, unique=True, verbose_name="Слаг названия")
-    name = models.CharField(max_length=100, unique=True, verbose_name="Название")
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='Слаг названия')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Название')
 
     class Meta:
-        verbose_name = "Тип диабета"
-        verbose_name_plural = "Типы диабета"
-        ordering = ["id"]
+        verbose_name = 'Тип диабета'
+        verbose_name_plural = 'Типы диабета'
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -23,13 +23,13 @@ class DiabetesType(AutoDateMixin):
 class TreatmentType(AutoDateMixin):
     """Модель типов лечения"""
 
-    slug = models.SlugField(max_length=100, unique=True, verbose_name="Слаг названия")
-    name = models.CharField(max_length=100, unique=True, verbose_name="Название")
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='Слаг названия')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Название')
 
     class Meta:
-        verbose_name = "Тип лечения"
-        verbose_name_plural = "Типы лечения"
-        ordering = ["id"]
+        verbose_name = 'Тип лечения'
+        verbose_name_plural = 'Типы лечения'
+        ordering = ['id']
 
     def __str__(self):
         return self.name
@@ -40,21 +40,21 @@ class Disease(AutoDateMixin):
 
     users = models.ManyToManyField(
         to=AppUser,
-        verbose_name="Пользователи с заболеванием",
-        related_name="diseases",
+        verbose_name='Пользователи с заболеванием',
+        related_name='diseases',
         blank=True,
-        help_text="Указанные пользователи болеют этим заболеванием",
+        help_text='Указанные пользователи болеют этим заболеванием',
     )
 
     name = models.CharField(
         max_length=500,
-        verbose_name="Название болезни",
+        verbose_name='Название болезни',
     )
 
     class Meta:
-        verbose_name = "Заболевание"
-        verbose_name_plural = "Заболевания"
-        ordering = ["name"]
+        verbose_name = 'Заболевание'
+        verbose_name_plural = 'Заболевания'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -65,40 +65,40 @@ class Allergy(AutoDateMixin):
 
     users = models.ManyToManyField(
         to=AppUser,
-        verbose_name="Пользователи",
+        verbose_name='Пользователи',
         blank=True,
-        related_name="allergies",
-        help_text="Указанные пользователи имеют эту аллергию",
+        related_name='allergies',
+        help_text='Указанные пользователи имеют эту аллергию',
     )
 
     name = models.CharField(
         max_length=500,
-        verbose_name="Название аллергии",
+        verbose_name='Название аллергии',
     )
 
     class Meta:
-        verbose_name = "Аллергия"
-        verbose_name_plural = "Аллергии"
-        ordering = ["name"]
+        verbose_name = 'Аллергия'
+        verbose_name_plural = 'Аллергии'
+        ordering = ['name']
 
 
 class Advantage(AutoDateMixin):
     """Модель преимуществ"""
 
-    title = models.CharField(max_length=120, verbose_name="Название")
-    description = models.CharField(max_length=1000, verbose_name="Описание")
+    title = models.CharField(max_length=120, verbose_name='Название')
+    description = models.CharField(max_length=1000, verbose_name='Описание')
 
     image = models.ImageField(
-        upload_to="advantages/", blank=True, null=True, verbose_name="Изображение"
+        upload_to='advantages/', blank=True, null=True, verbose_name='Изображение'
     )
 
-    order_num = models.PositiveSmallIntegerField(verbose_name="Порядок", unique=True)
+    order_num = models.PositiveSmallIntegerField(verbose_name='Порядок', unique=True)
 
     class Meta:
-        verbose_name = "Преимущество"
-        verbose_name_plural = "Преимущества"
+        verbose_name = 'Преимущество'
+        verbose_name_plural = 'Преимущества'
 
-        ordering = ["order_num"]
+        ordering = ['order_num']
 
     def __str__(self):
         return self.title
@@ -112,35 +112,35 @@ class Rate(AutoDateMixin):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name="Пользователь",
+        verbose_name='Пользователь',
     )
 
     text = models.CharField(
-        max_length=1000, validators=[validate_length], verbose_name="Текст"
+        max_length=1000, validators=[validate_length], verbose_name='Текст'
     )
 
-    is_visible = models.BooleanField(verbose_name="Показывать", default=False)
+    is_visible = models.BooleanField(verbose_name='Показывать', default=False)
 
     class Meta:
-        verbose_name = "Отзыв"
-        verbose_name_plural = "Отзывы"
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return f"{self.text[:100]}..."
+        return f'{self.text[:100]}...'
 
     @property
     def user_info(self):
         if not self.user:
-            return "Аноним"
+            return 'Аноним'
 
         if not self.user.first_name:
             return self.user.username
 
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f'{self.user.first_name} {self.user.last_name}'
 
     @property
     def date_joined(self):
         if not self.user:
-            return ""
+            return ''
 
         return self.user.created_at

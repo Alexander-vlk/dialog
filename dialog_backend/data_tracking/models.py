@@ -117,7 +117,7 @@ class WeeklyLog(AutoDateMixin):
         unique_together = ('user', 'week_start', 'week_end')
 
     def __str__(self):
-        return f'Отчет за неделю {self.week_start.strftime('%d.%m.%Y')} - {self.week_end.strftime('%d.%m.%Y')}'
+        return f'Отчет за неделю {self.week_start.strftime("%d.%m.%Y")} - {self.week_end.strftime("%d.%m.%Y")}'
 
     @property
     def is_filled(self):
@@ -347,4 +347,4 @@ class BodyTemperature(AutoDateMixin):
         verbose_name_plural = 'Температуры тела'
 
     def __str__(self):
-        return f"{self.user}:{self.updated_at}:{self.temperature}"
+        return f'{self.user}:{self.updated_at}:{self.temperature}'

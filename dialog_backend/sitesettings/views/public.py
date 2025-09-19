@@ -36,7 +36,7 @@ from sitesettings.utils import get_main_page_settings
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: AdvantageResponseSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -72,7 +72,7 @@ class AdvantageAPIView(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: CallToActionBlockSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -110,7 +110,7 @@ class CallToActionBlockView(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: FeatureSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -148,7 +148,7 @@ class FeatureAPIView(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: HeroActionBlockSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -186,7 +186,7 @@ class HeroActionBlockAPIView(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: MainPageFAQSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -224,7 +224,7 @@ class MainPageFAQAPIView(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: RateResponseSerializer,
         **SWAGGER_ERROR_MESSAGES,
@@ -260,7 +260,7 @@ class RateAPIview(APIView):
 
 @extend_schema(
     tags=[MAIN_PAGE_DATA_TAG],
-    methods=["GET"],
+    methods=['GET'],
     responses={
         status.HTTP_200_OK: SliderImageSerializer,
         **SWAGGER_ERROR_MESSAGES,
