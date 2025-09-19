@@ -40,6 +40,7 @@ from data_tracking.serializers import (
     HealthSerializer,
     PressureSerializer,
     WeeklyLogSerializer,
+    DailyLogResponseSerializer,
 )
 
 
@@ -554,7 +555,7 @@ class HealthAPIView(APIView):
 
 @extend_schema(
     tags=[DAILY_LOG_SWAGGER_TAG],
-    methods=['GET', 'POST', 'OPTIONS'],
+    methods=['GET', 'PUT', 'OPTIONS'],
     description='Взаимодействие с единичным экземпляром дневного отчета',
 )
 class DailyLogAPIView(APIView):
@@ -563,14 +564,14 @@ class DailyLogAPIView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    serializer_class = DailyLogResponseSerializer
+
     @extend_schema(
         description='Получить статус заполнения актуального дневного отчета',
     )
     def options(self, request, *args, **kwargs):
         """OPTIONS-запрос"""
-        current_daily_log = DailyLog.objects.filter(
-            user=request.user, date=timezone.now()
-        )
+        current_daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now())
         if not current_daily_log.exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -579,5 +580,30 @@ class DailyLogAPIView(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
+    @extend_schema(
+        'Получить сегодняшний дневной отчет',
+        responses={
+            status.HTTP_200_OK: serializer_class,
+            **SWAGGER_ERROR_MESSAGES,
+        },
+    )
     def get(self, request):
         """GET-запрос"""
+        serializer = self.serializer_class(
+            instance=DailyLog.objects.filter(user=request.user, date=timezone.now()).first(),
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        'Обновить сегодняшний дневной отчет',
+        request=serializer_class,
+    )
+    def put(self, request):
+        """POST-запрос"""
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        current_daily_log = DailyLog.objects.filter(user=request.user, date=timezone.now())
+        current_daily_log.update(**serializer.validated_data)
+
+        return Response(status=status.HTTP_200_OK)

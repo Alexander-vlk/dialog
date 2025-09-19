@@ -140,47 +140,6 @@ class MoodSerializer(serializers.ModelSerializer):
         fields = ('name', 'color', 'bg_color')
 
 
-class DailyLogSerializer(serializers.ModelSerializer):
-    """Сериализатор модели DailyLog"""
-
-    class Meta:
-        model = DailyLog
-        fields = (
-            'calories_count',
-            'proteins_count',
-            'fats_count',
-            'carbs_count',
-            'general_health',
-            'physical_activity',
-            'additional_info',
-        )
-
-    def validate_date(self, value):
-        user = self.context['request'].user
-        if (
-            user.is_authenticated
-            and DailyLog.objects.filter(user=user, date=value).exists()
-        ):
-            raise serializers.ValidationError(
-                'Дневной отчет для этого дня уже существует'
-            )
-        if value > date.today():
-            raise serializers.ValidationError(
-                'Нельзя создать дневной отчет для еще не наступившего дня'
-            )
-
-        return value
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        if user.is_authenticated:
-            return DailyLog.objects.create(
-                user=user,
-                date=date.today(),
-                **validated_data,
-            )
-
-
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
