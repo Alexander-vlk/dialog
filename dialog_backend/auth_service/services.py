@@ -23,7 +23,7 @@ def authenticate_user(request, access_token, refresh_token) -> Response:
         httponly=True,
         secure=not settings.DEBUG,
         samesite='Lax',
-        expires=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
+        max_age=TWO_MONTHS if request.data.get('remember') else ONE_DAY,
     )
 
     return response
