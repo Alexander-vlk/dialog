@@ -31,8 +31,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
     serializer_class = TokenObtainPairSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes = []  # type: ignore
+    authentication_classes = []  # type: ignore
 
     @extend_schema(
         'Установка пары токенов',
@@ -111,8 +111,8 @@ class CustomTokenRefreshView(TokenRefreshView):
 
     serializer_class = TokenRefreshSerializer  # type: ignore
 
-    permission_classes: list = []
-    authentication_classes: list = []
+    permission_classes = []  # type: ignore
+    authentication_classes = []  # type: ignore
 
     @extend_schema(
         'Обновление access-токена',
@@ -137,8 +137,8 @@ class CustomTokenRefreshView(TokenRefreshView):
 class LogoutAPIView(APIView):
     """APIView для выхода пользователя из профиля"""
 
-    authentication_classes: list = [JWTAuthentication]
-    permission_classes: list = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         'Выполнение выхода пользователя из системы',
