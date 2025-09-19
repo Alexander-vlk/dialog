@@ -3,7 +3,6 @@ from .serializers import (
     WeeklyLogSerializer,
     HealthSerializer,
     MoodSerializer,
-    DailyLogSerializer,
     BodyTemperatureSerializer,
     GlucoseSerializer,
     PressureSerializer,
@@ -11,6 +10,8 @@ from .serializers import (
     AverageGlucoseSerializer,
     AverageBJUSerializer,
 )
+from .request_serializers import DailyLogRequestSerializer
+from .response_serializers import DailyLogResponseSerializer
 
 
 __all__ = (
@@ -18,11 +19,12 @@ __all__ = (
     'WeeklyLogSerializer',
     'HealthSerializer',
     'MoodSerializer',
-    'DailyLogSerializer',
     'BodyTemperatureSerializer',
     'GlucoseSerializer',
     'PressureSerializer',
     'CaloriesSerializer',
     'AverageGlucoseSerializer',
     'AverageBJUSerializer',
+    'DailyLogRequestSerializer',
+    'DailyLogResponseSerializer',
 )
