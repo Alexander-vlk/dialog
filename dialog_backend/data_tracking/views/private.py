@@ -41,7 +41,9 @@ from data_tracking.serializers import (
     PressureSerializer,
     WeeklyLogSerializer,
     DailyLogResponseSerializer,
+    DailyLogRequestSerializer,
 )
+from data_tracking.services import update_daily_log
 
 
 @extend_schema(
@@ -600,16 +602,23 @@ class DailyLogAPIView(APIView):
 
     @extend_schema(
         'Обновить сегодняшний дневной отчет',
-        request=serializer_class,
+        request=DailyLogRequestSerializer,
+        responses={
+            status.HTTP_200_OK: serializer_class,
+            **SWAGGER_ERROR_MESSAGES,
+        },
     )
     def put(self, request):
         """POST-запрос"""
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        request_serializer = DailyLogRequestSerializer(data=request.data)
+        request_serializer.is_valid(raise_exception=True)
 
-        current_daily_log = DailyLog.objects.filter(
-            user=request.user, date=timezone.now()
+        current_daily_log = get_object_or_404(
+            DailyLog, user=request.user, date=timezone.now()
         )
-        current_daily_log.update(**serializer.validated_data)
-
-        return Response(status=status.HTTP_200_OK)
+        update_daily_log(
+            get_object_or_404(DailyLog, user=request.user, date=timezone.now()),
+            request_serializer.validated_data,
+        )
+        response_serializer = self.serializer_class(instance=current_daily_log)
+        return Response(response_serializer.data, status.HTTP_200_OK)
