@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core import validators
 from django.db import models
 
 from common_utils.mixins import AutoDateMixin
@@ -26,6 +27,12 @@ class AppUser(AbstractUser, AutoDateMixin):
         max_length=10,
         choices=GENDER_CHOICES,
         verbose_name='Пол',
+    )
+    height = models.SmallIntegerField(
+        verbose_name='Рост',
+        null=True,
+        blank=True,
+        validators=[validators.MinValueValidator(1)],
     )
     birth_date = models.DateField(
         verbose_name='Дата рождения',
