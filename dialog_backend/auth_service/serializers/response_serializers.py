@@ -13,7 +13,7 @@ from constants import GENDER_CHOICES
             description='Базовый ответ',
             value=[
                 {
-                    'id': '1',
+                    'id': 1,
                     'username': 'testov',
                     'email': 'test@test.com',
                     'last_name': 'Тестов',
@@ -21,6 +21,7 @@ from constants import GENDER_CHOICES
                     'patronymic_name': 'Тестович',
                     'image_url': 'https://dialog.com/static/testov/profile.png',
                     'gender': 'Мужской',
+                    'height': 180,
                     'birth_date': '2000-10-10',
                     'diabetes_type': '1-го типа',
                     'diagnosis_date': '2019-10-10',
@@ -45,6 +46,7 @@ class AppUserResponseSerializer(serializers.Serializer):
     phone_number = serializers.CharField(help_text='Номер телефона', allow_blank=True)
     image_url = serializers.CharField(help_text='URL изображения', allow_blank=True)
     gender = serializers.ChoiceField(help_text='Пол', choices=GENDER_CHOICES)
+    height = serializers.CharField(help_text='Рост', allow_null=True, required=False)
     birth_date = serializers.DateField(help_text='Дата рождения')
     diagnosis_date = serializers.DateField(help_text='Дата постановки диагноза')
     treatment_type = serializers.CharField(help_text='Тип лечения', allow_blank=True)

@@ -36,12 +36,11 @@ class AppUserAPIView(APIView):
             'patronymic_name': self.request.user.patronymic_name,
             'image_url': self.request.user.image.url,
             'gender': self.request.user.gender,
+            'height': self.request.user.height,
             'birth_date': self.request.user.birth_date,
             'diabetes_type': self.request.user.diabetes_type,
             'diagnosis_date': self.request.user.diagnosis_date,
-            'treatment_type': self.request.user.treatment_type.name
-            if self.request.user.treatment_type
-            else None,
+            'treatment_type': self.request.user.treatment_type.name if self.request.user.treatment_type else None,
             'phone_number': self.request.user.phone_number,
         }
 
