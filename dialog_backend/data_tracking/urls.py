@@ -27,7 +27,7 @@ urlpatterns = [
     path('bju/average/', AvgBJUApiView.as_view(), name='bju-average'),
     path('health/', HealthAPIView.as_view(), name='health'),
     path('mood/', MoodAPIView.as_view(), name='mood'),
-    path('daily-log/current/', DailyLogAPIView.as_view(), name='daily_log'),
-    path('daily-log/', ListDailyLogAPIView.as_view(), name='daily_log'),
-    path('weekly-log/', WeeklyLogAPIView.as_view(), name='weekly_log'),
+    path('daily-logs/current/', DailyLogAPIView.as_view(), name='current_daily_log'),
+    path('daily-logs/', ListDailyLogAPIView.as_view(), name='daily_log'),
+    path('weekly-logs/', WeeklyLogAPIView.as_view(), name='weekly_log'),
 ]
