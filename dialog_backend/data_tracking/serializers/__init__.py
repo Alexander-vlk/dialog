@@ -11,7 +11,7 @@ from .serializers import (
     AverageBJUSerializer,
 )
 from .request_serializers import DailyLogRequestSerializer
-from .response_serializers import DailyLogResponseSerializer
+from .response_serializers import DailyLogResponseSerializer, DailyLogFillStatusResponseSerializer
 
 
 __all__ = (
@@ -27,4 +27,5 @@ __all__ = (
     'AverageBJUSerializer',
     'DailyLogRequestSerializer',
     'DailyLogResponseSerializer',
+    'DailyLogFillStatusResponseSerializer',
 )

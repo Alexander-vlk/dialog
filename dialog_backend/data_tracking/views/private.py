@@ -32,6 +32,7 @@ from data_tracking.models import (
     WeeklyLog,
     DailyLog,
 )
+from data_tracking.selectors.daily_log import get_daily_logs_fill_status
 from data_tracking.serializers import (
     AverageBJUSerializer,
     AverageGlucoseSerializer,
@@ -42,7 +43,7 @@ from data_tracking.serializers import (
     PressureSerializer,
     WeeklyLogSerializer,
     DailyLogResponseSerializer,
-    DailyLogRequestSerializer,
+    DailyLogRequestSerializer, DailyLogFillStatusResponseSerializer,
 )
 from data_tracking.services import update_daily_log
 
@@ -651,4 +652,31 @@ class ListDailyLogAPIView(APIView):
             instance=DailyLog.objects.filter(user=request.user),
             many=True,
         )
+        return Response(serializer.data, status.HTTP_200_OK)
+
+
+@extend_schema(
+    tags=[DAILY_LOG_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получить статусы заполнения дневных отчетов по пользователю',
+)
+class ListDailyLogFillStatusAPIView(APIView):
+    """APIView: Получить статусы заполнения дневных отчетов"""
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = DailyLogFillStatusResponseSerializer
+
+    @extend_schema(
+        'Получить статусы заполнения дневных отчетов',
+        responses={
+            status.HTTP_200_OK: serializer_class,
+            **SWAGGER_ERROR_MESSAGES,
+        },
+    )
+    def get(self, request):
+        """GET-запрос"""
+        daily_logs_fill_status = get_daily_logs_fill_status(request.user)
+        serializer = self.serializer_class(instance=daily_logs_fill_status, many=True)
         return Response(serializer.data, status.HTTP_200_OK)

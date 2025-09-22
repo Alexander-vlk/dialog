@@ -11,7 +11,7 @@ from data_tracking.views.private import (
     HealthAPIView,
     PressureAPIView,
     WeeklyLogAPIView,
-    ListDailyLogAPIView,
+    ListDailyLogAPIView, ListDailyLogFillStatusAPIView,
 )
 
 urlpatterns = [
@@ -24,6 +24,7 @@ urlpatterns = [
     path('health/', HealthAPIView.as_view(), name='health'),
     path('mood/', MoodAPIView.as_view(), name='mood'),
     path('daily-logs/current/', DailyLogAPIView.as_view(), name='current_daily_log'),
+    path('daily-logs/fill-statuses/', ListDailyLogFillStatusAPIView.as_view(), name='daily_log_statuses'),
     path('daily-logs/', ListDailyLogAPIView.as_view(), name='daily_log'),
     path('weekly-logs/', WeeklyLogAPIView.as_view(), name='weekly_log'),
 ]

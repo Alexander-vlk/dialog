@@ -17,3 +17,10 @@ class DailyLogData(TypedDict):
     physical_activity: str
     additional_info: str
     date: datetime.date
+
+
+class DailyLogFillStatus(TypedDict):
+    """Типизация для DailyLogFillStatus"""
+
+    date: datetime.date
+    is_filled: bool

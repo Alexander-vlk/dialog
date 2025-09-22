@@ -33,3 +33,31 @@ class DailyLogResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DailyLog
         fields = '__all__'
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample(
+            'Успешный ответ',
+            value=[
+                {
+                    'date': '2020-10-10',
+                    'is_filled': True,
+                },
+                {
+                    'date': '2020-10-11',
+                    'is_filled': True,
+                },
+                {
+                    'date': '2020-10-12',
+                    'is_filled': False,
+                },
+            ],
+        ),
+    ],
+)
+class DailyLogFillStatusResponseSerializer(serializers.Serializer):
+    """Сериализатор статуса заполнения дневного отчета"""
+
+    date = serializers.DateField(help_text='Дата дневного отчета')
+    is_filled = serializers.BooleanField(help_text='Заполнен')
