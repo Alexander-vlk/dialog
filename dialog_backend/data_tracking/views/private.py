@@ -1,3 +1,5 @@
+from http.client import responses
+
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from drf_spectacular.utils import (
@@ -622,3 +624,32 @@ class DailyLogAPIView(APIView):
         )
         response_serializer = self.serializer_class(instance=current_daily_log)
         return Response(response_serializer.data, status.HTTP_200_OK)
+
+
+@extend_schema(
+    tags=[DAILY_LOG_SWAGGER_TAG],
+    methods=['GET'],
+    description='Получить список дневных отчетов для конкретного пользователя',
+)
+class ListDailyLogAPIView(APIView):
+    """APIView для получения списка дневных отчетов по конкретному пользователю"""
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = DailyLogResponseSerializer
+
+    @extend_schema(
+        'Получить список дневных отчетов по конкретному пользователю',
+        responses={
+            status.HTTP_200_OK: serializer_class,
+            **SWAGGER_ERROR_MESSAGES,
+        },
+    )
+    def get(self, request):
+        """GET-запрос"""
+        serializer = self.serializer_class(
+            instance=DailyLog.objects.filter(user=request.user),
+            many=True,
+        )
+        return Response(serializer.data, status.HTTP_200_OK)
