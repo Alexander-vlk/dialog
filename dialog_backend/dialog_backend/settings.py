@@ -17,7 +17,6 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default='localhost')
 INSTALLED_APPS = [
     'django.contrib.sites',
     'cabinet.apps.CabinetConfig',
-    'sitesettings.apps.SitesettingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
