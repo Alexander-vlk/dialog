@@ -1,24 +1,32 @@
 services:
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
-    command: poetry run python3 manage.py runserver 0.0.0.0:8040
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=dialog_backend
+    command: >
+      sh -c "
+      poetry run python manage.py migrate &&
+      poetry run python manage.py runserver 0.0.0.0:8040
+      "
     volumes:
       - ./:/home/django/dialog_backend
     ports:
       - "8040:8040"
     depends_on:
-      - db
+      - postgres
       - redis
       - rabbitmq
     networks:
       - dialog_network
 
-  db:
+  postgres:
     image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql@14/data
+      - ./sql_dump:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-1234}
@@ -45,16 +53,18 @@ services:
     networks:
       - dialog_network
 
-  celery:
+  celery-worker:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /app/dialog_backend
     command: celery -A dialog_backend worker --loglevel=info
     volumes:
-      - ./dialog_backend:/app
+      - ./:/app
     depends_on:
-      - db
+      - postgres
       - rabbitmq
+      - celery-beat
     networks:
       - dialog_network
 
@@ -62,13 +72,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /app/dialog_backend
     command: celery -A dialog_backend beat --loglevel=info
     volumes:
-      - ./dialog_backend:/app
+      - ./:/app
     env_file:
       - ./dialog_backend/dialog_backend/.env
     depends_on:
-      - db
+      - postgres
       - rabbitmq
     networks:
       - dialog_network
@@ -82,6 +93,38 @@ services:
       - "5555:5555"
     depends_on:
       - rabbitmq
+    networks:
+      - dialog_network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./site.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    extra_hosts:
+      - "crm.com:host-gateway"
+    networks:
+      - dialog_network
+    depends_on:
+      - backend
+      - frontend
+
+  frontend:
+    build:
+      context: ./dialog_frontend
+      dockerfile: Dockerfile
+    command: npm run dev -- --hostname 0.0.0.0 --port 3000уд
+    working_dir: /home/frontend
+    volumes:
+      - ./dialog_frontend:/home/frontend
+      - /home/frontend/node_modules
+    ports:
+      - "8300:8300"
+    depends_on:
+      - backend
     networks:
       - dialog_network
 
