@@ -17,6 +17,9 @@ Tablegroup data_tracking {
   data_tracking_meal
   data_tracking_physicalactivity
   data_tracking_note
+  data_tracking_temperature
+  data_tracking_pressure
+  data_tracking_glucose
 }
 
 Tablegroup auth_service {
@@ -220,5 +223,42 @@ Table data_tracking_note [note: 'Заметки'] {
   updated_at timestamp [not null]
   indexes {
     (user_id, measured_at) [name: 'data_tracking_note_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_temperature [note: 'Температура'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_temperature_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_pressure [note: 'Гемоглобин'] {
+  id integer [primary key]
+  systolic integer [not null]
+  diastolic integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_pressureuser_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_glucose [note: 'Гемоглобин'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_glucose_user_id_measured_at_desc_idx', type: btree]
   }
 }
