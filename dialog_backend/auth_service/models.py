@@ -4,7 +4,7 @@ from django.db import models
 
 from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_not_future_date
-from constants import GENDER_CHOICES
+from constants import GENDER_CHOICES, UNDEFINED
 
 
 class AppUser(AbstractUser, AutoDateMixin):
@@ -17,7 +17,6 @@ class AppUser(AbstractUser, AutoDateMixin):
         verbose_name='Фото',
         default='images/stub.png',
     )
-
     patronymic_name = models.CharField(
         max_length=150,
         default='',
@@ -27,6 +26,7 @@ class AppUser(AbstractUser, AutoDateMixin):
         max_length=10,
         choices=GENDER_CHOICES,
         verbose_name='Пол',
+        default=UNDEFINED,
     )
     height = models.SmallIntegerField(
         verbose_name='Рост',

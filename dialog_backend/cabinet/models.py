@@ -45,7 +45,6 @@ class Disease(AutoDateMixin):
         blank=True,
         help_text='Указанные пользователи болеют этим заболеванием',
     )
-
     name = models.CharField(
         max_length=500,
         verbose_name='Название болезни',
@@ -70,7 +69,6 @@ class Allergy(AutoDateMixin):
         related_name='allergies',
         help_text='Указанные пользователи имеют эту аллергию',
     )
-
     name = models.CharField(
         max_length=500,
         verbose_name='Название аллергии',
@@ -87,11 +85,12 @@ class Advantage(AutoDateMixin):
 
     title = models.CharField(max_length=120, verbose_name='Название')
     description = models.CharField(max_length=1000, verbose_name='Описание')
-
     image = models.ImageField(
-        upload_to='advantages/', blank=True, null=True, verbose_name='Изображение'
+        upload_to='advantages/',
+        blank=True,
+        null=True,
+        verbose_name='Изображение',
     )
-
     order_num = models.PositiveSmallIntegerField(verbose_name='Порядок', unique=True)
 
     class Meta:
@@ -114,11 +113,11 @@ class Rate(AutoDateMixin):
         blank=True,
         verbose_name='Пользователь',
     )
-
     text = models.CharField(
-        max_length=1000, validators=[validate_length], verbose_name='Текст'
+        max_length=1000,
+        validators=[validate_length],
+        verbose_name='Текст',
     )
-
     is_visible = models.BooleanField(verbose_name='Показывать', default=False)
 
     class Meta:

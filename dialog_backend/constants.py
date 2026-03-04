@@ -12,11 +12,13 @@ TWO_WEEKS = 1209600
 
 BATCH_SIZE = 1000
 
-MALE = 'MALE'
-FEMALE = 'FEMALE'
+MALE = 'male'
+FEMALE = 'female'
+UNDEFINED = 'undefined'
 GENDER_CHOICES = {
     MALE: 'Мужской',
     FEMALE: 'Женский',
+    UNDEFINED: 'Не определен',
 }
 
 FIRST_TYPE = '1'
