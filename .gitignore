@@ -179,5 +179,5 @@ cython_debug/
 !function*.png
 
 dialog_backend/static/
-frontend
+dialog_frontend
 ssl
