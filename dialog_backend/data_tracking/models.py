@@ -9,9 +9,15 @@ from common_utils.validators import validate_positive_float
 class Temperature(AutoDateMixin):
     """Температура"""
 
-    value = models.FloatField(verbose_name='Значение (в Цельсия)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (в Цельсия)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение температуры'
@@ -27,9 +33,15 @@ class Temperature(AutoDateMixin):
 class Glucose(AutoDateMixin):
     """Глюкоза"""
 
-    value = models.FloatField(verbose_name='Значение (ммоль/л)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (ммоль/л)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение уровня сахара в крови'
@@ -46,8 +58,12 @@ class Hemoglobin(AutoDateMixin):
     """Гемоглобин"""
 
     value = models.PositiveSmallIntegerField(verbose_name='Значение (г/л)')
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение гемоглобина'
@@ -63,9 +79,15 @@ class Hemoglobin(AutoDateMixin):
 class Cholesterol(AutoDateMixin):
     """Холестерин"""
 
-    value = models.FloatField(verbose_name='Значение (моль/л)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (моль/л)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение холестерина'
@@ -81,9 +103,15 @@ class Cholesterol(AutoDateMixin):
 class LipidProfile(AutoDateMixin):
     """Липидный профиль"""
 
-    value = models.FloatField(verbose_name='Значение (ммоль/л)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (ммоль/л)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение липидного профиля'
@@ -99,9 +127,15 @@ class LipidProfile(AutoDateMixin):
 class Microalbuminuria(AutoDateMixin):
     """Микроальбуминурия"""
 
-    value = models.FloatField(verbose_name='Значение (мг/сут)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (мг/сут)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение микроальбуминурии'
@@ -118,8 +152,12 @@ class Weight(AutoDateMixin):
     """Вес"""
 
     value = models.PositiveSmallIntegerField(verbose_name='Значение (кг)')
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение веса'
@@ -135,9 +173,15 @@ class Weight(AutoDateMixin):
 class Ketones(AutoDateMixin):
     """Кетоны"""
 
-    value = models.FloatField(verbose_name='Значение (ммоль/л)', validators=[validate_positive_float])
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    value = models.FloatField(
+        verbose_name='Значение (ммоль/л)', validators=[validate_positive_float]
+    )
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение кетонов'
@@ -153,12 +197,16 @@ class Ketones(AutoDateMixin):
 class Meal(AutoDateMixin):
     """КБЖУ за прием пищи"""
 
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
     calories = models.PositiveSmallIntegerField(verbose_name='Калории')
     proteins = models.PositiveSmallIntegerField(verbose_name='Белки')
     carbs = models.PositiveSmallIntegerField(verbose_name='Жиры')
     fats = models.PositiveSmallIntegerField(verbose_name='Углеводы')
-    eaten_at = models.DateTimeField(verbose_name='Время приема пищи', default=timezone.now)
+    eaten_at = models.DateTimeField(
+        verbose_name='Время приема пищи', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Значение КБЖУ за прием пищи'
@@ -175,8 +223,12 @@ class PhysicalActivity(AutoDateMixin):
     """Физическая активность"""
 
     description = models.CharField(verbose_name='Описание', max_length=1000)
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Запись о физической активности'
@@ -193,8 +245,12 @@ class Note(AutoDateMixin):
     """Физическая активность"""
 
     description = models.CharField(verbose_name='Описание', max_length=1000)
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Заметка'
@@ -211,8 +267,12 @@ class Mood(AutoDateMixin):
     """Настроение"""
 
     name = models.CharField(verbose_name='Название', max_length=1000)
-    text_color = models.CharField(verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль')
-    background_color = models.CharField(verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль')
+    text_color = models.CharField(
+        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
+    )
+    background_color = models.CharField(
+        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
+    )
 
     class Meta:
         verbose_name = 'Настроение'
@@ -226,9 +286,13 @@ class Mood(AutoDateMixin):
 class MoodAppUser(AutoDateMixin):
     """Прокси-модель связки настроения и пользователя"""
 
-    user = models.ForeignKey(AppUser, verbose_name='Пользователь', on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
     mood = models.ForeignKey(Mood, verbose_name='Настроение', on_delete=models.PROTECT)
-    measured_at = models.DateTimeField(verbose_name='Время замера', default=timezone.now)
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера', default=timezone.now
+    )
 
     class Meta:
         verbose_name = 'Связка пользователя и настроения'

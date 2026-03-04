@@ -1,7 +1,8 @@
+import datetime
+
 import environ
 from pathlib import Path
 
-from constants import ONE_DAY, HALF_HOUR, TWO_MONTHS
 
 env = environ.Env()
 env.read_env()
@@ -117,9 +118,19 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'DiaLog API reference',
-    'DESCRIPTION': 'All information about the DiaLog API',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_INCLUDE_SCHEMA': True,
+    'SECURITY': [
+        {
+            'BearerAuth': [],
+        },
+    ],
+    'SECURITY_DEFINITIONS': {
+        'BearerAuth': {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerformat': 'JWT',
+        },
+    },
 }
 
 LOGGING = {
@@ -157,9 +168,9 @@ LOGGING = {
 SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
-    'ACCESS_TOKEN_LIFETIME': ONE_DAY if DEBUG else HALF_HOUR,
-    'REFRESH_TOKEN_LIFETIME': TWO_MONTHS,
     'AUTH_COOKIE_HTTP_ONLY': True,
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(hours=6),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(weeks=4),
 }
 
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
