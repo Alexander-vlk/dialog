@@ -7,9 +7,31 @@ from common_utils.validators import validate_not_future_date
 from constants import GENDER_CHOICES, UNDEFINED
 
 
+class Town(AutoDateMixin):
+    """Справочник городов"""
+
+    name = models.CharField(max_length=100, unique=True, verbose_name='Название')
+    timedelta = models.IntegerField(verbose_name='Отклонение по часам')
+
+    class Meta:
+        verbose_name = 'Город'
+        verbose_name_plural = 'Справочник городов'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class AppUser(AbstractUser, AutoDateMixin):
     """Модель пользователя"""
 
+    town = models.ForeignKey(
+        Town,
+        verbose_name='Город',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
     image = models.ImageField(
         upload_to='images/',
         blank=True,

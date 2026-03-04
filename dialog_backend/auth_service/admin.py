@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from auth_service.models import AppUser
 
@@ -8,6 +8,8 @@ from auth_service.models import AppUser
 class AppUserAdmin(admin.ModelAdmin):
     """Админ для модели AppUser"""
 
+    add_form = UserCreationForm
+    form = UserChangeForm
     list_display = ('username', 'email', 'first_name', 'last_name')
     readonly_fields = ('password', 'last_login', 'date_joined')
 

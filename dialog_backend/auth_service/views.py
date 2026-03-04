@@ -21,7 +21,7 @@ from auth_service.serializers import (
     AccessTokenResponseSerializer,
     UserRegistrationRequestSerializer,
 )
-from auth_service.services import authenticate_user, create_logs_for_new_user
+from auth_service.services import authenticate_user
 from cabinet.constants import AUTH_SERVICE_SWAGGER_TAG, HEALTHCHECK_SWAGGER_TAG
 from constants import SWAGGER_ERROR_MESSAGES
 
