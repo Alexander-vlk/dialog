@@ -2,7 +2,6 @@ from django.db import models
 
 from auth_service.models import AppUser
 from common_utils.mixins import AutoDateMixin
-from common_utils.validators import validate_length
 
 
 class DiabetesType(AutoDateMixin):

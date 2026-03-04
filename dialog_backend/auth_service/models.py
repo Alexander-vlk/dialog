@@ -90,6 +90,17 @@ class AppUser(AbstractUser, AutoDateMixin):
         default='',
         blank=True,
     )
+    moods = models.ManyToManyField(
+        'data_tracking.Mood',
+        verbose_name='Связанные настроения',
+        through='data_tracking.MoodAppUser',
+        related_name='users_with_mood',
+    )
+    diseases = models.ManyToManyField(
+        'cabinet.Disease',
+        verbose_name='Сопутствующие заболевания',
+        related_name='users_with_disease',
+    )
 
     class Meta:
         verbose_name = 'Пользователь'
