@@ -1,0 +1,224 @@
+TableGroup cabinet {
+  cabinet_diabetestype
+  cabinet_treatmenttype
+  cabinet_disease
+  cabinet_diseaseappuser // M2M
+}
+
+Tablegroup data_tracking {
+  data_tracking_hemoglobin
+  data_tracking_cholesterol
+  data_tracking_lipid_profile
+  data_tracking_microalbuminuria
+  data_tracking_weight
+  data_tracking_ketones
+  data_tracking_mood
+  data_tracking_moodappuser // M2M, нужна прокси-таблица в коде
+  data_tracking_meal
+  data_tracking_physicalactivity
+  data_tracking_note
+}
+
+Tablegroup auth_service {
+  auth_service_appuser
+}
+
+Table cabinet_diabetestype [note: 'Справочник типов диабета'] {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table cabinet_treatmenttype [note: 'Справочник типов лечения'] {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table cabinet_disease [note: 'Справочник сопутствующих заболеваний'] {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table cabinet_diseaseappuser [note: 'Связка сопутствующего заболевания и пользователя'] {
+  id integer [primary key]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  disease_id integer [not null, ref: > cabinet_disease.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    user_id
+    disease_id
+  }
+}
+
+Table auth_service_town [note: 'Город'] {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  timestamp integer [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table auth_service_appuser [note: 'Пользователь'] {
+  id integer [primary key]
+  username varchar(150) [not null, unique]
+  first_name varchar(150) [not null, default: '']
+  last_name varchar(150) [not null, default: '']
+  email varchar [not null, default: '']
+  phone_number varchar(15) [not null, default: '']
+  is_staff boolean [not null, default: false]
+  is_active boolean [not null, default: true]
+  town_id integer [not null, ref: > auth_service_town.id]
+  date_joined timestamp [not null]
+  image varchar [null]
+  patronymic_name varchar(150) [not null, default: '']
+  gender varchar(10) [not null, default: 'undefined']
+  height integer [null]
+  birth_date date [null]
+  diabetes_type_id integer [ref: > cabinet_diabetestype.id, null]
+  treatment_type_id integer [ref: > cabinet_treatmenttype.id, null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    diabetes_type_id
+    treatment_type_id
+  }
+}
+
+Table data_tracking_hemoglobin [note: 'Гемоглобин'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_hemoglobin_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_cholesterol [note: 'Холестерин'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_cholesterol_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_lipid_profile [note: 'Липидный профиль'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_lipid_profile_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_microalbuminuria [note: 'Микроальбуминурия'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_microalbuminuria_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_weight [note: 'Вес'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_weight_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_ketones [note: 'Кетоны'] {
+  id integer [primary key]
+  value integer [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_ketones_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_mood [note: 'Справочник настроений'] {
+  id integer [primary key]
+  name varchar(100) [unique, not null]
+  color varchar(10) [unique, not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table data_tracking_moodappuser [note: 'Связка настроения и пользователя'] {
+  id integer [primary key]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  mood_id integer [not null, ref: > data_tracking_mood.id]
+  measured_at timestamp [not null, note: 'В какой момент времени было это настроение']
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    user_id
+    mood_id
+    (user_id, measured_at) [name: 'data_tracking_moodappuser_user_id_mood_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_meal [note: 'КБЖУ за прием пищи'] {
+  id integer [primary key]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  calories integer [not null]
+  proteins integer [not null]
+  carbs integer [not null, note: 'Хлебные единицы за день будут высчитываться по сумме всех углеводов, деленной на 12']
+  fats integer [not null]
+  eaten_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, eaten_at) [name: 'data_tracking_meal_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_physicalactivity [note: 'Физическая активность'] {
+  id integer [primary key]
+  description varchar(1000) [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_physicalactivity_user_id_measured_at_desc_idx', type: btree]
+  }
+}
+
+Table data_tracking_note [note: 'Заметки'] {
+  id integer [primary key]
+  description varchar(1000) [not null]
+  user_id integer [not null, ref: > auth_service_appuser.id]
+  measured_at timestamp [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  indexes {
+    (user_id, measured_at) [name: 'data_tracking_note_user_id_measured_at_desc_idx', type: btree]
+  }
+}
