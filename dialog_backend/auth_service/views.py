@@ -85,13 +85,9 @@ class UserRegistrationAPIView(APIView):
 
         serializer = UserRegistrationRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         new_user = serializer.save()
-        create_logs_for_new_user(new_user)
-
         new_user_username = serializer.validated_data.get('username')
         new_user_password = serializer.validated_data.get('password')
-
         token_serializer = TokenObtainPairSerializer(
             data={
                 'username': new_user_username,
@@ -99,7 +95,6 @@ class UserRegistrationAPIView(APIView):
             },
         )
         token_serializer.is_valid(raise_exception=True)
-
         access_token = token_serializer.validated_data.get('access')
         refresh_token = token_serializer.validated_data.get('refresh')
 

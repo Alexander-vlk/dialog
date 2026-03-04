@@ -12,7 +12,6 @@ from drf_spectacular.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Optional UI:
     path(
         'api/schema/swagger-ui/',
         SpectacularSwaggerView.as_view(url_name='schema'),
@@ -24,9 +23,6 @@ urlpatterns = [
         name='redoc',
     ),
     path('api/auth_service/', include('auth_service.urls')),
-    path('api/data-tracking/', include('data_tracking.urls')),
-    path('api/cabinet/public/', include('cabinet.urls.public')),
-    path('api/cabinet/private/', include('cabinet.urls.private')),
 ]
 
 if settings.DEBUG:
