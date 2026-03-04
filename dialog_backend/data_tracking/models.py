@@ -161,8 +161,8 @@ class Meal(AutoDateMixin):
     eaten_at = models.DateTimeField(verbose_name='Время приема пищи', default=timezone.now)
 
     class Meta:
-        verbose_name = 'Значение ЛБЖУ за прием пищи'
-        verbose_name_plural = 'Значения ЛБЖУ за прием пищи'
+        verbose_name = 'Значение КБЖУ за прием пищи'
+        verbose_name_plural = 'Значения КБЖУ за прием пищи'
         indexes = [
             models.Index(fields=['user', 'eaten_at']),
         ]
