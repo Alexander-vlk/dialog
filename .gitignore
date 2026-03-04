@@ -181,3 +181,4 @@ cython_debug/
 dialog_backend/static/
 dialog_frontend
 ssl
+node_modules
