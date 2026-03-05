@@ -89,6 +89,8 @@ class LogoutAPIView(APIView):
     permission_classes: list = [IsAuthenticated, HasRefreshToken]
     authentication_classes: list = [JWTAuthentication]
 
+    serializer_class = None
+
     def post(self, request, *args, **kwargs):
         """POST-запрос"""
         refresh_token = request.COOKIES.get('refresh_token')

@@ -249,7 +249,8 @@ class Note(AutoDateMixin):
         AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
     )
     measured_at = models.DateTimeField(
-        verbose_name='Время замера', default=timezone.now
+        verbose_name='Время замера',
+        default=timezone.now,
     )
 
     class Meta:

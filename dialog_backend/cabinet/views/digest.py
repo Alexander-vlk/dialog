@@ -16,7 +16,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
 
 @extend_schema_view(
     retrieve=extend_schema(
-        'Получить один объект из справочника по его id',
+        'Получить один объект из справочника типов диабета по его id',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -24,7 +24,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         },
     ),
     list=extend_schema(
-        'Получить все записи из справочника',
+        'Получить все записи из справочника типов диабета',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -32,7 +32,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике',
+        'Создать новый тип диабета в справочнике типов диабета',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -40,7 +40,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         },
     ),
     update=extend_schema(
-        'Обновить целиком объект в справочнике',
+        'Обновить целиком объект в справочнике типов диабета',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -48,7 +48,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         },
     ),
     partial_update=extend_schema(
-        'Частично обновить объект в справочнике',
+        'Частично обновить объект в справочнике типов диабета',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -56,7 +56,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         },
     ),
     destroy=extend_schema(
-        'Удалить объект в справочнике',
+        'Удалить объект из справочника типов диабета',
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
@@ -73,7 +73,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
 
 @extend_schema_view(
     retrieve=extend_schema(
-        'Получить один объект из справочника по его id',
+        'Получить один объект из справочника типов лечения по его id',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -81,7 +81,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     list=extend_schema(
-        'Получить все записи из справочника',
+        'Получить все записи из справочника типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -89,7 +89,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике',
+        'Создать новый тип диабета в справочнике типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -97,7 +97,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     update=extend_schema(
-        'Обновить целиком объект в справочнике',
+        'Обновить целиком объект в справочнике типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -105,7 +105,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     partial_update=extend_schema(
-        'Частично обновить объект в справочнике',
+        'Частично обновить объект в справочнике типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -113,7 +113,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     destroy=extend_schema(
-        'Удалить объект в справочнике',
+        'Удалить объект из справочника типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -130,7 +130,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
 
 @extend_schema_view(
     retrieve=extend_schema(
-        'Получить один объект из справочника по его id',
+        'Получить один объект из справочника сопутствующих заболеваний по его id',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
@@ -138,7 +138,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     list=extend_schema(
-        'Получить все записи из справочника',
+        'Получить все записи из справочника сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
@@ -146,7 +146,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике',
+        'Создать новый тип диабета в справочнике сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
@@ -154,7 +154,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     update=extend_schema(
-        'Обновить целиком объект в справочнике',
+        'Обновить целиком объект в справочнике сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
@@ -162,7 +162,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     partial_update=extend_schema(
-        'Частично обновить объект в справочнике',
+        'Частично обновить объект в справочнике сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
@@ -170,7 +170,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     destroy=extend_schema(
-        'Удалить объект в справочнике',
+        'Удалить объект из справочника сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
