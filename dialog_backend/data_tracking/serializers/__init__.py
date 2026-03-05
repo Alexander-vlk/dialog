@@ -12,6 +12,7 @@ from .serializers import (
     PhysicalActivitySerializer,
     NoteSerializer,
 )
+from .request_serializers import DateFilterRequestSerializer
 
 __all__ = [
     'MoodSerializer',
@@ -26,4 +27,5 @@ __all__ = [
     'MealSerializer',
     'PhysicalActivitySerializer',
     'NoteSerializer',
+    'DateFilterRequestSerializer',
 ]

@@ -30,6 +30,7 @@ class TemperatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Temperature
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class GlucoseSerializer(serializers.ModelSerializer):
@@ -38,6 +39,7 @@ class GlucoseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Glucose
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class HemoglobinSerializer(serializers.ModelSerializer):
@@ -46,6 +48,7 @@ class HemoglobinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hemoglobin
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class CholesterolSerializer(serializers.ModelSerializer):
@@ -54,6 +57,7 @@ class CholesterolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cholesterol
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class LipidProfileSerializer(serializers.ModelSerializer):
@@ -62,6 +66,7 @@ class LipidProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = LipidProfile
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class MicroalbuminuriaSerializer(serializers.ModelSerializer):
@@ -70,6 +75,7 @@ class MicroalbuminuriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Microalbuminuria
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class WeightSerializer(serializers.ModelSerializer):
@@ -78,6 +84,7 @@ class WeightSerializer(serializers.ModelSerializer):
     class Meta:
         model = Weight
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class KetonesSerializer(serializers.ModelSerializer):
@@ -86,6 +93,7 @@ class KetonesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ketones
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class MealSerializer(serializers.ModelSerializer):
@@ -94,6 +102,7 @@ class MealSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meal
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class PhysicalActivitySerializer(serializers.ModelSerializer):
@@ -102,6 +111,7 @@ class PhysicalActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = PhysicalActivity
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -110,3 +120,4 @@ class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = '__all__'
+        read_only_fields = ['user', 'measured_at']
