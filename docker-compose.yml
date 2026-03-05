@@ -19,6 +19,8 @@ services:
       - postgres
       - redis
       - rabbitmq
+      - celery-beat
+      - celery-worker
     networks:
       - dialog_network
 
@@ -81,6 +83,7 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+      - flower
     networks:
       - dialog_network
 
