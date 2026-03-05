@@ -30,6 +30,7 @@ class IndicatorModelViewSet(ModelViewSet):
 
     def get_queryset(self):
         """Получить набор данных на основе пользователя"""
+        # todo: не передаются query-параметры, разобраться
         date_filter_serializer = DateFilterRequestSerializer(data=self.request.query_params)
         date_filter_serializer.is_valid(raise_exception=True)
         time_filter = Q()

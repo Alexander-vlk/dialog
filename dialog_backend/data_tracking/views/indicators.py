@@ -4,7 +4,7 @@ from rest_framework import status
 from common_utils.constants import APISchemaTags
 from data_tracking.viewsets import IndicatorModelViewSet
 from data_tracking.models import Temperature
-from data_tracking.serializers import TemperatureSerializer
+from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSerializer
 
 
 @extend_schema_view(
@@ -20,6 +20,7 @@ from data_tracking.serializers import TemperatureSerializer
         'Получить все записи из справочника настроений',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
+        parameters=[DateFilterRequestSerializer],
         responses={
             status.HTTP_200_OK: TemperatureSerializer,
         },
