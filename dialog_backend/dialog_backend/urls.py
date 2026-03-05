@@ -23,6 +23,7 @@ urlpatterns = [
         name='redoc',
     ),
     path('api/auth_service/', include('auth_service.urls')),
+    path('api/cabinet', include('cabinet.urls')),
 ]
 
 if settings.DEBUG:

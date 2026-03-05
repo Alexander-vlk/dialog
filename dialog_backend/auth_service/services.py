@@ -13,7 +13,6 @@ def get_authenticated_response(request, access_token, refresh_token) -> Response
             'access_token': access_token,
         },
     )
-
     response = Response(serializer.data, status=status.HTTP_200_OK)
     response.set_cookie(
         key=REFRESH_TOKEN_COOKIE_NAME,

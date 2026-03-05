@@ -66,4 +66,4 @@ class AppUserResponseSerializer(serializers.Serializer):
 class AccessTokenResponseSerializer(serializers.Serializer):
     """Сериализатор для access_token"""
 
-    access = serializers.CharField(max_length=1000, help_text='Access-токен')
+    access_token = serializers.CharField(max_length=1000, help_text='Access-токен')
