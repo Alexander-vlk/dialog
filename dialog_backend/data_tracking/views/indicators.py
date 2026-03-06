@@ -79,7 +79,7 @@ from data_tracking.serializers import (
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
-            status.HTTP_200_OK: TemperatureSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -138,7 +138,7 @@ class TemperatureViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.GLUCOSE],
         request=GlucoseSerializer,
         responses={
-            status.HTTP_200_OK: GlucoseSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -197,7 +197,7 @@ class GlucoseViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.HEMOGLOBIN],
         request=HemoglobinSerializer,
         responses={
-            status.HTTP_200_OK: HemoglobinSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -256,7 +256,7 @@ class HemoglobinViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.CHOLESTEROL],
         request=CholesterolSerializer,
         responses={
-            status.HTTP_200_OK: CholesterolSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -315,7 +315,7 @@ class CholesterolViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.LIPID_PROFILE],
         request=LipidProfileSerializer,
         responses={
-            status.HTTP_200_OK: LipidProfileSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -374,7 +374,7 @@ class LipidProfileViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.MICROALBUMINURIA],
         request=MicroalbuminuriaSerializer,
         responses={
-            status.HTTP_200_OK: MicroalbuminuriaSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -433,7 +433,7 @@ class MicroalbuminuriaViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.WEIGHT],
         request=WeightSerializer,
         responses={
-            status.HTTP_200_OK: WeightSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -492,7 +492,7 @@ class WeightViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.KETONES],
         request=KetonesSerializer,
         responses={
-            status.HTTP_200_OK: KetonesSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -551,7 +551,7 @@ class KetonesViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.MEAL],
         request=MealSerializer,
         responses={
-            status.HTTP_200_OK: MealSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -610,7 +610,7 @@ class MealViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.PHYSICAL_ACTIVITY],
         request=PhysicalActivitySerializer,
         responses={
-            status.HTTP_200_OK: PhysicalActivitySerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -669,7 +669,7 @@ class PhysicalActivityViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.NOTES],
         request=NoteSerializer,
         responses={
-            status.HTTP_200_OK: NoteSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -728,7 +728,7 @@ class NoteViewSet(IndicatorModelViewSet):
         tags=[APISchemaTags.MOOD],
         request=MoodAppUserSerializer,
         responses={
-            status.HTTP_200_OK: MoodAppUserSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )

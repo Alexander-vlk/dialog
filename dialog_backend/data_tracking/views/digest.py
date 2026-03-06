@@ -54,7 +54,7 @@ from data_tracking.serializers import MoodSerializer
         tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
-            status.HTTP_200_OK: MoodSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )

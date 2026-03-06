@@ -36,7 +36,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
-            status.HTTP_200_OK: DiabetesTypeSerializer,
+            status.HTTP_201_CREATED: DiabetesTypeSerializer,
         },
     ),
     update=extend_schema(
@@ -60,7 +60,7 @@ from common_utils.mixins import ReadOnlyOrStaffMixin
         tags=[APISchemaTags.DIABETES_TYPE],
         request=DiabetesTypeSerializer,
         responses={
-            status.HTTP_200_OK: DiabetesTypeSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -93,7 +93,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
-            status.HTTP_200_OK: TreatmentTypeSerializer,
+            status.HTTP_201_CREATED: TreatmentTypeSerializer,
         },
     ),
     update=extend_schema(
@@ -117,7 +117,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
-            status.HTTP_200_OK: TreatmentTypeSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
@@ -150,7 +150,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
-            status.HTTP_200_OK: DiseaseSerializer,
+            status.HTTP_201_CREATED: DiseaseSerializer,
         },
     ),
     update=extend_schema(
@@ -174,7 +174,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={
-            status.HTTP_200_OK: DiseaseSerializer,
+            status.HTTP_204_NO_CONTENT: {},
         },
     ),
 )
