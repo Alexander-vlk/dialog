@@ -2,6 +2,7 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
 
 from common_utils.constants import APISchemaTags
+from data_tracking.serializers.serializers import HealthAppUserSerializer
 from data_tracking.viewsets import IndicatorModelViewSet
 from data_tracking.models import (
     Temperature,
@@ -14,7 +15,7 @@ from data_tracking.models import (
     Ketones,
     Meal,
     PhysicalActivity,
-    Note, MoodAppUser,
+    Note, MoodAppUser, HealthAppUser,
 )
 from data_tracking.serializers import (
     TemperatureSerializer,
@@ -700,7 +701,7 @@ class NoteViewSet(IndicatorModelViewSet):
         },
     ),
     create=extend_schema(
-        'Создать новую связку',
+        'Создать новую связку настроения и пользователя',
         tags=[APISchemaTags.MOOD],
         request=MoodAppUserSerializer,
         responses={
@@ -708,7 +709,7 @@ class NoteViewSet(IndicatorModelViewSet):
         },
     ),
     update=extend_schema(
-        'Обновить целиком связку',
+        'Обновить целиком связку настроения и пользователя',
         tags=[APISchemaTags.MOOD],
         request=MoodAppUserSerializer,
         responses={
@@ -716,7 +717,7 @@ class NoteViewSet(IndicatorModelViewSet):
         },
     ),
     partial_update=extend_schema(
-        'Частично обновить связку',
+        'Частично обновить связку настроения и пользователя',
         tags=[APISchemaTags.MOOD],
         request=MoodAppUserSerializer,
         responses={
@@ -724,7 +725,7 @@ class NoteViewSet(IndicatorModelViewSet):
         },
     ),
     destroy=extend_schema(
-        'Удалить связку',
+        'Удалить связку настроения и пользователя',
         tags=[APISchemaTags.MOOD],
         request=MoodAppUserSerializer,
         responses={
@@ -738,3 +739,62 @@ class MoodAppUserViewSet(IndicatorModelViewSet):
     model_name = MoodAppUser
     queryset = MoodAppUser.objects.all()
     serializer_class = MoodAppUserSerializer
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        'Получить связку состояния и пользователя по ее id',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: HealthAppUserSerializer,
+        },
+    ),
+    list=extend_schema(
+        'Получить список связок состояния и пользователя',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        parameters=[DateFilterRequestSerializer],
+        responses={
+            status.HTTP_200_OK: HealthAppUserSerializer,
+        },
+    ),
+    create=extend_schema(
+        'Создать новую связку состояния и пользователя',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        responses={
+            status.HTTP_201_CREATED: HealthAppUserSerializer,
+        },
+    ),
+    update=extend_schema(
+        'Обновить целиком связку состояния и пользователя',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: HealthAppUserSerializer,
+        },
+    ),
+    partial_update=extend_schema(
+        'Частично обновить связку состояния и пользователя',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: HealthAppUserSerializer,
+        },
+    ),
+    destroy=extend_schema(
+        'Удалить связку состояния и пользователя',
+        tags=[APISchemaTags.HEALTH],
+        request=HealthAppUserSerializer,
+        responses={
+            status.HTTP_204_NO_CONTENT: {},
+        },
+    ),
+)
+class HealthAppUserViewSet(IndicatorModelViewSet):
+    """ViewSet для работы со связкой пользователя и настроения"""
+
+    model_name = HealthAppUser
+    queryset = HealthAppUser.objects.all()
+    serializer_class = HealthAppUserSerializer

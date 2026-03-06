@@ -1,4 +1,4 @@
-from .digest import MoodViewSet
+from .digest import MoodViewSet, HealthViewSet
 from .indicators import (
     TemperatureViewSet,
     GlucoseViewSet,
@@ -28,4 +28,5 @@ __all__ = [
     'PhysicalActivityViewSet',
     'NoteViewSet',
     'MoodAppUserViewSet',
+    'HealthViewSet',
 ]

@@ -4,8 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 
 from common_utils.constants import APISchemaTags
 from common_utils.mixins import ReadOnlyOrStaffMixin
-from data_tracking.models import Mood
-from data_tracking.serializers import MoodSerializer
+from data_tracking.models import Mood, Health
+from data_tracking.serializers import MoodSerializer, HealthSerializer
 
 
 @extend_schema_view(
@@ -63,3 +63,60 @@ class MoodViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
 
     queryset = Mood.objects.all()
     serializer_class = MoodSerializer
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        'Получить один объект из справочника типов состояний по его id',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_200_OK: HealthSerializer,
+        },
+    ),
+    list=extend_schema(
+        'Получить все записи из справочника типов состояний',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_200_OK: HealthSerializer,
+        },
+    ),
+    create=extend_schema(
+        'Создать новый объект в справочнике типов состояний',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_200_OK: HealthSerializer,
+        },
+    ),
+    update=extend_schema(
+        'Обновить целиком объект в справочнике типов состояний',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_200_OK: HealthSerializer,
+        },
+    ),
+    partial_update=extend_schema(
+        'Частично обновить объект в справочнике типов состояний',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_200_OK: HealthSerializer,
+        },
+    ),
+    destroy=extend_schema(
+        'Удалить объект в справочнике типов состояний',
+        tags=[APISchemaTags.HEALTH_DIGEST],
+        request=HealthSerializer,
+        responses={
+            status.HTTP_204_NO_CONTENT: {},
+        },
+    ),
+)
+class HealthViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
+    """ViewSet для справочника настроений"""
+
+    queryset = Health.objects.all()
+    serializer_class = HealthSerializer

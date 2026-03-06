@@ -12,7 +12,10 @@ from data_tracking.models import (
     Ketones,
     PhysicalActivity,
     Note,
-    Meal, MoodAppUser,
+    Meal,
+    MoodAppUser,
+    Health,
+    HealthAppUser,
 )
 
 
@@ -21,6 +24,14 @@ class MoodSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Mood
+        fields = '__all__'
+
+
+class HealthSerializer(serializers.ModelSerializer):
+    """Сериализатор для Health"""
+
+    class Meta:
+        model = Health
         fields = '__all__'
 
 
@@ -128,5 +139,14 @@ class MoodAppUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MoodAppUser
+        fields = '__all__'
+        read_only_fields = ['user']
+
+
+class HealthAppUserSerializer(serializers.ModelSerializer):
+    """Сериализатор для связки самочувствия и пользователя"""
+
+    class Meta:
+        model = HealthAppUser
         fields = '__all__'
         read_only_fields = ['user']

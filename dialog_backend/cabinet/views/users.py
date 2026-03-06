@@ -20,6 +20,14 @@ from common_utils.constants import APISchemaTags
             status.HTTP_200_OK: AppUserSerializer,
         },
     ),
+    partial_update=extend_schema(
+        'Частично обновить данные пользователя',
+        tags=[APISchemaTags.USERS],
+        request=AppUserSerializer,
+        responses={
+            status.HTTP_200_OK: AppUserSerializer,
+        },
+    ),
     update=extend_schema(
         'Обновить данные пользователя',
         tags=[APISchemaTags.USERS],
