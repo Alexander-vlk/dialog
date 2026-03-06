@@ -98,6 +98,13 @@ class AppUser(AbstractUser, AutoDateMixin):
         related_name='users_with_mood',
         blank=True,
     )
+    healths = models.ManyToManyField(
+        'data_tracking.Health',
+        verbose_name='Связанные самочувствия',
+        through='data_tracking.HealthAppUser',
+        related_name='users_with_health',
+        blank=True,
+    )
     diseases = models.ManyToManyField(
         'cabinet.Disease',
         verbose_name='Сопутствующие заболевания',

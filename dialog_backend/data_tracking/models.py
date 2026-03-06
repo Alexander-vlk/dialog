@@ -304,3 +304,50 @@ class MoodAppUser(AutoDateMixin):
 
     def __str__(self):
         return f'{self.user.username} {self.mood.name} - {self.measured_at}'
+
+
+class Health(AutoDateMixin):
+    """Самочувствие"""
+
+    name = models.CharField(verbose_name='Название', max_length=1000)
+    text_color = models.CharField(
+        verbose_name='Цвет',
+        max_length=20,
+        help_text='TailwindCSS-стиль',
+    )
+    background_color = models.CharField(
+        verbose_name='Цвет',
+        max_length=20,
+        help_text='TailwindCSS-стиль',
+    )
+
+    class Meta:
+        verbose_name = 'Самочувствие'
+        verbose_name_plural = 'Справочник типов самочувствия'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class HealthAppUser(AutoDateMixin):
+    """Прокси-модель связки самочувствия и пользователя"""
+
+    user = models.ForeignKey(
+        AppUser, verbose_name='Пользователь', on_delete=models.PROTECT
+    )
+    health = models.ForeignKey(Health, verbose_name='Самочувствие', on_delete=models.PROTECT)
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера',
+        default=timezone.now,
+    )
+
+    class Meta:
+        verbose_name = 'Связка пользователя и самочувствия'
+        verbose_name_plural = 'Связки пользователя и самочувствия'
+        indexes = [
+            models.Index(fields=['user', 'health', 'measured_at']),
+        ]
+
+    def __str__(self):
+        return f'{self.user.username} {self.health.name} - {self.measured_at}'

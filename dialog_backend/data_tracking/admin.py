@@ -14,6 +14,8 @@ from data_tracking.models import (
     Note,
     Mood,
     MoodAppUser,
+    Health,
+    HealthAppUser,
 )
 
 
@@ -129,5 +131,22 @@ class MoodAppUserAdmin(admin.ModelAdmin):
     """Админ для модели MoodAppUser"""
 
     list_display = ['user', 'mood', 'measured_at']
-    raw_id_fields = ['user']
+    raw_id_fields = ['user', 'mood']
     search_fields = ['user', 'mood__name', 'measured_at']
+
+
+@admin.register(Health)
+class HealthAdmin(admin.ModelAdmin):
+    """Админ для модели Health"""
+
+    list_display = ['name', 'text_color', 'background_color']
+    search_fields = ['name', 'text_color', 'background_color']
+
+
+@admin.register(HealthAppUser)
+class HealthAppUserAdmin(admin.ModelAdmin):
+    """Админ для модели HealthAppUser"""
+
+    list_display = ['user', 'health', 'measured_at']
+    raw_id_fields = ['user', 'health']
+    search_fields = ['user', 'health__name', 'measured_at']
