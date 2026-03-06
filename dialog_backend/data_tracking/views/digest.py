@@ -26,7 +26,7 @@ from data_tracking.serializers import MoodSerializer
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике настроений',
+        'Создать новый объект в справочнике настроений',
         tags=[APISchemaTags.MOOD],
         request=MoodSerializer,
         responses={

@@ -89,7 +89,7 @@ class DiabetesTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике типов лечения',
+        'Создать новый объект в справочнике типов лечения',
         tags=[APISchemaTags.TREATMENT_TYPE],
         request=TreatmentTypeSerializer,
         responses={
@@ -146,7 +146,7 @@ class TreatmentTypeViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике сопутствующих заболеваний',
+        'Создать новый объект в справочнике сопутствующих заболеваний',
         tags=[APISchemaTags.DISEASE],
         request=DiseaseSerializer,
         responses={

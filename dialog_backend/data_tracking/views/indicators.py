@@ -9,7 +9,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
 
 @extend_schema_view(
     retrieve=extend_schema(
-        'Получить один объект из справочника настроений по его id',
+        'Получить один объект данных температуры пользователя по его id',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
@@ -17,7 +17,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
         },
     ),
     list=extend_schema(
-        'Получить все записи из справочника настроений',
+        'Получить все записи о температуре пользователя',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         parameters=[DateFilterRequestSerializer],
@@ -26,7 +26,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
         },
     ),
     create=extend_schema(
-        'Создать новый тип диабета в справочнике настроений',
+        'Создать новый объект данных температуры пользователя',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
@@ -34,7 +34,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
         },
     ),
     update=extend_schema(
-        'Обновить целиком объект в справочнике настроений',
+        'Обновить целиком объект данных о температуре',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
@@ -42,7 +42,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
         },
     ),
     partial_update=extend_schema(
-        'Частично обновить объект в справочнике настроений',
+        'Частично обновить объект о температуре',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
@@ -50,7 +50,7 @@ from data_tracking.serializers import TemperatureSerializer, DateFilterRequestSe
         },
     ),
     destroy=extend_schema(
-        'Удалить объект в справочнике настроений',
+        'Удалить объект данных о температуре',
         tags=[APISchemaTags.TEMPERATURE],
         request=TemperatureSerializer,
         responses={
