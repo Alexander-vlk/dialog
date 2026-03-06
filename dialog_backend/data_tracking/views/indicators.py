@@ -87,6 +87,7 @@ class TemperatureViewSet(IndicatorModelViewSet):
     """ViewSet для работы с температурой"""
 
     model_name = Temperature
+    queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
 
 
@@ -145,6 +146,7 @@ class GlucoseViewSet(IndicatorModelViewSet):
     """ViewSet для работы с уровнем сахара в крови"""
 
     model_name = Glucose
+    queryset = Glucose.objects.all()
     serializer_class = GlucoseSerializer
 
 
@@ -203,6 +205,7 @@ class HemoglobinViewSet(IndicatorModelViewSet):
     """ViewSet для работы с гемоглобином"""
 
     model_name = Hemoglobin
+    queryset = Hemoglobin.objects.all()
     serializer_class = HemoglobinSerializer
 
 
@@ -261,6 +264,7 @@ class CholesterolViewSet(IndicatorModelViewSet):
     """ViewSet для работы с холестерином"""
 
     model_name = Cholesterol
+    queryset = Cholesterol.objects.all()
     serializer_class = CholesterolSerializer
 
 
@@ -319,6 +323,7 @@ class LipidProfileViewSet(IndicatorModelViewSet):
     """ViewSet для работы с липидным профилем"""
 
     model_name = LipidProfile
+    queryset = LipidProfile.objects.all()
     serializer_class = LipidProfileSerializer
 
 
@@ -377,6 +382,7 @@ class MicroalbuminuriaViewSet(IndicatorModelViewSet):
     """ViewSet для работы с микроальбуминурией"""
 
     model_name = Microalbuminuria
+    queryset = Microalbuminuria.objects.all()
     serializer_class = MicroalbuminuriaSerializer
 
 
@@ -435,6 +441,7 @@ class WeightViewSet(IndicatorModelViewSet):
     """ViewSet для работы с весом"""
 
     model_name = Weight
+    queryset = Weight.objects.all()
     serializer_class = WeightSerializer
 
 
@@ -493,6 +500,7 @@ class KetonesViewSet(IndicatorModelViewSet):
     """ViewSet для работы с кетоновыми телами"""
 
     model_name = Ketones
+    queryset = Ketones.objects.all()
     serializer_class = KetonesSerializer
 
 
@@ -551,6 +559,7 @@ class MealViewSet(IndicatorModelViewSet):
     """ViewSet для работы с приемами пищи"""
 
     model_name = Meal
+    queryset = Meal.objects.all()
     serializer_class = MealSerializer
 
 
@@ -609,6 +618,7 @@ class PhysicalActivityViewSet(IndicatorModelViewSet):
     """ViewSet для работы с физической активностью"""
 
     model_name = PhysicalActivity
+    queryset = PhysicalActivity.objects.all()
     serializer_class = PhysicalActivitySerializer
 
 
@@ -667,4 +677,5 @@ class NoteViewSet(IndicatorModelViewSet):
     """ViewSet для работы с заметками"""
 
     model_name = Note
+    queryset = Note.objects.all()
     serializer_class = NoteSerializer
