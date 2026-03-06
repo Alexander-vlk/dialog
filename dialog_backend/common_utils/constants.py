@@ -3,6 +3,8 @@ class APISchemaTags:
 
     AUTH_SERVICE = 'Сервис аутентификации'
 
+    USERS = 'Пользователи'
+
     DIABETES_TYPE = 'Справочник типов диабета'
     TREATMENT_TYPE = 'Справочник типов лечения'
     DISEASE = 'Справочник сопутствующих заболеваний'

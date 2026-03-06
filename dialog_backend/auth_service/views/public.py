@@ -4,13 +4,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import (
-    TokenRefreshSerializer,
+    TokenRefreshSerializer, TokenObtainPairSerializer,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from auth_service.permissions import HasNoRefreshToken, HasRefreshToken
 from auth_service.serializers import (
-    AccessTokenResponseSerializer,
+    AccessTokenResponseSerializer, AppUserSerializer,
 )
 
 from auth_service.services import get_authenticated_response
@@ -98,42 +98,41 @@ class HealthCheck(APIView):
         return Response(status=status.HTTP_202_ACCEPTED)
 
 
-# @extend_schema_view(
-#     post=extend_schema(
-#         tags=[APISchemaTags.AUTH_SERVICE],
-#         summary='Регистрация',
-#         operation_id='Регистрация',
-#         request=RegisterEmployeeRequestSerializer,
-#         responses={
-#             **DefaultAPIResponses.RESPONSES,
-#             status.HTTP_200_OK: AccessTokenResponseSerializer,
-#         },
-#     ),
-# )
-# class RegisterEmployee(APIView):
-#     """Регистрация работника"""
-#
-#     permission_classes: list = [HasNoRefreshToken]
-#     authentication_classes: list = []
-#
-#     def post(self, request, *args, **kwargs):
-#         """POST-запрос"""
-#
-#
-#         token_serializer = TokenObtainPairSerializer(
-#             data={
-#                 'username': request_serializer.validated_data['username'],
-#                 'password': request_serializer.validated_data['password'],
-#             },
-#         )
-#         token_serializer.is_valid(raise_exception=True)
-#
-#         response = get_authenticated_response(
-#             request,
-#             token_serializer.validated_data['access'],
-#             token_serializer.validated_data['refresh'],
-#         )
-#         return response
+@extend_schema_view(
+    post=extend_schema(
+        tags=[APISchemaTags.AUTH_SERVICE, APISchemaTags.USERS],
+        summary='Регистрация',
+        operation_id='Регистрация',
+        request=AppUserSerializer,
+        responses={
+            status.HTTP_200_OK: AccessTokenResponseSerializer,
+        },
+    ),
+)
+class NewAppUserRegisterAPIView(APIView):
+    """Регистрация работника"""
+
+    permission_classes: list = [HasNoRefreshToken]
+    authentication_classes: list = []
+
+    def post(self, request, *args, **kwargs):
+        """POST-запрос"""
+        request_serializer = AppUserSerializer(data=request.data, context={'is_register': True})
+        request_serializer.is_valid(raise_exception=True)
+        request_serializer.save()
+        token_serializer = TokenObtainPairSerializer(
+            data={
+                'username': request_serializer.validated_data['username'],
+                'password': request_serializer.validated_data['password'],
+            },
+        )
+        token_serializer.is_valid(raise_exception=True)
+        response = get_authenticated_response(
+            request,
+            token_serializer.validated_data['access'],
+            token_serializer.validated_data['refresh'],
+        )
+        return response
 
 
 @extend_schema_view(

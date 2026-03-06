@@ -6,6 +6,7 @@ from .private import (
 from .public import (
     HealthCheckAPIView,
     CustomTokenRefreshView,
+    NewAppUserRegisterAPIView,
 )
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     'HealthCheckAPIView',
     'CustomTokenObtainPairView',
     'CustomTokenRefreshView',
+    'NewAppUserRegisterAPIView',
 ]
