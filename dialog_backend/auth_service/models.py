@@ -43,6 +43,7 @@ class AppUser(AbstractUser, AutoDateMixin):
         max_length=150,
         default='',
         verbose_name='Отчество',
+        blank=True,
     )
     gender = models.CharField(
         max_length=10,
@@ -95,11 +96,13 @@ class AppUser(AbstractUser, AutoDateMixin):
         verbose_name='Связанные настроения',
         through='data_tracking.MoodAppUser',
         related_name='users_with_mood',
+        blank=True,
     )
     diseases = models.ManyToManyField(
         'cabinet.Disease',
         verbose_name='Сопутствующие заболевания',
         related_name='users_with_disease',
+        blank=True,
     )
 
     class Meta:
