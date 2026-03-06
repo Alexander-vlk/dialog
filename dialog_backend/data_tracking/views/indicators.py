@@ -14,7 +14,7 @@ from data_tracking.models import (
     Ketones,
     Meal,
     PhysicalActivity,
-    Note,
+    Note, MoodAppUser,
 )
 from data_tracking.serializers import (
     TemperatureSerializer,
@@ -28,7 +28,7 @@ from data_tracking.serializers import (
     KetonesSerializer,
     MealSerializer,
     PhysicalActivitySerializer,
-    NoteSerializer,
+    NoteSerializer, MoodAppUserSerializer,
 )
 
 
@@ -679,3 +679,62 @@ class NoteViewSet(IndicatorModelViewSet):
     model_name = Note
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        'Получить связку настроения и пользователя по ее id',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: MoodAppUserSerializer,
+        },
+    ),
+    list=extend_schema(
+        'Получить список связок настроения и пользователя',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        parameters=[DateFilterRequestSerializer],
+        responses={
+            status.HTTP_200_OK: MoodAppUserSerializer,
+        },
+    ),
+    create=extend_schema(
+        'Создать новую связку',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        responses={
+            status.HTTP_201_CREATED: MoodAppUserSerializer,
+        },
+    ),
+    update=extend_schema(
+        'Обновить целиком связку',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: MoodAppUserSerializer,
+        },
+    ),
+    partial_update=extend_schema(
+        'Частично обновить связку',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: MoodAppUserSerializer,
+        },
+    ),
+    destroy=extend_schema(
+        'Удалить связку',
+        tags=[APISchemaTags.MOOD],
+        request=MoodAppUserSerializer,
+        responses={
+            status.HTTP_200_OK: MoodAppUserSerializer,
+        },
+    ),
+)
+class MoodAppUserViewSet(IndicatorModelViewSet):
+    """ViewSet для работы со связкой пользователя и настроения"""
+
+    model_name = MoodAppUser
+    queryset = MoodAppUser.objects.all()
+    serializer_class = MoodAppUserSerializer

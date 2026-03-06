@@ -11,7 +11,7 @@ from data_tracking.serializers import MoodSerializer
 @extend_schema_view(
     retrieve=extend_schema(
         'Получить один объект из справочника настроений по его id',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,
@@ -19,7 +19,7 @@ from data_tracking.serializers import MoodSerializer
     ),
     list=extend_schema(
         'Получить все записи из справочника настроений',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,
@@ -27,7 +27,7 @@ from data_tracking.serializers import MoodSerializer
     ),
     create=extend_schema(
         'Создать новый объект в справочнике настроений',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,
@@ -35,7 +35,7 @@ from data_tracking.serializers import MoodSerializer
     ),
     update=extend_schema(
         'Обновить целиком объект в справочнике настроений',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,
@@ -43,7 +43,7 @@ from data_tracking.serializers import MoodSerializer
     ),
     partial_update=extend_schema(
         'Частично обновить объект в справочнике настроений',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,
@@ -51,7 +51,7 @@ from data_tracking.serializers import MoodSerializer
     ),
     destroy=extend_schema(
         'Удалить объект в справочнике настроений',
-        tags=[APISchemaTags.MOOD],
+        tags=[APISchemaTags.MOOD_DIGEST],
         request=MoodSerializer,
         responses={
             status.HTTP_200_OK: MoodSerializer,

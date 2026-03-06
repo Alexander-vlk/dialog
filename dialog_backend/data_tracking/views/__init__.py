@@ -11,6 +11,7 @@ from .indicators import (
     MealViewSet,
     PhysicalActivityViewSet,
     NoteViewSet,
+    MoodAppUserViewSet,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     'MealViewSet',
     'PhysicalActivityViewSet',
     'NoteViewSet',
+    'MoodAppUserViewSet',
 ]

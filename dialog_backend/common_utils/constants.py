@@ -6,7 +6,7 @@ class APISchemaTags:
     DIABETES_TYPE = 'Справочник типов диабета'
     TREATMENT_TYPE = 'Справочник типов лечения'
     DISEASE = 'Справочник сопутствующих заболеваний'
-    MOOD = 'Справочник настроений'
+    MOOD_DIGEST = 'Справочник настроений'
 
     TEMPERATURE = 'Температура'
     GLUCOSE = 'Уровень сахара в крови'
@@ -19,3 +19,4 @@ class APISchemaTags:
     MEAL = 'Приемы пищи'
     PHYSICAL_ACTIVITY = 'Физическая активность'
     NOTES = 'Заметки'
+    MOOD = 'Настроение (в связке с пользователем)'
