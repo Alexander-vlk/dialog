@@ -13,6 +13,7 @@ from .indicators import (
     NoteViewSet,
     MoodAppUserViewSet,
 )
+from .reports import ReportAPIView
 
 __all__ = [
     'MoodViewSet',
@@ -29,4 +30,5 @@ __all__ = [
     'NoteViewSet',
     'MoodAppUserViewSet',
     'HealthViewSet',
+    'ReportAPIView',
 ]

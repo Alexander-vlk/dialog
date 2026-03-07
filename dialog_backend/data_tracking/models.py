@@ -4,6 +4,7 @@ from django.utils import timezone
 from auth_service.models import AppUser
 from common_utils.mixins import AutoDateMixin
 from common_utils.validators import validate_positive_float
+from data_tracking.constants import CARBS_COUNT_BY_SINGLE_BREAD_UNIT
 
 
 class Temperature(AutoDateMixin):
@@ -217,6 +218,11 @@ class Meal(AutoDateMixin):
 
     def __str__(self):
         return f'{self.user.username} {self.eaten_at}'
+
+    @property
+    def bread_units(self) -> float:
+        """Хлебные единицы"""
+        return self.carbs / CARBS_COUNT_BY_SINGLE_BREAD_UNIT
 
 
 class PhysicalActivity(AutoDateMixin):

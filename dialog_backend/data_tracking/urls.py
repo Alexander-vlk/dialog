@@ -15,7 +15,7 @@ from data_tracking.views import (
     PhysicalActivityViewSet,
     NoteViewSet,
     MoodAppUserViewSet,
-    HealthViewSet,
+    HealthViewSet, ReportAPIView,
 )
 from data_tracking.views.indicators import HealthAppUserViewSet
 
@@ -38,4 +38,5 @@ data_tracking_router.register('health_app_user', HealthAppUserViewSet, basename=
 
 urlpatterns = [
     path('', include(data_tracking_router.urls)),
+    path('reports/', ReportAPIView.as_view(), name='report'),
 ]
