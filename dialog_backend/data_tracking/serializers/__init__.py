@@ -16,6 +16,7 @@ from .serializers import (
     HealthSerializer,
 )
 from .request_serializers import DateFilterRequestSerializer, ReportRequestSerializer
+from .response_serializers import ReportResponseSerializer
 
 __all__ = [
     'MoodSerializer',
@@ -35,4 +36,5 @@ __all__ = [
     'MoodAppUserSerializer',
     'HealthSerializer',
     'ReportRequestSerializer',
+    'ReportResponseSerializer',
 ]

@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 from common_utils.constants import APISchemaTags
-from data_tracking.serializers import ReportRequestSerializer, DateFilterRequestSerializer
+from data_tracking.serializers import ReportRequestSerializer, DateFilterRequestSerializer, ReportResponseSerializer
 
 
 @extend_schema_view(
@@ -13,7 +13,7 @@ from data_tracking.serializers import ReportRequestSerializer, DateFilterRequest
         request=ReportRequestSerializer,
         parameters=[DateFilterRequestSerializer],
         responses={
-            status.HTTP_200_OK: {},
+            status.HTTP_200_OK: ReportResponseSerializer,
         },
     ),
 )
