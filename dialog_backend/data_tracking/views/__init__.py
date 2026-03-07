@@ -1,6 +1,7 @@
 from .digest import MoodViewSet, HealthViewSet
 from .indicators import (
     TemperatureViewSet,
+    PressureViewSet,
     GlucoseViewSet,
     HemoglobinViewSet,
     CholesterolViewSet,
@@ -18,6 +19,7 @@ from .reports import ReportAPIView
 __all__ = [
     'MoodViewSet',
     'TemperatureViewSet',
+    'PressureViewSet',
     'GlucoseViewSet',
     'HemoglobinViewSet',
     'CholesterolViewSet',

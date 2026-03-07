@@ -15,7 +15,9 @@ from data_tracking.views import (
     PhysicalActivityViewSet,
     NoteViewSet,
     MoodAppUserViewSet,
-    HealthViewSet, ReportAPIView,
+    HealthViewSet,
+    ReportAPIView,
+    PressureViewSet,
 )
 from data_tracking.views.indicators import HealthAppUserViewSet
 
@@ -23,6 +25,7 @@ data_tracking_router = SimpleRouter()
 data_tracking_router.register('mood', MoodViewSet)
 data_tracking_router.register('health', HealthViewSet)
 data_tracking_router.register('temperature', TemperatureViewSet, basename='temperature')
+data_tracking_router.register('pressure', PressureViewSet, basename='pressure')
 data_tracking_router.register('glucose', GlucoseViewSet, basename='glucose')
 data_tracking_router.register('hemoglobin', HemoglobinViewSet, basename='hemoglobin')
 data_tracking_router.register('cholesterol', CholesterolViewSet, basename='cholesterol')

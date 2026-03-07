@@ -1,6 +1,7 @@
 from .serializers import (
     MoodSerializer,
     TemperatureSerializer,
+    PressureSerializer,
     GlucoseSerializer,
     HemoglobinSerializer,
     CholesterolSerializer,
@@ -19,6 +20,7 @@ from .request_serializers import DateFilterRequestSerializer, ReportRequestSeria
 __all__ = [
     'MoodSerializer',
     'TemperatureSerializer',
+    'PressureSerializer',
     'GlucoseSerializer',
     'HemoglobinSerializer',
     'CholesterolSerializer',

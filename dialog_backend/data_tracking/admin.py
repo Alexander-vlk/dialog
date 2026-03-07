@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from data_tracking.models import (
     Temperature,
+    Pressure,
     Glucose,
     Hemoglobin,
     Cholesterol,
@@ -22,6 +23,15 @@ from data_tracking.models import (
 @admin.register(Temperature)
 class TemperatureAdmin(admin.ModelAdmin):
     """Админ для модели Temperature"""
+
+    list_display = ['user', 'measured_at']
+    raw_id_fields = ['user']
+    search_fields = ['user', 'measured_at']
+
+
+@admin.register(Pressure)
+class PressureAdmin(admin.ModelAdmin):
+    """Админ для модели Pressure"""
 
     list_display = ['user', 'measured_at']
     raw_id_fields = ['user']

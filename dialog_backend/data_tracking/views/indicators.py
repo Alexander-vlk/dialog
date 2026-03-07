@@ -6,6 +6,7 @@ from data_tracking.serializers.serializers import HealthAppUserSerializer
 from data_tracking.viewsets import IndicatorModelViewSet
 from data_tracking.models import (
     Temperature,
+    Pressure,
     Glucose,
     Hemoglobin,
     Cholesterol,
@@ -15,10 +16,13 @@ from data_tracking.models import (
     Ketones,
     Meal,
     PhysicalActivity,
-    Note, MoodAppUser, HealthAppUser,
+    Note,
+    MoodAppUser,
+    HealthAppUser,
 )
 from data_tracking.serializers import (
     TemperatureSerializer,
+    PressureSerializer,
     DateFilterRequestSerializer,
     HemoglobinSerializer,
     GlucoseSerializer,
@@ -29,7 +33,8 @@ from data_tracking.serializers import (
     KetonesSerializer,
     MealSerializer,
     PhysicalActivitySerializer,
-    NoteSerializer, MoodAppUserSerializer,
+    NoteSerializer,
+    MoodAppUserSerializer,
 )
 
 
@@ -90,6 +95,65 @@ class TemperatureViewSet(IndicatorModelViewSet):
     model_name = Temperature
     queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
+
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        'Получить один объект данных давления пользователя по его id',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        responses={
+            status.HTTP_200_OK: PressureSerializer,
+        },
+    ),
+    list=extend_schema(
+        'Получить все записи о давлении пользователя',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        parameters=[DateFilterRequestSerializer],
+        responses={
+            status.HTTP_200_OK: PressureSerializer,
+        },
+    ),
+    create=extend_schema(
+        'Создать новый объект данных давления',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        responses={
+            status.HTTP_201_CREATED: PressureSerializer,
+        },
+    ),
+    update=extend_schema(
+        'Обновить целиком объект данных о давлении',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        responses={
+            status.HTTP_200_OK: PressureSerializer,
+        },
+    ),
+    partial_update=extend_schema(
+        'Частично обновить объект о давлении',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        responses={
+            status.HTTP_200_OK: PressureSerializer,
+        },
+    ),
+    destroy=extend_schema(
+        'Удалить объект данных о давлении',
+        tags=[APISchemaTags.PRESSURE],
+        request=PressureSerializer,
+        responses={
+            status.HTTP_204_NO_CONTENT: {},
+        },
+    ),
+)
+class PressureViewSet(IndicatorModelViewSet):
+    """ViewSet для работы с температурой"""
+
+    model_name = Pressure
+    queryset = Pressure.objects.all()
+    serializer_class = PressureSerializer
 
 
 @extend_schema_view(

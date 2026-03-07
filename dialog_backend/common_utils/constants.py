@@ -12,6 +12,7 @@ class APISchemaTags:
     HEALTH_DIGEST = 'Справочник типов состояния'
 
     TEMPERATURE = 'Температура'
+    PRESSURE = 'Давление'
     GLUCOSE = 'Уровень сахара в крови'
     HEMOGLOBIN = 'Гемоглобин'
     CHOLESTEROL = 'Холестерин'

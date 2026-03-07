@@ -15,7 +15,7 @@ from data_tracking.models import (
     Meal,
     MoodAppUser,
     Health,
-    HealthAppUser,
+    HealthAppUser, Pressure,
 )
 
 
@@ -40,6 +40,15 @@ class TemperatureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Temperature
+        fields = '__all__'
+        read_only_fields = ['user']
+
+
+class PressureSerializer(serializers.ModelSerializer):
+    """Сериализатор для Pressure"""
+
+    class Meta:
+        model = Pressure
         fields = '__all__'
         read_only_fields = ['user']
 
