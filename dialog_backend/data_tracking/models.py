@@ -31,6 +31,29 @@ class Temperature(AutoDateMixin):
         return f'{self.user.username} {self.measured_at}'
 
 
+class Pressure(AutoDateMixin):
+    """Давление"""
+
+    systolic = models.PositiveSmallIntegerField(verbose_name='Систолическое')
+    diastolic = models.PositiveSmallIntegerField(verbose_name='Диастолическое')
+    user = models.ForeignKey(
+        AppUser,
+        verbose_name='Пользователь',
+        on_delete=models.PROTECT,
+    )
+    measured_at = models.DateTimeField(
+        verbose_name='Время замера',
+        default=timezone.now,
+    )
+
+    class Meta:
+        verbose_name = 'Замер давления'
+        verbose_name_plural = 'Замеры давления'
+
+    def __str__(self):
+        return f'{self.user.username} {self.measured_at}'
+
+
 class Glucose(AutoDateMixin):
     """Глюкоза"""
 
