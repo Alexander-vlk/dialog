@@ -37,6 +37,7 @@ class ReportAPIView(APIView):
         request_serializer.is_valid(raise_exception=True)
         query_params_serializer = DateFilterRequestSerializer(data=request.query_params)
         query_params_serializer.is_valid(raise_exception=True)
+        # todo: перегнать все врем в aware
         data_for_report = get_data_for_report(
             user=request.user,
             indicators=request_serializer.validated_data['indicators'],
