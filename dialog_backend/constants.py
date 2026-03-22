@@ -8,6 +8,8 @@ ONE_DAY = timedelta(days=1)
 ONE_WEEK = timedelta(days=7)
 TWO_MONTHS = timedelta(days=60)
 
+DATE_FORMAT = '%Y-%m-%d'
+
 TWO_WEEKS = 1209600
 
 BATCH_SIZE = 1000

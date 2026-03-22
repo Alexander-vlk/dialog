@@ -1,13 +1,11 @@
-from .response_serializers import (
-    AdvantageResponseSerializer,
-    DiabetesTypeResponseSerializer,
-    RateResponseSerializer,
-    TreatmentTypeResponseSerializer,
+from .serializers import (
+    DiabetesTypeSerializer,
+    TreatmentTypeSerializer,
+    DiseaseSerializer,
 )
 
 __all__ = [
-    'AdvantageResponseSerializer',
-    'DiabetesTypeResponseSerializer',
-    'RateResponseSerializer',
-    'TreatmentTypeResponseSerializer',
+    'DiabetesTypeSerializer',
+    'DiseaseSerializer',
+    'TreatmentTypeSerializer',
 ]

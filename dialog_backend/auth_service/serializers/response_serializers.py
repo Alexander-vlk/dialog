@@ -52,7 +52,18 @@ class AppUserResponseSerializer(serializers.Serializer):
     treatment_type = serializers.CharField(help_text='Тип лечения', allow_blank=True)
 
 
+@extend_schema_serializer(
+    many=False,
+    examples=[
+        OpenApiExample(
+            'Пример токена',
+            value={
+                'access_token': 'some_cool_key',
+            },
+        ),
+    ],
+)
 class AccessTokenResponseSerializer(serializers.Serializer):
     """Сериализатор для access_token"""
 
-    access = serializers.CharField(max_length=1000, help_text='Access-токен')
+    access_token = serializers.CharField(max_length=1000, help_text='Access-токен')

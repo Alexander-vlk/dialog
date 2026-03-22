@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - PYTHONUNBUFFERED=1
-      - DJANGO_SETTINGS_MODULE=dialog_backend
+      - DJANGO_SETTINGS_MODULE=dialog_backend.settings
     command: >
       sh -c "
       poetry run python manage.py migrate &&
@@ -19,6 +19,8 @@ services:
       - postgres
       - redis
       - rabbitmq
+      - celery-beat
+      - celery-worker
     networks:
       - dialog_network
 
@@ -81,6 +83,7 @@ services:
     depends_on:
       - postgres
       - rabbitmq
+      - flower
     networks:
       - dialog_network
 
@@ -116,8 +119,8 @@ services:
     build:
       context: ./dialog_frontend
       dockerfile: Dockerfile
-    command: npm run dev -- --hostname 0.0.0.0 --port 3000уд
     working_dir: /home/frontend
+    command: npm run dev
     volumes:
       - ./dialog_frontend:/home/frontend
       - /home/frontend/node_modules

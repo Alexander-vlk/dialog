@@ -1,60 +1,45 @@
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework import serializers
+
+from constants import DATE_FORMAT
+from data_tracking.constants import AvailableIndicators
+
+
+class DateFilterRequestSerializer(serializers.Serializer):
+    """Сериализатор запроса по фильтру по дате"""
+
+    date_start = serializers.DateField(help_text='Дата начала', format=DATE_FORMAT)
+    date_end = serializers.DateField(help_text='Дата окончания', format=DATE_FORMAT)
+
+    def validate(self, attrs):
+        """Проверить параметры"""
+        date_start = attrs['date_start']
+        date_end = attrs['date_end']
+        if date_start > date_end:
+            raise serializers.ValidationError('Параметр date_start не может быть больше date_end')
+
+        return attrs
 
 
 @extend_schema_serializer(
     examples=[
         OpenApiExample(
-            'Успешный ответ',
+            'Базовый ответ',
             value={
-                'calories_count': 0,
-                'proteins_count': 0,
-                'fats_count': 0,
-                'carbs_count': 0,
-                'mood': 3,
-                'health_ids': [],
-                'physical_activity': '',
-                'additional_info': '',
-                'date': '2025-09-19',
+                'indicators': [
+                    'glucose',
+                    'hemoglobin',
+                    'meal',
+                ],
             },
         ),
     ],
 )
-class DailyLogRequestSerializer(serializers.Serializer):
-    """Request serializer для DailyLog"""
+class ReportRequestSerializer(serializers.Serializer):
+    """Сериализатор запроса для отчетов"""
 
-    user_id = serializers.IntegerField(
-        help_text='ID пользователя', allow_null=True, required=False
+    indicators = serializers.ListField(
+        help_text='Показатели',
+        child=serializers.ChoiceField(choices=AvailableIndicators.ALL_CHOICES)
     )
-    weekly_log_id = serializers.IntegerField(
-        help_text='ID недельного отчета',
-        allow_null=True,
-        required=False,
-    )
-    calories_count = serializers.IntegerField(
-        help_text='Количество калорий', min_value=0
-    )
-    proteins_count = serializers.IntegerField(
-        help_text='Количество белков', min_value=0
-    )
-    fats_count = serializers.IntegerField(help_text='Количество жиров', min_value=0)
-    carbs_count = serializers.IntegerField(
-        help_text='Количество углеводов', min_value=0
-    )
-    mood = serializers.IntegerField(help_text='Настроение', min_value=1, max_value=5)
-    health_ids = serializers.ListField(
-        help_text='ID статусов самочувствия',
-        child=serializers.IntegerField(),
-        allow_empty=True,
-    )
-    physical_activity = serializers.CharField(
-        help_text='Физическая активность',
-        max_length=2000,
-        allow_blank=True,
-    )
-    additional_info = serializers.CharField(
-        help_text='Дополнительная информация',
-        max_length=2000,
-        allow_blank=True,
-    )
-    date = serializers.DateField(help_text='Дата замера', allow_null=True)

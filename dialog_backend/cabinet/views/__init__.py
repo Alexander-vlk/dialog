@@ -1,8 +1,9 @@
-from cabinet.views.private import AppUserAPIView
-from .public import DiabetesTypeAPIView, TreatmentTypeAPIView
+from .digest import DiabetesTypeViewSet, TreatmentTypeViewSet, DiseaseViewSet
+from .users import AppUserViewSet
 
 __all__ = [
-    'AppUserAPIView',
-    'DiabetesTypeAPIView',
-    'TreatmentTypeAPIView',
+    'AppUserViewSet',
+    'DiabetesTypeViewSet',
+    'TreatmentTypeViewSet',
+    'DiseaseViewSet',
 ]
