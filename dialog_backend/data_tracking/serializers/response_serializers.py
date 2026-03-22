@@ -20,14 +20,14 @@ from constants import DATE_FORMAT
                         'median_values': {
                             'value': 1.5,
                         },
-                        'min': {
+                        'min_value': {
                             'id': 1,
                             'value': 1,
                             'measured_at': '2026-03-07T15:20:44.695Z',
                             'created_at': '2026-03-07T15:20:44.695Z',
                             'updated_at': '2026-03-07T15:20:44.695Z',
                         },
-                        'max': {
+                        'max_value': {
                             'id': 2,
                             'value': 2,
                             'measured_at': '2026-03-07T15:20:44.695Z',
@@ -45,7 +45,7 @@ from constants import DATE_FORMAT
                             'systolic': 105,
                             'diastolic': 155,
                         },
-                        'min': {
+                        'min_value': {
                             'id': 1,
                             'systolic': 10,
                             'diastolic': 10,
@@ -53,7 +53,7 @@ from constants import DATE_FORMAT
                             'created_at': '2026-03-07T15:20:44.695Z',
                             'updated_at': '2026-03-07T15:20:44.695Z',
                         },
-                        'max': {
+                        'max_value': {
                             'id': 2,
                             'systolic': 200,
                             'diastolic': 300,
@@ -76,8 +76,8 @@ from constants import DATE_FORMAT
                             'carbs': 0,
                             'fats': 0,
                         },
-                        'min': None,
-                        'max': None,
+                        'min_value': None,
+                        'max_value': None,
                     },
                 },
             },
@@ -93,8 +93,8 @@ class ReportResponseSerializer(serializers.Serializer):
         total = serializers.IntegerField(help_text='Общее кол-во записей', default=0)
         average_values = serializers.DictField(help_text='Средние значения', default=dict)
         median_values = serializers.DictField(help_text='Медианные значения', default=dict)
-        min = serializers.DictField(help_text='Объект с минимальным показателем', allow_null=True, default=None)
-        max = serializers.DictField(help_text='Объект с максимальным показателем', allow_null=True, default=None)
+        min_value = serializers.DictField(help_text='Объект с минимальным показателем', allow_null=True, default=None)
+        max_value = serializers.DictField(help_text='Объект с максимальным показателем', allow_null=True, default=None)
 
     date_start = serializers.DateField(help_text='Дата начала', format=DATE_FORMAT)
     date_end = serializers.DateField(help_text='Дата окончания', format=DATE_FORMAT)

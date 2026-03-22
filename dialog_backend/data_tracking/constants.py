@@ -2,6 +2,7 @@ class AvailableIndicators:
     """Доступные виды показателей"""
 
     TEMPERATURE = 'temperature'
+    PRESSURE = 'pressure'
     GLUCOSE = 'glucose'
     HEMOGLOBIN = 'hemoglobin'
     CHOLESTEROL = 'cholesterol'
@@ -20,6 +21,7 @@ class AvailableIndicators:
         WEIGHT,
         KETONES,
         MEAL,
+        PRESSURE,
     ]
 
 
