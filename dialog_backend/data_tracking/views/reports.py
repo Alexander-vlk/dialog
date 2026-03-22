@@ -8,12 +8,22 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from common_utils.constants import APISchemaTags
+from data_tracking.constants import AvailableIndicators
 from data_tracking.dataclasses import DateBounds
 from data_tracking.selectors import get_data_for_report
 from data_tracking.serializers import ReportRequestSerializer, DateFilterRequestSerializer, ReportResponseSerializer
 
 
 @extend_schema_view(
+    get=extend_schema(
+        'Получить доступные показатели',
+        tags=[APISchemaTags.REPORTS],
+        responses={
+            status.HTTP_200_OK: {
+                'available_indicators': [],
+            },
+        },
+    ),
     post=extend_schema(
         'Получить отчет',
         tags=[APISchemaTags.REPORTS],
@@ -29,6 +39,15 @@ class ReportAPIView(APIView):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Получить доступные показатели"""
+        return Response(
+            {
+                'available_indicators': AvailableIndicators.ALL_CHOICES,
+            },
+            status=status.HTTP_200_OK,
+        )
 
     @staticmethod
     def post(request, *args, **kwargs):
