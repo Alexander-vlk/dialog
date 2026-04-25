@@ -380,3 +380,44 @@ class HealthAppUser(AutoDateMixin):
 
     def __str__(self):
         return f'{self.user.username} {self.health.name} - {self.measured_at}'
+
+
+class Medication(AutoDateMixin):
+    """Справочник препаратов"""
+
+    INSULIN = 'insulin'
+    TABLET = 'tablet'
+    OTHER = 'other'
+    TYPE_CHOICES = {
+        INSULIN: 'Инсулин',
+        TABLET: 'Таблетки',
+        OTHER: 'Другое',
+    }
+
+    name = models.CharField('Название', max_length=200)
+    type = models.CharField('Тип', max_length=50)
+
+    class Meta:
+        verbose_name = 'Препарат'
+        verbose_name_plural = 'Препараты'
+        ordering = ['name']
+
+    def __str__(self):
+        return f'{self.name} - {self.type}'
+
+
+class MedicationTake(AutoDateMixin):
+    """Прием лекарства"""
+
+    user = models.ForeignKey('auth_service.AppUser', verbose_name='Пользователь', on_delete=models.PROTECT)
+    medication = models.ForeignKey('Medication', verbose_name='Лекарство из справочника', on_delete=models.PROTECT)
+    taken_at = models.DateTimeField(verbose_name='Время приема')
+    dose = models.FloatField('Дозировка')
+    comment = models.CharField('Комментарий', max_length=300, default='', blank=True)
+
+    class Meta:
+        verbose_name = 'Прием лекарства'
+        verbose_name_plural = 'Приемы лекарств'
+
+    def __str__(self):
+        return f'{self.user.username} {self.medication.name}'
