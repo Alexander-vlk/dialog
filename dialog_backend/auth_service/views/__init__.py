@@ -1,19 +1,19 @@
 from .private import (
     LogoutAPIView,
     ChangePassword,
-    CustomTokenObtainPairView,
 )
 from .public import (
     HealthCheckAPIView,
     CustomTokenRefreshView,
     NewAppUserRegisterAPIView,
+    AuthorizationAPIView,
 )
 
 __all__ = [
     'ChangePassword',
     'LogoutAPIView',
     'HealthCheckAPIView',
-    'CustomTokenObtainPairView',
+    'AuthorizationAPIView',
     'CustomTokenRefreshView',
     'NewAppUserRegisterAPIView',
 ]

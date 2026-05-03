@@ -7,7 +7,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from auth_service.models import AppUser
 from auth_service.permissions import HasRefreshToken
-from auth_service.serializers import AppUserSerializer
+from auth_service.serializers import RegisterUserSerializer
 from common_utils.constants import APISchemaTags
 
 
@@ -15,31 +15,31 @@ from common_utils.constants import APISchemaTags
     retrieve=extend_schema(
         'Получить данные пользователя',
         tags=[APISchemaTags.USERS],
-        request=AppUserSerializer,
+        request=RegisterUserSerializer,
         responses={
-            status.HTTP_200_OK: AppUserSerializer,
+            status.HTTP_200_OK: RegisterUserSerializer,
         },
     ),
     partial_update=extend_schema(
         'Частично обновить данные пользователя',
         tags=[APISchemaTags.USERS],
-        request=AppUserSerializer,
+        request=RegisterUserSerializer,
         responses={
-            status.HTTP_200_OK: AppUserSerializer,
+            status.HTTP_200_OK: RegisterUserSerializer,
         },
     ),
     update=extend_schema(
         'Обновить данные пользователя',
         tags=[APISchemaTags.USERS],
-        request=AppUserSerializer,
+        request=RegisterUserSerializer,
         responses={
-            status.HTTP_200_OK: AppUserSerializer,
+            status.HTTP_200_OK: RegisterUserSerializer,
         },
     ),
     destroy=extend_schema(
         'Удалить пользователя',
         tags=[APISchemaTags.USERS],
-        request=AppUserSerializer,
+        request=RegisterUserSerializer,
         responses={
             status.HTTP_204_NO_CONTENT: {},
         },
@@ -54,7 +54,7 @@ class AppUserViewSet(
     """ViewSet для работы с пользователями"""
 
     queryset = AppUser.objects.all()
-    serializer_class = AppUserSerializer
+    serializer_class = RegisterUserSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, HasRefreshToken]
 

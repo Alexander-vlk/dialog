@@ -6,10 +6,11 @@ from rest_framework import serializers
 from auth_service.models import AppUser
 
 
-class AppUserSerializer(serializers.ModelSerializer):
+class RegisterUserSerializer(serializers.ModelSerializer):
     """Сериализатор для модели AppUser"""
 
-    password_repeat = serializers.CharField(help_text='Пароль (еще раз)', required=False)
+    password_repeat = serializers.CharField(help_text='Пароль (еще раз)')
+    access_token = serializers.SerializerMethodField(help_text='Access Token')
 
     class Meta:
         model = AppUser
@@ -24,7 +25,12 @@ class AppUserSerializer(serializers.ModelSerializer):
             'last_login',
         ]
 
-    def validate_password(self, password):
+    def get_access_token(self, obj: AppUser):
+        """Получить access_token из контекста сериализатора"""
+        return  self.context['access_token']
+
+    @staticmethod
+    def validate_password(password):
         """Проверить пароль"""
         django_validate_password(password)
         return password

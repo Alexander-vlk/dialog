@@ -2,12 +2,13 @@ from .request_serializers import (
     UserRegistrationRequestSerializer,
     ChangePasswordRequestSerializer,
 )
-from .response_serializers import AccessTokenResponseSerializer
-from .serializers import AppUserSerializer
+from .response_serializers import AccessTokenResponseSerializer, AppUserResponseSerializer
+from .serializers import RegisterUserSerializer
 
 __all__ = [
     'AccessTokenResponseSerializer',
-    'AppUserSerializer',
+    'RegisterUserSerializer',
+    'AppUserResponseSerializer',
     'ChangePasswordRequestSerializer',
     'UserRegistrationRequestSerializer',
 ]
