@@ -25,7 +25,6 @@ class IndicatorModelViewSet(ModelViewSet):
         """Заполнить user и measured_at"""
         serializer.save(
             user=self.request.user,
-            measured_at=timezone.now(),
         )
 
     def get_queryset(self):
