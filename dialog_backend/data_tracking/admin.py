@@ -16,7 +16,7 @@ from data_tracking.models import (
     Mood,
     MoodAppUser,
     Health,
-    HealthAppUser,
+    HealthAppUser, Medication, MedicationTake,
 )
 
 
@@ -160,3 +160,24 @@ class HealthAppUserAdmin(admin.ModelAdmin):
     list_display = ['user', 'health', 'measured_at']
     raw_id_fields = ['user', 'health']
     search_fields = ['user', 'health__name', 'measured_at']
+
+
+@admin.register(Medication)
+class MedicationAdmin(admin.ModelAdmin):
+    """Админ для модели Medication"""
+
+    list_display = ['id', 'name', 'type', 'created_at', 'updated_at']
+    list_filter = ['type']
+    search_fields = ['name', 'type']
+    ordering = ['name']
+
+
+@admin.register(MedicationTake)
+class MedicationTakeAdmin(admin.ModelAdmin):
+    """Админ для модели MedicationTake"""
+
+    list_display = ['id', 'user', 'medication', 'dose', 'taken_at']
+    list_filter = ['medication', 'taken_at']
+    search_fields = ['user__username', 'medication__name', 'comment']
+    autocomplete_fields = ['user', 'medication']
+    date_hierarchy = 'taken_at'
