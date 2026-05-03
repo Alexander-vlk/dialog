@@ -13,7 +13,7 @@ class AppUserAdmin(UserAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
     list_display = ('username', 'email', 'first_name', 'last_name')
-    raw_id_fields = ('town', 'diabetes_type', 'treatment_type')
+    raw_id_fields = ('town',)
     readonly_fields = (
         'last_login',
         'date_joined',
@@ -33,8 +33,6 @@ class AppUserAdmin(UserAdmin):
                     'height',
                     'birth_date',
                     'phone_number',
-                    'diabetes_type',
-                    'treatment_type',
                     'diagnosis_date',
                     'image',
                 ],

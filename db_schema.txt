@@ -83,14 +83,8 @@ Table auth_service_appuser [note: 'Пользователь'] {
   gender varchar(10) [not null, default: 'undefined']
   height integer [null]
   birth_date date [null]
-  diabetes_type_id integer [ref: > cabinet_diabetestype.id, null]
-  treatment_type_id integer [ref: > cabinet_treatmenttype.id, null]
   created_at timestamp [not null]
   updated_at timestamp [not null]
-  indexes {
-    diabetes_type_id
-    treatment_type_id
-  }
 }
 
 Table data_tracking_hemoglobin [note: 'Гемоглобин'] {

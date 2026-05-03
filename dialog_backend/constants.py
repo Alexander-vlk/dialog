@@ -29,14 +29,6 @@ MODY_TYPE = 'mody'
 GESTATIONAL = 'gestational'
 MANY_TYPES = 'many_types'
 NO_DIABETES = 'no_diabetes'
-DIABETES_TYPE_CHOICES = {
-    FIRST_TYPE: '1-го типа',
-    SECOND_TYPE: '2-го типа',
-    MODY_TYPE: 'MODY-диабет',
-    GESTATIONAL: 'Гестационный диабет',
-    MANY_TYPES: 'Несколько типов диабета',
-    NO_DIABETES: 'Не болею диабетом',
-}
 
 TERRIBLE = 1
 BAD = 2

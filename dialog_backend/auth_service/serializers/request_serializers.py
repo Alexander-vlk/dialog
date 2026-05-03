@@ -25,7 +25,6 @@ from auth_service.validators.serializer_validators import drf_validate_password
                 'email': 'test@test.com',
                 'gender': 'MALE',
                 'birth_date': '2000-10-01',
-                'diabetes_type': '1',
                 'diagnosis_date': '2020-10-01',
                 'treatment_type': 'not_set',
                 'profile_image': None,
@@ -62,9 +61,7 @@ class UserRegistrationRequestSerializer(serializers.ModelSerializer):
             'gender',
             'height',
             'birth_date',
-            'diabetes_type',
             'diagnosis_date',
-            'treatment_type',
             'image',
             'remember',
             'agreed_with_privacy',
@@ -136,9 +133,7 @@ class UserRegistrationRequestSerializer(serializers.ModelSerializer):
             gender=validated_data['gender'],
             height=validated_data['height'],
             birth_date=validated_data['birth_date'],
-            diabetes_type=validated_data['diabetes_type'],
             diagnosis_date=validated_data['diagnosis_date'],
-            treatment_type=validated_data['treatment_type'],
             image=validated_data['image'],
         )
 

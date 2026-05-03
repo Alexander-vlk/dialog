@@ -23,9 +23,7 @@ from constants import GENDER_CHOICES
                     'gender': 'Мужской',
                     'height': 180,
                     'birth_date': '2000-10-10',
-                    'diabetes_type': '1-го типа',
                     'diagnosis_date': '2019-10-10',
-                    'treatment_type': 'Инсулинотерапия',
                     'phone_number': '79180001122',
                 },
             ],
@@ -48,8 +46,6 @@ class AppUserResponseSerializer(serializers.Serializer):
     gender = serializers.ChoiceField(help_text='Пол', choices=GENDER_CHOICES)
     height = serializers.CharField(help_text='Рост', allow_null=True, required=False)
     birth_date = serializers.DateField(help_text='Дата рождения')
-    diagnosis_date = serializers.DateField(help_text='Дата постановки диагноза')
-    treatment_type = serializers.CharField(help_text='Тип лечения', allow_blank=True)
 
 
 @extend_schema_serializer(

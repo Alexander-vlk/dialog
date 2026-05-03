@@ -5,8 +5,6 @@ class APISchemaTags:
 
     USERS = 'Пользователи'
 
-    DIABETES_TYPE = 'Справочник типов диабета'
-    TREATMENT_TYPE = 'Справочник типов лечения'
     DISEASE = 'Справочник сопутствующих заболеваний'
     MOOD_DIGEST = 'Справочник настроений'
     HEALTH_DIGEST = 'Справочник типов состояния'
