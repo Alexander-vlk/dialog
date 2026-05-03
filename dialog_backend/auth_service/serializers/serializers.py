@@ -49,7 +49,10 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Создать пользователя"""
-        diseases = validated_data.pop('diseases')
+        diseases = []
+        if validated_data.get('diseases'):
+            diseases = validated_data.pop('diseases')
+
         new_user = AppUser.objects.create_user(**validated_data)
         new_user.diseases.set(diseases)
         return new_user
