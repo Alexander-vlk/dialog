@@ -15,7 +15,7 @@ from data_tracking.models import (
     Meal,
     MoodAppUser,
     Health,
-    HealthAppUser, Pressure,
+    HealthAppUser, Pressure, Medication, MedicationTake,
 )
 
 
@@ -159,3 +159,30 @@ class HealthAppUserSerializer(serializers.ModelSerializer):
         model = HealthAppUser
         fields = '__all__'
         read_only_fields = ['user']
+
+
+class MedicationSerializer(serializers.ModelSerializer):
+    """Сериализатор справочника препаратов"""
+
+    class Meta:
+        model = Medication
+        fields = ['id', 'name', 'type', 'created_at', 'updated_at']
+
+
+class MedicationTakeSerializer(serializers.ModelSerializer):
+    """Сериализатор приема лекарства"""
+
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = MedicationTake
+        fields = [
+            'id',
+            'user',
+            'medication',
+            'taken_at',
+            'dose',
+            'comment',
+            'created_at',
+            'updated_at',
+        ]

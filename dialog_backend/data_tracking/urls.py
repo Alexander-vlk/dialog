@@ -18,6 +18,8 @@ from data_tracking.views import (
     HealthViewSet,
     ReportAPIView,
     PressureViewSet,
+    MedicationTakeViewSet,
+    MedicationViewSet,
 )
 from data_tracking.views.indicators import HealthAppUserViewSet
 
@@ -38,6 +40,8 @@ data_tracking_router.register('physical_activity', PhysicalActivityViewSet, base
 data_tracking_router.register('note', NoteViewSet, basename='note')
 data_tracking_router.register('mood_app_user', MoodAppUserViewSet, basename='mood_app_user')
 data_tracking_router.register('health_app_user', HealthAppUserViewSet, basename='health_app_user')
+data_tracking_router.register('medication_takes', MedicationTakeViewSet, basename='medication_takes')
+data_tracking_router.register('medications', MedicationViewSet, basename='medications')
 
 urlpatterns = [
     path('', include(data_tracking_router.urls)),

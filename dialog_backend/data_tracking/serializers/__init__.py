@@ -14,6 +14,8 @@ from .serializers import (
     NoteSerializer,
     MoodAppUserSerializer,
     HealthSerializer,
+    MedicationSerializer,
+    MedicationTakeSerializer,
 )
 from .request_serializers import DateFilterRequestSerializer, ReportRequestSerializer
 from .response_serializers import ReportResponseSerializer
