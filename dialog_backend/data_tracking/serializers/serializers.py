@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+from django.utils import timezone
 from rest_framework import serializers
 
 from data_tracking.models import (
@@ -19,6 +22,26 @@ from data_tracking.models import (
 )
 
 
+class RecentDateTimeMixin:
+    recent_datetime_fields: tuple[str, ...] = ()
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        min_datetime = timezone.now() - timedelta(days=14)
+        max_datetime = timezone.now()
+
+        for field_name in self.recent_datetime_fields:
+            value = attrs.get(field_name)
+            if value is None:
+                continue
+            if value < min_datetime or value > max_datetime:
+                raise serializers.ValidationError({
+                    field_name: 'Время должно быть в пределах последних 14 дней.'
+                })
+
+        return attrs
+
+
 class MoodSerializer(serializers.ModelSerializer):
     """Сериализатор для Mood"""
 
@@ -35,130 +58,144 @@ class HealthSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TemperatureSerializer(serializers.ModelSerializer):
+class TemperatureSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Temperature"""
 
     class Meta:
         model = Temperature
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class PressureSerializer(serializers.ModelSerializer):
+class PressureSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Pressure"""
 
     class Meta:
         model = Pressure
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class GlucoseSerializer(serializers.ModelSerializer):
+class GlucoseSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Glucose"""
 
     class Meta:
         model = Glucose
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class HemoglobinSerializer(serializers.ModelSerializer):
+class HemoglobinSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Hemoglobin"""
 
     class Meta:
         model = Hemoglobin
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class CholesterolSerializer(serializers.ModelSerializer):
+class CholesterolSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Cholesterol"""
 
     class Meta:
         model = Cholesterol
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class LipidProfileSerializer(serializers.ModelSerializer):
+class LipidProfileSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для LipidProfile"""
 
     class Meta:
         model = LipidProfile
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class MicroalbuminuriaSerializer(serializers.ModelSerializer):
+class MicroalbuminuriaSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Microalbuminuria"""
 
     class Meta:
         model = Microalbuminuria
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class WeightSerializer(serializers.ModelSerializer):
+class WeightSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Weight"""
 
     class Meta:
         model = Weight
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class KetonesSerializer(serializers.ModelSerializer):
+class KetonesSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Ketones"""
 
     class Meta:
         model = Ketones
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class MealSerializer(serializers.ModelSerializer):
+class MealSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Meal"""
 
     class Meta:
         model = Meal
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('eaten_at',)
 
 
-class PhysicalActivitySerializer(serializers.ModelSerializer):
+class PhysicalActivitySerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для PhysicalActivity"""
 
     class Meta:
         model = PhysicalActivity
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class NoteSerializer(serializers.ModelSerializer):
+class NoteSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для Note"""
 
     class Meta:
         model = Note
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class MoodAppUserSerializer(serializers.ModelSerializer):
+class MoodAppUserSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для связки настроения и пользователя"""
 
     class Meta:
         model = MoodAppUser
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
-class HealthAppUserSerializer(serializers.ModelSerializer):
+class HealthAppUserSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор для связки самочувствия и пользователя"""
 
     class Meta:
         model = HealthAppUser
         fields = '__all__'
         read_only_fields = ['user']
+    recent_datetime_fields = ('measured_at',)
 
 
 class MedicationSerializer(serializers.ModelSerializer):
@@ -169,7 +206,7 @@ class MedicationSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'type', 'created_at', 'updated_at']
 
 
-class MedicationTakeSerializer(serializers.ModelSerializer):
+class MedicationTakeSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
     """Сериализатор приема лекарства"""
 
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -186,3 +223,4 @@ class MedicationTakeSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
+    recent_datetime_fields = ('taken_at',)
