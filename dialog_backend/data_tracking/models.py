@@ -296,13 +296,8 @@ class Note(AutoDateMixin):
 class Mood(AutoDateMixin):
     """Настроение"""
 
-    name = models.CharField(verbose_name='Название', max_length=1000)
-    text_color = models.CharField(
-        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
-    )
-    background_color = models.CharField(
-        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
-    )
+    name = models.CharField(verbose_name='Название', max_length=100)
+    slug = models.SlugField(verbose_name='Слаг', max_length=100, unique=True)
 
     class Meta:
         verbose_name = 'Настроение'
@@ -338,17 +333,8 @@ class MoodAppUser(AutoDateMixin):
 class Health(AutoDateMixin):
     """Самочувствие"""
 
-    name = models.CharField(verbose_name='Название', max_length=1000)
-    text_color = models.CharField(
-        verbose_name='Цвет',
-        max_length=20,
-        help_text='TailwindCSS-стиль',
-    )
-    background_color = models.CharField(
-        verbose_name='Цвет',
-        max_length=20,
-        help_text='TailwindCSS-стиль',
-    )
+    name = models.CharField(verbose_name='Название', max_length=100)
+    slug = models.SlugField(verbose_name='Слаг', max_length=100, unique=True)
 
     class Meta:
         verbose_name = 'Самочувствие'

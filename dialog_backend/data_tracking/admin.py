@@ -132,8 +132,8 @@ class NoteAdmin(admin.ModelAdmin):
 class MoodAdmin(admin.ModelAdmin):
     """Админ для модели Mood"""
 
-    list_display = ['name', 'text_color', 'background_color']
-    search_fields = ['name', 'text_color', 'background_color']
+    list_display = ['name']
+    search_fields = ['name']
 
 
 @admin.register(MoodAppUser)
@@ -149,8 +149,8 @@ class MoodAppUserAdmin(admin.ModelAdmin):
 class HealthAdmin(admin.ModelAdmin):
     """Админ для модели Health"""
 
-    list_display = ['name', 'text_color', 'background_color']
-    search_fields = ['name', 'text_color', 'background_color']
+    list_display = ['name']
+    search_fields = ['name']
 
 
 @admin.register(HealthAppUser)

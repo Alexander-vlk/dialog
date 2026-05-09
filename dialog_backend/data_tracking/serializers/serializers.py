@@ -210,6 +210,7 @@ class MedicationTakeSerializer(RecentDateTimeMixin, serializers.ModelSerializer)
     """Сериализатор приема лекарства"""
 
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    medication = MedicationSerializer(read_only=True)
 
     class Meta:
         model = MedicationTake

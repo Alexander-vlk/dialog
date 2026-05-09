@@ -115,7 +115,7 @@ class TemperatureViewSet(IndicatorModelViewSet):
             user=request.user,
             measured_at__gte=date_start,
             measured_at__lte=date_end,
-        ).aggregate(Avg('systolic'))
+        ).aggregate(Avg('value'))
         return Response(
             {
                 'average': average['value__avg'],
@@ -713,6 +713,14 @@ class KetonesViewSet(IndicatorModelViewSet):
             status.HTTP_200_OK: MealSerializer,
         },
     ),
+    average=extend_schema(
+        'Получить средние показатели приемов пищи пользователя',
+        tags=[APISchemaTags.MEAL],
+        parameters=[DateFilterRequestSerializer],
+        responses={
+            status.HTTP_200_OK: MealSerializer,
+        },
+    ),
     create=extend_schema(
         'Создать новый объект приема пищи пользователя',
         tags=[APISchemaTags.MEAL],
@@ -752,6 +760,31 @@ class MealViewSet(IndicatorModelViewSet):
     model_name = Meal
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
+
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение холестерина"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Meal.objects.filter(
+            user=request.user,
+            eaten_at__gte=date_start,
+            eaten_at__lte=date_end,
+        ).aggregate(
+            average_calories=Avg('calories'),
+            average_proteins=Avg('proteins'),
+            average_carbs=Avg('carbs'),
+            average_fats=Avg('fats'),
+        )
+        return Response(
+            {
+                'average_calories': average['average_calories'],
+                'average_proteins': average['average_proteins'],
+                'average_carbs': average['average_carbs'],
+                'average_fats': average['average_fats'],
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 @extend_schema_view(
