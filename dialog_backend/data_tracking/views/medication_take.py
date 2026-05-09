@@ -87,7 +87,7 @@ class MedicationViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
             status.HTTP_200_OK: MedicationTakeSerializer,
         },
     ),
-    get_last_weight=extend_schema(
+    get_last=extend_schema(
         'Получить последний прием препарата',
         tags=[APISchemaTags.MEDICATION],
         parameters=[DateFilterRequestSerializer],
@@ -136,8 +136,8 @@ class MedicationTakeViewSet(IndicatorModelViewSet):
     serializer_class = MedicationTakeSerializer
 
     @action(detail=False, methods=['get'], url_path='last', url_name='last')
-    def get_last_weight(self, request):
-        """Получить последний замер веса"""
+    def get_last(self, request):
+        """Получить последний прием лекарства"""
         last_weight = MedicationTake.objects.filter(user=request.user).order_by('taken_at').last()
         serializer = self.get_serializer(last_weight)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -207,10 +207,13 @@ class MedicationSerializer(serializers.ModelSerializer):
 
 
 class MedicationTakeSerializer(RecentDateTimeMixin, serializers.ModelSerializer):
-    """Сериализатор приема лекарства"""
-
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     medication = MedicationSerializer(read_only=True)
+    medication_id = serializers.PrimaryKeyRelatedField(
+        queryset=Medication.objects.all(),
+        source='medication',
+        write_only=True,
+    )
 
     class Meta:
         model = MedicationTake
@@ -218,10 +221,12 @@ class MedicationTakeSerializer(RecentDateTimeMixin, serializers.ModelSerializer)
             'id',
             'user',
             'medication',
+            'medication_id',
             'taken_at',
             'dose',
             'comment',
             'created_at',
             'updated_at',
         ]
+
     recent_datetime_fields = ('taken_at',)

@@ -352,8 +352,8 @@ def _get_meal_data(user: AppUser, date_bounds: DateBounds) -> AggregatedIndicato
     # todo: переделать на получение отдельных приемов пищи с минимальным/максимальным значением отдельного параметра
     filtered_meal_data = Meal.objects.filter(
         user=user,
-        measured_at__gte=date_bounds.date_start,
-        measured_at__lte=date_bounds.date_end,
+        eaten_at__gte=date_bounds.date_start,
+        eaten_at__lte=date_bounds.date_end,
     )
     aggregated_values = filtered_meal_data.aggregate(
         total=Count('id', distinct=True),
@@ -369,10 +369,16 @@ def _get_meal_data(user: AppUser, date_bounds: DateBounds) -> AggregatedIndicato
     return AggregatedIndicatorData(
         total=aggregated_values['total'],
         average_values={
-            'value': aggregated_values['average'],
+            'calories': aggregated_values['average_calories'],
+            'proteins': aggregated_values['average_proteins'],
+            'carbs': aggregated_values['average_carbs'],
+            'fats': aggregated_values['average_fats'],
         },
         median_values={
-            'value': aggregated_values['median'],
+            'calories': aggregated_values['median_calories'],
+            'proteins': aggregated_values['median_proteins'],
+            'carbs': aggregated_values['median_carbs'],
+            'fats': aggregated_values['median_fats'],
         },
         min_value=None,
         max_value=None,
