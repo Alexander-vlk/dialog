@@ -1,5 +1,11 @@
+from datetime import timedelta
+
+from django.db.models import Avg
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from common_utils.constants import APISchemaTags
 from data_tracking.serializers.serializers import HealthAppUserSerializer
@@ -56,6 +62,10 @@ from data_tracking.serializers import (
             status.HTTP_200_OK: TemperatureSerializer,
         },
     ),
+    average=extend_schema(
+        'Среднее значение уровня температуры за последние две недели',
+        tags=[APISchemaTags.TEMPERATURE],
+    ),
     create=extend_schema(
         'Создать новый объект данных температуры пользователя',
         tags=[APISchemaTags.TEMPERATURE],
@@ -96,6 +106,23 @@ class TemperatureViewSet(IndicatorModelViewSet):
     queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
 
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение температуры"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Temperature.objects.filter(
+            user=request.user,
+            measured_at__gte=date_start,
+            measured_at__lte=date_end,
+        ).aggregate(Avg('systolic'))
+        return Response(
+            {
+                'average': average['value__avg'],
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 @extend_schema_view(
     retrieve=extend_schema(
@@ -114,6 +141,10 @@ class TemperatureViewSet(IndicatorModelViewSet):
         responses={
             status.HTTP_200_OK: PressureSerializer,
         },
+    ),
+    average=extend_schema(
+        'Среднее значение давления за последние две недели',
+        tags=[APISchemaTags.PRESSURE],
     ),
     create=extend_schema(
         'Создать новый объект данных давления',
@@ -155,6 +186,24 @@ class PressureViewSet(IndicatorModelViewSet):
     queryset = Pressure.objects.all()
     serializer_class = PressureSerializer
 
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение давления"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Pressure.objects.filter(
+            user=request.user,
+            measured_at__gte=date_start,
+            measured_at__lte=date_end,
+        ).aggregate(avg_systolic=Avg('systolic'), avg_diastolic=Avg('diastolic'))
+        return Response(
+            {
+                'avg_systolic': average['avg_systolic'],
+                'avg_diastolic': average['avg_diastolic'],
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 @extend_schema_view(
     retrieve=extend_schema(
@@ -173,6 +222,10 @@ class PressureViewSet(IndicatorModelViewSet):
         responses={
             status.HTTP_200_OK: GlucoseSerializer,
         },
+    ),
+    average=extend_schema(
+        'Среднее значение уровня сахара в крови за последние две недели',
+        tags=[APISchemaTags.GLUCOSE],
     ),
     create=extend_schema(
         'Создать новый объект данных уровня сахара в крови пользователя',
@@ -214,6 +267,23 @@ class GlucoseViewSet(IndicatorModelViewSet):
     queryset = Glucose.objects.all()
     serializer_class = GlucoseSerializer
 
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение уровня сахара в крови"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Glucose.objects.filter(
+            user=request.user,
+            measured_at__gte=date_start,
+            measured_at__lte=date_end,
+        ).aggregate(Avg('value'))
+        return Response(
+            {
+                'average': average['value__avg'],
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 @extend_schema_view(
     retrieve=extend_schema(
@@ -232,6 +302,10 @@ class GlucoseViewSet(IndicatorModelViewSet):
         responses={
             status.HTTP_200_OK: HemoglobinSerializer,
         },
+    ),
+    average=extend_schema(
+        'Среднее значение гемоглобина за последние две недели',
+        tags=[APISchemaTags.HEMOGLOBIN],
     ),
     create=extend_schema(
         'Создать новый объект гемоглобина пользователя',
@@ -273,6 +347,23 @@ class HemoglobinViewSet(IndicatorModelViewSet):
     queryset = Hemoglobin.objects.all()
     serializer_class = HemoglobinSerializer
 
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение уровня гемоглобина"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Hemoglobin.objects.filter(
+            user=request.user,
+            measured_at__gte=date_start,
+            measured_at__lte=date_end,
+        ).aggregate(Avg('value'))
+        return Response(
+            {
+                'average': average['value__avg'],
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 @extend_schema_view(
     retrieve=extend_schema(
@@ -291,6 +382,10 @@ class HemoglobinViewSet(IndicatorModelViewSet):
         responses={
             status.HTTP_200_OK: CholesterolSerializer,
         },
+    ),
+    average=extend_schema(
+        'Среднее значение гемоглобина за последние две недели',
+        tags=[APISchemaTags.CHOLESTEROL],
     ),
     create=extend_schema(
         'Создать новый объект холестерина пользователя',
@@ -331,6 +426,23 @@ class CholesterolViewSet(IndicatorModelViewSet):
     model_name = Cholesterol
     queryset = Cholesterol.objects.all()
     serializer_class = CholesterolSerializer
+
+    @action(detail=False, methods=['get'], url_path='average', url_name='average')
+    def average(self, request):
+        """Среднее значение холестерина"""
+        date_end = timezone.now()
+        date_start = date_end - timedelta(days=14)
+        average = Cholesterol.objects.filter(
+            user=request.user,
+            measured_at__gte=date_start,
+            measured_at__lte=date_end,
+        ).aggregate(Avg('value'))
+        return Response(
+            {
+                'average': average['value__avg'],
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 @extend_schema_view(
@@ -460,6 +572,13 @@ class MicroalbuminuriaViewSet(IndicatorModelViewSet):
             status.HTTP_200_OK: WeightSerializer,
         },
     ),
+    get_last_weight=extend_schema(
+        'Получить последний объект данных веса',
+        tags=[APISchemaTags.WEIGHT],
+        responses={
+            status.HTTP_200_OK: WeightSerializer,
+        },
+    ),
     list=extend_schema(
         'Получить все записи о весе пользователя',
         tags=[APISchemaTags.WEIGHT],
@@ -508,6 +627,13 @@ class WeightViewSet(IndicatorModelViewSet):
     model_name = Weight
     queryset = Weight.objects.all()
     serializer_class = WeightSerializer
+
+    @action(detail=False, methods=['get'], url_path='last', url_name='last')
+    def get_last_weight(self, request):
+        """Получить последний замер веса"""
+        last_weight = Weight.objects.filter(user=request.user).order_by('measured_at').last()
+        serializer = self.get_serializer(last_weight)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema_view(

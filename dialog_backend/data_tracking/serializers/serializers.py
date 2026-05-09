@@ -28,7 +28,7 @@ class RecentDateTimeMixin:
     def validate(self, attrs):
         attrs = super().validate(attrs)
         min_datetime = timezone.now() - timedelta(days=14)
-        max_datetime = timezone.now()
+        max_datetime = timezone.now() + timedelta(days=14)
 
         for field_name in self.recent_datetime_fields:
             value = attrs.get(field_name)
