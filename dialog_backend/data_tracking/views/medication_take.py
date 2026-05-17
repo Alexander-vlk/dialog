@@ -1,6 +1,8 @@
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from common_utils.constants import APISchemaTags
@@ -85,6 +87,14 @@ class MedicationViewSet(ModelViewSet, ReadOnlyOrStaffMixin):
             status.HTTP_200_OK: MedicationTakeSerializer,
         },
     ),
+    get_last=extend_schema(
+        'Получить последний прием препарата',
+        tags=[APISchemaTags.MEDICATION],
+        parameters=[DateFilterRequestSerializer],
+        responses={
+            status.HTTP_200_OK: MedicationTakeSerializer,
+        },
+    ),
     create=extend_schema(
         'Создать запись о приеме препарата',
         tags=[APISchemaTags.MEDICATION],
@@ -124,3 +134,10 @@ class MedicationTakeViewSet(IndicatorModelViewSet):
     model_name = MedicationTake
     queryset = MedicationTake.objects.all()
     serializer_class = MedicationTakeSerializer
+
+    @action(detail=False, methods=['get'], url_path='last', url_name='last')
+    def get_last(self, request):
+        """Получить последний прием лекарства"""
+        last_weight = MedicationTake.objects.filter(user=request.user).order_by('taken_at').last()
+        serializer = self.get_serializer(last_weight)
+        return Response(serializer.data, status=status.HTTP_200_OK)

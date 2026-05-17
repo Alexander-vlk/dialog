@@ -23,6 +23,7 @@ class Temperature(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение температуры'
         verbose_name_plural = 'Значения температуры'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -49,6 +50,7 @@ class Pressure(AutoDateMixin):
     class Meta:
         verbose_name = 'Замер давления'
         verbose_name_plural = 'Замеры давления'
+        ordering = ['-measured_at']
 
     def __str__(self):
         return f'{self.user.username} {self.measured_at}'
@@ -70,6 +72,7 @@ class Glucose(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение уровня сахара в крови'
         verbose_name_plural = 'Значения уровня сахара в крови'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -92,6 +95,7 @@ class Hemoglobin(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение гемоглобина'
         verbose_name_plural = 'Значения гемоглобина'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -116,6 +120,7 @@ class Cholesterol(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение холестерина'
         verbose_name_plural = 'Значения холестерина'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -140,6 +145,7 @@ class LipidProfile(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение липидного профиля'
         verbose_name_plural = 'Значения липидного профиля'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -164,6 +170,7 @@ class Microalbuminuria(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение микроальбуминурии'
         verbose_name_plural = 'Значения микроальбуминурии'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -186,6 +193,7 @@ class Weight(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение веса'
         verbose_name_plural = 'Значения веса'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -210,6 +218,7 @@ class Ketones(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение кетонов'
         verbose_name_plural = 'Значения кетонов'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -235,6 +244,7 @@ class Meal(AutoDateMixin):
     class Meta:
         verbose_name = 'Значение КБЖУ за прием пищи'
         verbose_name_plural = 'Значения КБЖУ за прием пищи'
+        ordering = ['-eaten_at']
         indexes = [
             models.Index(fields=['user', 'eaten_at']),
         ]
@@ -262,6 +272,7 @@ class PhysicalActivity(AutoDateMixin):
     class Meta:
         verbose_name = 'Запись о физической активности'
         verbose_name_plural = 'Записи о физической активности'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -285,6 +296,7 @@ class Note(AutoDateMixin):
     class Meta:
         verbose_name = 'Заметка'
         verbose_name_plural = 'Заметки'
+        ordering = ['-measured_at']
         indexes = [
             models.Index(fields=['user', 'measured_at']),
         ]
@@ -296,13 +308,8 @@ class Note(AutoDateMixin):
 class Mood(AutoDateMixin):
     """Настроение"""
 
-    name = models.CharField(verbose_name='Название', max_length=1000)
-    text_color = models.CharField(
-        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
-    )
-    background_color = models.CharField(
-        verbose_name='Цвет', max_length=20, help_text='TailwindCSS-стиль'
-    )
+    name = models.CharField(verbose_name='Название', max_length=100)
+    slug = models.SlugField(verbose_name='Слаг', max_length=100, unique=True)
 
     class Meta:
         verbose_name = 'Настроение'
@@ -338,17 +345,8 @@ class MoodAppUser(AutoDateMixin):
 class Health(AutoDateMixin):
     """Самочувствие"""
 
-    name = models.CharField(verbose_name='Название', max_length=1000)
-    text_color = models.CharField(
-        verbose_name='Цвет',
-        max_length=20,
-        help_text='TailwindCSS-стиль',
-    )
-    background_color = models.CharField(
-        verbose_name='Цвет',
-        max_length=20,
-        help_text='TailwindCSS-стиль',
-    )
+    name = models.CharField(verbose_name='Название', max_length=100)
+    slug = models.SlugField(verbose_name='Слаг', max_length=100, unique=True)
 
     class Meta:
         verbose_name = 'Самочувствие'
@@ -418,6 +416,7 @@ class MedicationTake(AutoDateMixin):
     class Meta:
         verbose_name = 'Прием лекарства'
         verbose_name_plural = 'Приемы лекарств'
+        ordering = ['-taken_at']
 
     def __str__(self):
         return f'{self.user.username} {self.medication.name}'

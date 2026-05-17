@@ -8,6 +8,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from auth_service.permissions import HasRefreshToken
+from common_utils.paginators import SecurePagination
 from data_tracking.serializers import DateFilterRequestSerializer
 
 
@@ -19,7 +20,7 @@ class IndicatorModelViewSet(ModelViewSet):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, HasRefreshToken]
-    pagination_class = PageNumberPagination
+    pagination_class = SecurePagination
 
     def perform_create(self, serializer):
         """Заполнить user и measured_at"""

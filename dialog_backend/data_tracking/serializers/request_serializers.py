@@ -9,13 +9,16 @@ from data_tracking.constants import AvailableIndicators
 class DateFilterRequestSerializer(serializers.Serializer):
     """Сериализатор запроса по фильтру по дате"""
 
-    date_start = serializers.DateField(help_text='Дата начала', format=DATE_FORMAT)
-    date_end = serializers.DateField(help_text='Дата окончания', format=DATE_FORMAT)
+    date_start = serializers.DateField(help_text='Дата начала', format=DATE_FORMAT, required=False)
+    date_end = serializers.DateField(help_text='Дата окончания', format=DATE_FORMAT, required=False)
 
     def validate(self, attrs):
         """Проверить параметры"""
-        date_start = attrs['date_start']
-        date_end = attrs['date_end']
+        date_start = attrs.get('date_start')
+        date_end = attrs.get('date_end')
+        if not date_start or not date_end:
+            return attrs
+
         if date_start > date_end:
             raise serializers.ValidationError('Параметр date_start не может быть больше date_end')
 
