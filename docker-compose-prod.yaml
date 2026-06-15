@@ -3,17 +3,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /home/django/dialog_backend/dialog_backend
     environment:
       PYTHONUNBUFFERED: "1"
       DJANGO_SETTINGS_MODULE: dialog_backend.settings
     command: >
       sh -c "
-      poetry run python manage.py migrate &&
-      poetry run gunicorn dialog_backend.wsgi:application
-        --bind 0.0.0.0:8040
-        --workers 3
-        --timeout 60
+      poetry run gunicorn dialog_backend.wsgi:application --bind 0.0.0.0:8040 --workers 1 --timeout 60
       "
+    volumes:
+      - ./:/home/django/dialog_backend
     expose:
       - "8040"
     restart: always
@@ -25,10 +24,11 @@ services:
       - dialog_network
 
   postgres:
-    image: postgres:14
+    image: postgres:16
     restart: always
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql@14/data
+      - ./sql_dump:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234}
@@ -60,7 +60,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /app/dialog_backend
     command: celery -A dialog_backend worker --loglevel=info --concurrency=4
+    volumes:
+      - ./:/app
     restart: always
     depends_on:
       - postgres
@@ -73,7 +76,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    working_dir: /app/dialog_backend
     command: celery -A dialog_backend beat --loglevel=info
+    volumes:
+      - ./:/app
     restart: always
     depends_on:
       - postgres
@@ -113,7 +119,7 @@ services:
     build:
       context: ./dialog_frontend
       dockerfile: Dockerfile
-    command: npm run build
+    command: npm run dev
     volumes:
       - frontend_dist:/home/frontend/dist
     restart: "no"
