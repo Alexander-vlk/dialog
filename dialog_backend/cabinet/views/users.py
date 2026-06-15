@@ -10,6 +10,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from auth_service.models import AppUser
 from auth_service.permissions import HasRefreshToken
 from auth_service.serializers import RegisterUserSerializer
+from auth_service.serializers.serializers import AppUserSerializer
 from cabinet.selectors import get_streak_data_from_redis
 from cabinet.serializers import UserStreakResponseSerializer
 from common_utils.constants import APISchemaTags
@@ -18,22 +19,6 @@ from common_utils.constants import APISchemaTags
 @extend_schema_view(
     retrieve=extend_schema(
         'Получить данные пользователя',
-        tags=[APISchemaTags.USERS],
-        request=RegisterUserSerializer,
-        responses={
-            status.HTTP_200_OK: RegisterUserSerializer,
-        },
-    ),
-    partial_update=extend_schema(
-        'Частично обновить данные пользователя',
-        tags=[APISchemaTags.USERS],
-        request=RegisterUserSerializer,
-        responses={
-            status.HTTP_200_OK: RegisterUserSerializer,
-        },
-    ),
-    update=extend_schema(
-        'Обновить данные пользователя',
         tags=[APISchemaTags.USERS],
         request=RegisterUserSerializer,
         responses={
@@ -58,7 +43,6 @@ from common_utils.constants import APISchemaTags
 )
 class AppUserViewSet(
     RetrieveModelMixin,
-    UpdateModelMixin,
     DestroyModelMixin,
     GenericViewSet,
 ):
@@ -86,3 +70,38 @@ class AppUserViewSet(
         user_streak_data = get_streak_data_from_redis(request.user)
         response_serializer = UserStreakResponseSerializer(user_streak_data)
         return Response(response_serializer.data, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    partial_update=extend_schema(
+        'Частично обновить данные пользователя',
+        tags=[APISchemaTags.USERS],
+        request=AppUserSerializer,
+        responses={
+            status.HTTP_200_OK: AppUserSerializer,
+        },
+    ),
+    update=extend_schema(
+        'Обновить данные пользователя',
+        tags=[APISchemaTags.USERS],
+        request=AppUserSerializer,
+        responses={
+            status.HTTP_200_OK: AppUserSerializer,
+        },
+    ),
+)
+class UpdateAppUser(UpdateModelMixin, GenericViewSet):
+    """ViewSet для обновления профиля пользователя"""
+
+    queryset = AppUser.objects.all()
+    serializer_class = AppUserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, HasRefreshToken]
+
+    def has_permissions(self):
+        """Проверка наличия доступов по разным actions"""
+        permission_classes =  [IsAuthenticated(), HasRefreshToken()]
+        if self.request.method != 'retrieve':
+            permission_classes.append(IsAdminUser())
+
+        return permission_classes

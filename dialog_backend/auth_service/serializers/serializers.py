@@ -56,3 +56,21 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         new_user = AppUser.objects.create_user(**validated_data)
         new_user.diseases.set(diseases)
         return new_user
+
+
+class AppUserSerializer(serializers.ModelSerializer):
+    """Сериализатор модели AppUser"""
+
+    class Meta:
+        model = AppUser
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'patronymic_name',
+            'gender',
+            'height',
+            'birth_date',
+            'diagnosis_date',
+            'phone_number',
+        ]
