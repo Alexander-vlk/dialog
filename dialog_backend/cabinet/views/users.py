@@ -1,13 +1,17 @@
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.mixins import UpdateModelMixin, RetrieveModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from auth_service.models import AppUser
 from auth_service.permissions import HasRefreshToken
 from auth_service.serializers import RegisterUserSerializer
+from cabinet.selectors import get_streak_data_from_redis
+from cabinet.serializers import UserStreakResponseSerializer
 from common_utils.constants import APISchemaTags
 
 
@@ -44,6 +48,13 @@ from common_utils.constants import APISchemaTags
             status.HTTP_204_NO_CONTENT: {},
         },
     ),
+    streak=extend_schema(
+        'Получить данные об ударном режиме пользвоателя',
+        tags=[APISchemaTags.USERS],
+        responses={
+            status.HTTP_200_OK: UserStreakResponseSerializer,
+        },
+    ),
 )
 class AppUserViewSet(
     RetrieveModelMixin,
@@ -68,3 +79,10 @@ class AppUserViewSet(
             permission_classes.append(IsAdminUser())
 
         return permission_classes
+
+    @action(methods=['get'], detail=False, url_path='streak', url_name='streak')
+    def streak(self, request):
+        """Получить статус ударного режима для пользователя"""
+        user_streak_data = get_streak_data_from_redis(request.user)
+        response_serializer = UserStreakResponseSerializer(user_streak_data)
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
