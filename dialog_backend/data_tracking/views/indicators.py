@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import status
@@ -760,6 +760,18 @@ class MealViewSet(IndicatorModelViewSet):
     model_name = Meal
     queryset = Meal.objects.all()
     serializer_class = MealSerializer
+
+    def get_queryset(self):
+        """Получить набор данных на основе пользователя"""
+        date_filter_serializer = DateFilterRequestSerializer(data=self.request.query_params)
+        date_filter_serializer.is_valid(raise_exception=True)
+        time_filter = Q()
+        date_start = date_filter_serializer.validated_data.get('date_start')
+        date_end = date_filter_serializer.validated_data.get('date_end')
+        if date_start and date_end:
+            time_filter = Q(eaten_at__date__gte=date_start, eaten_at__date__lte=date_end)
+
+        return self.model_name.objects.filter(time_filter, user=self.request.user)
 
     @action(detail=False, methods=['get'], url_path='average', url_name='average')
     def average(self, request):

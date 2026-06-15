@@ -1,0 +1,131 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PYTHONUNBUFFERED: "1"
+      DJANGO_SETTINGS_MODULE: dialog_backend.settings
+    command: >
+      sh -c "
+      poetry run python manage.py migrate &&
+      poetry run gunicorn dialog_backend.wsgi:application
+        --bind 0.0.0.0:8040
+        --workers 3
+        --timeout 60
+      "
+    expose:
+      - "8040"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - dialog_network
+
+  postgres:
+    image: postgres:14
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234}
+      POSTGRES_DB: ${POSTGRES_DB:-dialog}
+    networks:
+      - dialog_network
+
+  redis:
+    image: redis:7
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - dialog_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-guest}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - dialog_network
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A dialog_backend worker --loglevel=info --concurrency=4
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - dialog_network
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A dialog_backend beat --loglevel=info
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - dialog_network
+
+  flower:
+    image: mher/flower
+    restart: always
+    environment:
+      CELERY_BROKER_URL: pyamqp://${RABBITMQ_DEFAULT_USER:-guest}@rabbitmq//
+      FLOWER_PORT: "5555"
+    ports:
+      - "5555:5555"
+    depends_on:
+      - rabbitmq
+    networks:
+      - dialog_network
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./site.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    networks:
+      - dialog_network
+
+  frontend:
+    build:
+      context: ./dialog_frontend
+      dockerfile: Dockerfile
+    command: npm run build
+    volumes:
+      - frontend_dist:/home/frontend/dist
+    restart: "no"
+    networks:
+      - dialog_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  frontend_dist:
+
+networks:
+  dialog_network:
+    external: true
