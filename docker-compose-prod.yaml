@@ -13,8 +13,8 @@ services:
       "
     volumes:
       - ./:/home/django/dialog_backend
-    expose:
-      - "8040"
+    ports:
+      - "8040:8040"
     restart: always
     depends_on:
       - postgres
@@ -110,6 +110,7 @@ services:
     volumes:
       - ./site.conf:/etc/nginx/conf.d/default.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
+      - ./dialog_backend/static:/static:ro
     depends_on:
       - backend
     networks:
@@ -122,6 +123,8 @@ services:
     command: npm run dev
     volumes:
       - frontend_dist:/home/frontend/dist
+    ports:
+      - "8300:8300"
     restart: "no"
     networks:
       - dialog_network

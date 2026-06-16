@@ -107,6 +107,7 @@ services:
     volumes:
       - ./site.conf:/etc/nginx/conf.d/site.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
+      - ./dialog_backend/static:/static:ro
     extra_hosts:
       - "crm.com:host-gateway"
     networks:
