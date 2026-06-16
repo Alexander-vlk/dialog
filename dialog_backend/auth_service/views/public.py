@@ -9,7 +9,7 @@ from rest_framework_simplejwt.serializers import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from auth_service.permissions import HasNoRefreshToken, HasRefreshToken
+from auth_service.permissions import HasRefreshToken
 from auth_service.serializers import (
     AccessTokenResponseSerializer,
     RegisterUserSerializer, AppUserResponseSerializer,
@@ -114,7 +114,7 @@ class HealthCheck(APIView):
 class NewAppUserRegisterAPIView(APIView):
     """Регистрация работника"""
 
-    permission_classes: list = [HasNoRefreshToken]
+    permission_classes: list = []
     authentication_classes: list = []
 
     def post(self, request, *args, **kwargs):
@@ -152,7 +152,7 @@ class NewAppUserRegisterAPIView(APIView):
 class AuthorizationAPIView(TokenObtainPairView):
     """Получить пару access и refresh токенов"""
 
-    permission_classes: list = [HasNoRefreshToken]
+    permission_classes: list = []
     authentication_classes: list = []
 
     def post(self, request, *args, **kwargs):

@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from auth_service.permissions import HasRefreshToken, HasNoRefreshToken
+from auth_service.permissions import HasRefreshToken
 from auth_service.serializers import (
     ChangePasswordRequestSerializer,
 )

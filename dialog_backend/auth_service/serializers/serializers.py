@@ -73,4 +73,5 @@ class AppUserSerializer(serializers.ModelSerializer):
             'birth_date',
             'diagnosis_date',
             'phone_number',
+            'email',
         ]
