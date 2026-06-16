@@ -120,12 +120,15 @@ services:
     build:
       context: ./dialog_frontend
       dockerfile: Dockerfile
+    working_dir: /home/frontend
     command: npm run dev
     volumes:
-      - frontend_dist:/home/frontend/dist
+      - ./dialog_frontend:/home/frontend
+      - /home/frontend/node_modules
     ports:
       - "8300:8300"
-    restart: "no"
+    depends_on:
+      - backend
     networks:
       - dialog_network
 
