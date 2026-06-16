@@ -51,7 +51,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'https://dialog.com',
-    'https://admin.dialog.com'
+    'https://admin.dialog.com',
     'https://diabetes-dialog.ru',
     'https://www.diabetes-dialog.ru',
 ]
