@@ -21,6 +21,8 @@ def execute_calculate_streak_for_users() -> None:
             )
             continue
 
-        user_streak_data['days_count'] += int(has_streak)
+        if not has_streak:
+            user_streak_data['days_count'] += int(has_streak)
+
         user_streak_data['is_active'] = has_streak
         cache.set(current_user_streak_redis_key, user_streak_data)
