@@ -61,6 +61,8 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class AppUserSerializer(serializers.ModelSerializer):
     """Сериализатор модели AppUser"""
 
+    email = serializers.EmailField(required=False, default='', allow_blank=True)
+
     class Meta:
         model = AppUser
         fields = [
