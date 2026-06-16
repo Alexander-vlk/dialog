@@ -108,6 +108,7 @@ services:
       - ./site.conf:/etc/nginx/conf.d/site.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
       - ./dialog_backend/static:/static:ro
+      - ./dialog_backend/media:/media:ro
     extra_hosts:
       - "crm.com:host-gateway"
     networks:
